@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "Core.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "Core.Application\Core.Application.csproj", "{EFD435E7-F203-4532-B4F1-CE23855B8422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Utility", "Core.Utility\Core.Utility.csproj", "{362BBAEA-3CF6-422D-AC31-F1CDB5803C0C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Global", "Core.Global\Core.Global.csproj", "{7F13A0B1-3071-4677-9B49-C319172037BC}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{EFD435E7-F203-4532-B4F1-CE23855B8422}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD435E7-F203-4532-B4F1-CE23855B8422}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD435E7-F203-4532-B4F1-CE23855B8422}.Release|Any CPU.Build.0 = Release|Any CPU
-		{362BBAEA-3CF6-422D-AC31-F1CDB5803C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{362BBAEA-3CF6-422D-AC31-F1CDB5803C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{362BBAEA-3CF6-422D-AC31-F1CDB5803C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{362BBAEA-3CF6-422D-AC31-F1CDB5803C0C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F13A0B1-3071-4677-9B49-C319172037BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F13A0B1-3071-4677-9B49-C319172037BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F13A0B1-3071-4677-9B49-C319172037BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
