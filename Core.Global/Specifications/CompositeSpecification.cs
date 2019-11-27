@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Domain.Specifications
+namespace Core.Global.Specifications
 {
     public abstract class CompositeSpecification<T> : Specification<T>, ICompositeSpecification<T>
     {

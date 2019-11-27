@@ -21,6 +21,9 @@ namespace Core.Frame.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureLogging((host, log) =>
+                {
+                    log.AddLog4Net("log4.config");
                 });
     }
 }

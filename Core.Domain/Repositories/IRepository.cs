@@ -1,5 +1,5 @@
 ﻿using Core.Global;
-using Core.Domain.Specifications;
+using Core.Global.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -7,7 +7,12 @@ using System.Text;
 
 namespace Core.Domain
 {
-    public interface IRepository<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>, new()
+    /// <summary>
+    /// 泛型仓储接口
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TEntity"></typeparam>
+    public interface IRepository<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
     {
         int Add(TEntity entity);
 
@@ -16,6 +21,8 @@ namespace Core.Domain
         TEntity Get(TKey id, params Expression<Func<TEntity, dynamic>>[] navigationProperties);
 
         IList<TEntity> Get(params Expression<Func<TEntity, dynamic>>[] navigationProperties);
+
+        T GetMax<T>(Expression<Func<TEntity, T>> maxExpression, ISpecification<TEntity> specification);
 
         IList<TEntity> GetByCondition(ISpecification<TEntity> specification, params Expression<Func<TEntity, dynamic>>[] navigationProperties);
 

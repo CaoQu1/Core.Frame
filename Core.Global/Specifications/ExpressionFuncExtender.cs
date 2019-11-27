@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Core.Domain.Specifications
+namespace Core.Global.Specifications
 {
     public static class ExpressionFuncExtender
     {

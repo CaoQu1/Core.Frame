@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Core.Domain.Specifications
+namespace Core.Global.Specifications
 {
     public class ExpressionSpecification<T> : Specification<T>
     {
