@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Domain
+namespace Core.Domain.Entities
 {
     /// <summary>
     /// 实体接口

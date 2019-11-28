@@ -40,6 +40,17 @@ namespace Core.Infrastructure
         private ILogger<BaseRepository<TKey, TEntity>> _logger;
 
         /// <summary>
+        /// 数据集
+        /// </summary>
+        public IQueryable<TEntity> Table
+        {
+            get
+            {
+                return this._dbContext.Set<TEntity>();
+            }
+        }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="unitOfWork"></param>

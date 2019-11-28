@@ -18,5 +18,18 @@ namespace Core.Global
             /// </summary>
             Asc
         }
+
+        public enum Sex
+        {
+            /// <summary>
+            /// 男
+            /// </summary>
+            Man,
+
+            /// <summary>
+            /// 女
+            /// </summary>
+            WoMan
+        }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace Core.Frame.Web
 {
@@ -43,6 +44,7 @@ namespace Core.Frame.Web
                 option.UseSqlServer(connectionString);
                 option.UseLoggerFactory(new LoggerFactory(new List<ILoggerProvider> { new Log4NetProvider() }));//添加sql监控日志
             });//初始化数据库连接
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
         }
 
         /// <summary>

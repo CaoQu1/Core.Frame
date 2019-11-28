@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Domain
+namespace Core.Domain.Repositories
 {
     /// <summary>
     /// 数据上下文接口

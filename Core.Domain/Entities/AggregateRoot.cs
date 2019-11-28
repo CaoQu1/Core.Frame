@@ -9,7 +9,7 @@ namespace Core.Domain.Entities
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class AggregateRoot<TEntity, TKey> : BaseEntity<TEntity, TKey> where TEntity : class
+    public abstract class AggregateRoot<TEntity, TKey> : BaseEntity<TEntity, TKey>, IAggregateRoot<TKey> where TEntity : class, IEntity<TKey>
     {
     }
 }
