@@ -12,7 +12,7 @@ namespace Core.Infrastructure
     /// </summary>
     public class BaseDbContext : DbContext, IDbContext
     {
-        public BaseDbContext(DbContextOptions options) : base(options)
+        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }

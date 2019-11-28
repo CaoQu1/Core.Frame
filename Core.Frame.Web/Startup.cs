@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Frame.Web
 {
@@ -34,11 +36,13 @@ namespace Core.Frame.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddMvc();
             services.AddDbContext<BaseDbContext>(option =>
             {
-                //option.UseSqlServer("");
-            });
+                var connectionString = Configuration.GetConnectionString("Core");
+                option.UseSqlServer(connectionString);
+                option.UseLoggerFactory(new LoggerFactory(new List<ILoggerProvider> { new Log4NetProvider() }));//添加sql监控日志
+            });//初始化数据库连接
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace Core.Frame.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
