@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +21,6 @@ namespace Core.Domain.Service
     /// </summary>
     public interface IDomainService
     {
-
     }
 
     /// <summary>

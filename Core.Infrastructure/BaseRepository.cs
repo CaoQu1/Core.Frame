@@ -1,4 +1,6 @@
 ﻿using Core.Domain;
+using Core.Domain.Entities;
+using Core.Domain.Repositories;
 using Core.Global;
 using Core.Global.Specifications;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +22,7 @@ namespace Core.Infrastructure
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class BaseRepository<TKey, TEntity> : IRepository<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
+    public class BaseRepository<TKey, TEntity> : IRepository<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
     {
         /// <summary>
         /// 工作单元

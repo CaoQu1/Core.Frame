@@ -1,4 +1,6 @@
 ﻿using Core.Domain;
+using Core.Domain.Entities;
+using Core.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,9 +26,9 @@ namespace Core.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetTypes().Where(t => !t.IsAbstract && typeof(IEntity<>).IsAssignableFrom(t)).Any()).ToList().ForEach(assmbly =>
+            AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetTypes().Where(t => !t.IsAbstract && typeof(IEntityTypeConfiguration<>).IsAssignableFrom(t)).Any()).ToList().ForEach(assmbly =>
               {
-                  modelBuilder.ApplyConfigurationsFromAssembly(assmbly, x => !x.IsAbstract && !x.IsInterface && typeof(IEntity<>).IsAssignableFrom(x));
+                  modelBuilder.ApplyConfigurationsFromAssembly(assmbly, x => !x.IsAbstract && !x.IsInterface && typeof(IEntityTypeConfiguration<>).IsAssignableFrom(x));
               });
             base.OnModelCreating(modelBuilder);
         }

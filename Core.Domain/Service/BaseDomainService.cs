@@ -2,6 +2,7 @@
 using Core.Domain.Repositories;
 using Core.Global;
 using Core.Global.Specifications;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Core.Domain.Service
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public class BaseDomainService<TKey, TEntity> : IDomainService<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
+    public abstract class BaseDomainService<TKey, TEntity> : IDomainService<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
     {
         protected readonly IRepository<TKey, TEntity> _repository;
         protected readonly ILogger<BaseDomainService<TKey, TEntity>> _logger;

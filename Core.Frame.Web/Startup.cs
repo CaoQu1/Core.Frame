@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Core.Global;
+using Core.Domain.Service;
 
 namespace Core.Frame.Web
 {
@@ -32,12 +35,26 @@ namespace Core.Frame.Web
         public IConfiguration Configuration { get; }
 
         /// <summary>
+        /// 服务
+        /// </summary>
+        public IServiceCollection ServiceCollection { get; set; }
+
+        /// <summary>
         /// 注入服务
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            var assmebies = new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("Core.Application*.dll")
+                .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
+            services.AddMvc()
+                .AddApplicationPart(assmebies.FirstOrDefault())
+                .AddRazorOptions(options =>
+            {
+                options.ViewLocationFormats.Add("/Core/{2}/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Core/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Core/Shared/{0}.cshtml");
+            });
             services.AddDbContext<BaseDbContext>(option =>
             {
                 var connectionString = Configuration.GetConnectionString("Core");
@@ -45,6 +62,8 @@ namespace Core.Frame.Web
                 option.UseLoggerFactory(new LoggerFactory(new List<ILoggerProvider> { new Log4NetProvider() }));//添加sql监控日志
             });//初始化数据库连接
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
+            services.AddDomianService();
+            ServiceCollection = services;
         }
 
         /// <summary>
@@ -54,6 +73,11 @@ namespace Core.Frame.Web
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            CoreAppContext.HttpContextAccessor = app.ApplicationServices.GetService<IHttpContextAccessor>();
+            CoreAppContext.ServiceCollection = ServiceCollection;
+            CoreAppContext.Configuration = Configuration;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -73,7 +97,11 @@ namespace Core.Frame.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(name: "default", pattern: "/{Controller}/{Action}/{id?}", defaults: new
+                {
+                    Controller = "User",
+                    Action = "Login"
+                });
             });
         }
     }
