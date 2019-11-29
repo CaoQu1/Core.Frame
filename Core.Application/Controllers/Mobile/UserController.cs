@@ -19,7 +19,7 @@ namespace Core.Application.Controllers
         /// </summary>
         /// <param name="systemUserService"></param>
         /// <param name="mapper"></param>
-        public UserController(IMapper mapper) : base(mapper)
+        public UserController()
         {
         }
 

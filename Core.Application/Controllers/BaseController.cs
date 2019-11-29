@@ -2,6 +2,7 @@
 using Core.Domain;
 using Core.Domain.Entities;
 using Core.Domain.Service;
+using Core.Global;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,13 @@ namespace Core.Application.Controllers
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         protected readonly IMapper _mapper;
 
-        public BaseController(IMapper mapper)
+        public BaseController()
         {
-            this._mapper = mapper;
+            this._mapper = CoreAppContext.GetService<IMapper>();
         }
 
         public virtual TEntity MapTo<TDto, TEntity>(TDto dto)

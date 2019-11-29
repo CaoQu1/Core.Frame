@@ -51,9 +51,13 @@ namespace Core.Frame.Web
                 .AddApplicationPart(assmebies.FirstOrDefault())
                 .AddRazorOptions(options =>
             {
-                options.ViewLocationFormats.Add("/Core/{2}/{1}/{0}.cshtml");
-                options.ViewLocationFormats.Add("/Core/{1}/{0}.cshtml");
-                options.ViewLocationFormats.Add("/Core/Shared/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Core/Admin/{1}/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Core/Admin/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Core/Admin/Shared/{0}.cshtml");
+
+                options.ViewLocationFormats.Add("/Core/Mobile/{2}/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Core/Mobile/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Core/Mobile/Shared/{0}.cshtml");
             });
             services.AddDbContext<BaseDbContext>(option =>
             {
@@ -63,6 +67,8 @@ namespace Core.Frame.Web
             });//初始化数据库连接
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
             services.AddDomianService();
+            services.AddHttpContextAccessor();
+            services.AddAuthentication().AddCookie();
             ServiceCollection = services;
         }
 
@@ -73,7 +79,6 @@ namespace Core.Frame.Web
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             CoreAppContext.HttpContextAccessor = app.ApplicationServices.GetService<IHttpContextAccessor>();
             CoreAppContext.ServiceCollection = ServiceCollection;
             CoreAppContext.Configuration = Configuration;
@@ -93,11 +98,13 @@ namespace Core.Frame.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(name: "default", pattern: "/{Controller}/{Action}/{id?}", defaults: new
+                endpoints.MapAreaControllerRoute(name: "admin", areaName: "Admin", pattern: "/Admin/{Controller=Admin}/{Action=Login}/{id?}");
+                endpoints.MapControllerRoute(name: "default", pattern: "/Mobile/{Controller}/{Action}/{id?}", defaults: new
                 {
                     Controller = "User",
                     Action = "Login"
