@@ -1,0 +1,9 @@
+automapper 对象映射
+log4 日志框架
+efcore orm 
+netcore 
+泛型仓储模式 
+DDD领域驱动设计
+easyui 前端框架
+redis缓存
+内存缓存
