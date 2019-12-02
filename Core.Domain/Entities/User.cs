@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Global;
+﻿using Core.Global;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Core.Domain.Entities
 {
     /// <summary>
-    /// 系统用户实体
+    /// 用户实体
     /// </summary>
-    public class SystemUser : AggregateRoot<SystemUser, int>
+    public class User : AggregateRoot<User, int>
     {
         /// <summary>
         /// 用户名
@@ -53,22 +53,22 @@ namespace Core.Domain.Entities
         public string Address { get; set; }
 
         /// <summary>
-        /// 系统编号
+        /// 区域编号
         /// </summary>
-        public int SystemId { get; set; }
+        public int AreaId { get; set; }
 
         /// <summary>
-        /// 系统用户角色关联信息
+        /// 区域实体
         /// </summary>
-        public virtual ICollection<SystemUserRole> SystemUserRoles { get; set; }
+        public virtual BusinessArea BusinessArea { get; set; }
 
         /// <summary>
         /// 配置数据库映射
         /// </summary>
         /// <param name="builder"></param>
-        public override void Configure(EntityTypeBuilder<SystemUser> builder)
+        public override void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("SystemUsers");
+            builder.ToTable("Users");
             builder.Property(x => x.NickName).HasColumnName(nameof(NickName));
             builder.Property(x => x.HeadPortrait).HasColumnName(nameof(HeadPortrait));
             builder.Property(x => x.PassWord).HasColumnName(nameof(PassWord));
@@ -77,7 +77,8 @@ namespace Core.Domain.Entities
             builder.Property(x => x.UserName).HasColumnName(nameof(UserName));
             builder.Property(x => x.Mobile).HasColumnName(nameof(Mobile));
             builder.Property(x => x.Sex).HasColumnName(nameof(Sex));
-            builder.Property(x => x.SystemId).HasColumnName(nameof(SystemId));
+
+            builder.HasOne(x => x.BusinessArea).WithOne(y => y.User).HasForeignKey<User>(x => x.AreaId);
         }
     }
 }
