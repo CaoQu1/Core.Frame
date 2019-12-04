@@ -34,13 +34,16 @@ namespace Core.Web
         public async Task Invoke(HttpContext httpContext)
         {
             var userAgents = httpContext.Request.Headers["user-agent"];
-            if (userAgents.Contains("micromessenger"))
+            if (!httpContext.Request.Path.HasValue || httpContext.Request.Path.Value == "/")
             {
-                httpContext.Request.Path = new PathString("/User/Login");
-            }
-            else
-            {
-                httpContext.Request.Path = new PathString("/Admin/Login");
+                if (userAgents.Contains("micromessenger"))
+                {
+                    httpContext.Request.Path = new PathString("/User/Login");
+                }
+                else
+                {
+                    httpContext.Request.Path = new PathString("/Admin/Login");
+                }
             }
             await _next(httpContext);
         }
