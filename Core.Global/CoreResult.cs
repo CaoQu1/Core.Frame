@@ -7,7 +7,7 @@ namespace Core.Global
     /// <summary>
     /// 返回结果
     /// </summary>
-    public class CoreResult
+    public class CoreResult<T>
     {
         /// <summary>
         /// 是否成功
@@ -17,11 +17,19 @@ namespace Core.Global
         /// <summary>
         /// 结果
         /// </summary>
-        public Object Value { get; set; }
+        public T Value { get; set; }
 
         /// <summary>
         /// 消息
         /// </summary>
         public string Message { get; set; }
+    }
+
+    /// <summary>
+    /// 返回对象结果
+    /// </summary>
+    public class CoreResult:CoreResult<Object>
+    {
+
     }
 }

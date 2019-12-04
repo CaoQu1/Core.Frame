@@ -22,6 +22,8 @@ namespace Core.Domain.Repositories
 
         TEntity Get(TKey id, params Expression<Func<TEntity, dynamic>>[] navigationProperties);
 
+        TEntity Get(TKey id, ISpecification<TEntity> specification, params Expression<Func<TEntity, dynamic>>[] navigationProperties);
+
         IList<TEntity> Get(params Expression<Func<TEntity, dynamic>>[] navigationProperties);
 
         T GetMax<T>(Expression<Func<TEntity, T>> maxExpression, ISpecification<TEntity> specification);

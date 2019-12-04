@@ -15,6 +15,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Core.Global;
 using Core.Domain.Service;
+using Core.Application.Filter;
+using Core.Web;
 
 namespace Core.Frame.Web
 {
@@ -47,8 +49,10 @@ namespace Core.Frame.Web
         {
             var assmebies = new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("Core.Application*.dll")
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
-            services.AddMvc()
-                .AddApplicationPart(assmebies.FirstOrDefault())
+            services.AddMvc(option =>
+            {
+                option.Filters.Add(new CoreAuthorizationFilter());
+            }).AddApplicationPart(assmebies.FirstOrDefault())
                 .AddRazorOptions(options =>
             {
                 options.AreaViewLocationFormats.Add("/Core/Admin/{1}/{0}.cshtml");
@@ -69,6 +73,11 @@ namespace Core.Frame.Web
             services.AddDomianService();
             services.AddHttpContextAccessor();
             services.AddAuthentication().AddCookie();
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = "127.0.0.1";
+                option.InstanceName = "db0";
+            });
             ServiceCollection = services;
         }
 
@@ -99,7 +108,10 @@ namespace Core.Frame.Web
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseWap();
 
             app.UseEndpoints(endpoints =>
             {

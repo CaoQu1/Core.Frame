@@ -52,6 +52,11 @@ namespace Core.Domain.Entities
         public virtual ActionPermissions ActionPermissions { get; set; }
 
         /// <summary>
+        /// 角色实体
+        /// </summary>
+        public virtual Role Role { get; set; }
+
+        /// <summary>
         /// 配置数据库映射
         /// </summary>
         /// <param name="builder"></param>
@@ -60,6 +65,7 @@ namespace Core.Domain.Entities
             builder.ToTable("ContollerActionRoles");
             builder.HasOne(x => x.ControllerPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ControllerId);
             builder.HasOne(x => x.ActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ActionId);
+            builder.HasOne(x => x.Role).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.RoleId);
         }
     }
 }

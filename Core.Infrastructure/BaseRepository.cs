@@ -206,6 +206,42 @@ namespace Core.Infrastructure
             return entity;
         }
 
+
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="eagerLoadingProperties"></param>
+        /// <returns></returns>
+        public virtual TEntity Get(TKey id, ISpecification<TEntity> specification, params Expression<Func<TEntity, dynamic>>[] navigationProperties)
+        {
+            TEntity entity = null;
+            if (navigationProperties != null &&
+              navigationProperties.Length > 0)
+            {
+                DbSet<TEntity> dbSet = this._dbContext.Set<TEntity>();
+                var eagerLoadingProperty = navigationProperties[0];
+                var eagerLoadingPath = this.GetEagerLoadingPath(eagerLoadingProperty);
+                var dbquery = dbSet.Include(eagerLoadingPath);
+                for (int i = 1; i < navigationProperties.Length; i++)
+                {
+                    eagerLoadingProperty = navigationProperties[i];
+                    eagerLoadingPath = this.GetEagerLoadingPath(eagerLoadingProperty);
+                    dbquery = dbquery.Include(eagerLoadingPath);
+                }
+                entity = dbquery.Where(c => c.Id.Equals(id)).Where(specification.GetExpression()).First();
+            }
+            else
+            {
+                entity = this._dbContext.Set<TEntity>().Find(id);
+            }
+            if (entity != null)
+            {
+                entity.FormatInitValue();
+            }
+            return entity;
+        }
+
         /// <summary>
         /// 获取实体集
         /// </summary>

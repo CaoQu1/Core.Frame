@@ -36,5 +36,10 @@ namespace Core.Domain.Entities
         /// 角色用户关联信息
         /// </summary>
         public virtual ICollection<SystemUserRole> SystemUserRoles { get; set; }
+
+        /// <summary>
+        /// 角色权限关联信息
+        /// </summary>
+        public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; }
     }
 }
