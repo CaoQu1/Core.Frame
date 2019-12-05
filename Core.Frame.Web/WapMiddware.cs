@@ -38,11 +38,11 @@ namespace Core.Web
             {
                 if (userAgents.Contains("micromessenger"))
                 {
-                    httpContext.Request.Path = new PathString("/User/Login");
+                    httpContext.Request.Path = new PathString("/mobile/user/login");
                 }
                 else
                 {
-                    httpContext.Request.Path = new PathString("/Admin/Login");
+                    httpContext.Request.Path = new PathString("/admin/admin/login");
                 }
             }
             await _next(httpContext);

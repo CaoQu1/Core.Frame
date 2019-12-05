@@ -17,6 +17,7 @@ using Core.Global;
 using Core.Domain.Service;
 using Core.Application.Filter;
 using Core.Web;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Core.Frame.Web
 {
@@ -51,7 +52,7 @@ namespace Core.Frame.Web
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
             services.AddMvc(option =>
             {
-                option.Filters.Add(new CoreAuthorizationFilter());
+                // option.Filters.Add(new CoreAuthorizationFilter());
             }).AddApplicationPart(assmebies.FirstOrDefault())
                 .AddRazorOptions(options =>
             {
@@ -59,8 +60,8 @@ namespace Core.Frame.Web
                 options.AreaViewLocationFormats.Add("/Core/Admin/{0}.cshtml");
                 options.AreaViewLocationFormats.Add("/Core/Admin/Shared/{0}.cshtml");
 
-                options.ViewLocationFormats.Add("/Core/Mobile/{2}/{1}/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Core/Mobile/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Core/Mobile/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Core/Mobile/Shared/{0}.cshtml");
             });
             services.AddDbContext<BaseDbContext>(option =>
@@ -72,7 +73,11 @@ namespace Core.Frame.Web
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
             services.AddDomianService();
             services.AddHttpContextAccessor();
-            services.AddAuthentication().AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+            {
+                option.LoginPath = "/User/Login";
+                option.LogoutPath = "/User/LoginOut";
+            });
             services.AddDistributedRedisCache(option =>
             {
                 option.Configuration = "127.0.0.1";
@@ -116,7 +121,7 @@ namespace Core.Frame.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(name: "admin", areaName: "Admin", pattern: "/Admin/{Controller=Admin}/{Action=Login}/{id?}");
-                endpoints.MapControllerRoute(name: "default", pattern: "/Mobile/{Controller}/{Action}/{id?}", defaults: new
+                endpoints.MapControllerRoute(name: "default", pattern: "/{Controller}/{Action}/{id?}", defaults: new
                 {
                     Controller = "User",
                     Action = "Login"

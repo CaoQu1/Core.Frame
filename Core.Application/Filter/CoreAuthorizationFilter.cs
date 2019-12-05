@@ -1,8 +1,11 @@
 ﻿using Core.Domain;
 using Core.Domain.Entities;
 using Core.Global;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
@@ -25,10 +28,16 @@ namespace Core.Application.Filter
         /// <returns></returns>
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            var controllerActionDescriptor = (context.ActionDescriptor as ControllerActionDescriptor);
+            if (controllerActionDescriptor.MethodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any())
+            {
+                return;
+            }
             var userClaim = context.HttpContext.User.FindFirst(ClaimTypes.Sid);
             if (userClaim == null || userClaim.Value.IsEmpty())
             {
                 AuthorizationFailResult(context);
+                return;
             }
             var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
             var systemUserRoles = await cacheManagerService.GetOrAdd<List<SystemUserRole>>(String.Format(CoreConst.USERROLES, userClaim.Value), () =>
@@ -47,6 +56,7 @@ namespace Core.Application.Filter
             if (!controllerActionRoles.Any(x => x.Controller == controller && x.Action == action))
             {
                 AuthorizationFailResult(context);
+                return;
             }
         }
 
@@ -76,7 +86,7 @@ namespace Core.Application.Filter
             }
             else
             {
-                context.Result = new ChallengeResult();
+                context.Result = new RedirectResult("/admin/admin/login");
             }
         }
     }

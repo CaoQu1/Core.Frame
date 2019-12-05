@@ -2,6 +2,7 @@
 using Core.Application.Controllers;
 using Core.Domain;
 using Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace Core.Application.Controllers
         /// 登录
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Core.Application.Filter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,7 @@ namespace Core.Application.Controllers
     /// <summary>
     /// 后台控制器基类
     /// </summary>
-    [Area("Admin")]
-    [Authorize]
+    [CoreAuthorizationFilter]
     public abstract class AdminBaseController : BaseController
     {
 
