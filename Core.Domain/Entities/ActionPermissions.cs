@@ -38,33 +38,12 @@ namespace Core.Domain.Entities
         public int? ShowOrder { get; set; }
 
         /// <summary>
-        /// 系统编号
-        /// </summary>
-        public int SystemId { get; set; }
-
-        /// <summary>
-        /// 控制器编号
-        /// </summary>
-        public int ControllerId { get; set; }
-
-        /// <summary>
-        /// 控制器实体
-        /// </summary>
-        public virtual ControllerPermissions ControllerPermissions { get; set; }
-
-        /// <summary>
-        /// 操作角色关联信息
-        /// </summary>
-        public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; } 
-
-        /// <summary>
         /// 配置数据库
         /// </summary>
         /// <param name="builder"></param>
         public override void Configure(EntityTypeBuilder<ActionPermissions> builder)
         {
             builder.ToTable("ActionPermissions");
-            builder.HasOne(x => x.ControllerPermissions).WithMany(y => y.ActionPermissions).HasForeignKey(f => f.ControllerId);
             base.Configure(builder);
         }
     }

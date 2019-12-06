@@ -33,5 +33,6 @@ namespace Core.Application.Controllers
         {
             return this._mapper.Map<TDto>(entity);
         }
+
     }
 }

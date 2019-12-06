@@ -42,6 +42,11 @@ namespace Core.Domain.Entities
         public int SystemId { get; set; }
 
         /// <summary>
+        /// 控制器操作编号
+        /// </summary>
+        public int ControllerActionId { get; set; }
+
+        /// <summary>
         /// 控制器实体
         /// </summary>
         public virtual ControllerPermissions ControllerPermissions { get; set; }
@@ -50,6 +55,11 @@ namespace Core.Domain.Entities
         /// 操作实体
         /// </summary>
         public virtual ActionPermissions ActionPermissions { get; set; }
+
+        /// <summary>
+        /// 控制器操作实体
+        /// </summary>
+        public virtual ControllerActionPermissions ControllerActionPermissions { get; set; }
 
         /// <summary>
         /// 角色实体

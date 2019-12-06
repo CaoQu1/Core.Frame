@@ -16,7 +16,7 @@ namespace Core.Domain.Service
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class BaseDomainService<TKey, TEntity> : IDomainService<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
+    public class BaseDomainService<TKey, TEntity> : IDomainService<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
     {
         protected readonly IRepository<TKey, TEntity> _repository;
         protected readonly ILogger<BaseDomainService<TKey, TEntity>> _logger;

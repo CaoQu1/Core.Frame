@@ -18,6 +18,11 @@ namespace Core.Domain.Entities
         public int SystemId { get; set; }
 
         /// <summary>
+        /// 区域
+        /// </summary>
+        public string Area { get; set; }
+
+        /// <summary>
         /// 控制器
         /// </summary>
         public string Controller { get; set; }
@@ -55,12 +60,8 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 操作实体
         /// </summary>
-        public virtual ICollection<ActionPermissions> ActionPermissions { get; set; }
+        public virtual ICollection<ControllerActionPermissions> ActionPermissions { get; set; }
 
-        /// <summary>
-        /// 控制器角色关联信息
-        /// </summary>
-        public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; }
 
         /// <summary>
         /// 配置数据库
