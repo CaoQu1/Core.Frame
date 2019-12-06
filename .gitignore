@@ -1,2 +1,11 @@
 bin
 obj
+/.vs/slnx.sqlite
+/.vs/Core.Frame/v16/Server/sqlite3/storage.ide-wal
+/.vs/Core.Frame/v16/Server/sqlite3/storage.ide-shm
+/.vs/Core.Frame/v16/Server/sqlite3/storage.ide
+/.vs/Core.Frame/v16/Server/sqlite3/db.lock
+/.vs/Core.Frame/v16/Server/sqlite3
+/.vs/Core.Frame/v16/.suo
+/.vs/Core.Frame/v16
+/.vs
