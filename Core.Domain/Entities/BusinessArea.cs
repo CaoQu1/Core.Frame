@@ -22,6 +22,11 @@ namespace Core.Domain.Entities
         public int? ParentId { get; set; }
 
         /// <summary>
+        /// 添加时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
         /// 用户实体
         /// </summary>
         public virtual User User { get; set; }

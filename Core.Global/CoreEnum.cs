@@ -87,5 +87,147 @@ namespace Core.Global
             /// </summary>
             Approve
         }
+
+        /// <summary>
+        /// 附件类型
+        /// </summary>
+        public enum AttachmentType
+        {
+            /// <summary>
+            /// 图片
+            /// </summary>
+            Image,
+
+            /// <summary>
+            /// 文件
+            /// </summary>
+            File
+        }
+
+        /// <summary>
+        /// 模块
+        /// </summary>
+        public enum Module
+        {
+            /// <summary>
+            /// 商品
+            /// </summary>
+            Good,
+
+            /// <summary>
+            /// 其他
+            /// </summary>
+            Other
+        }
+
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public enum OrderStatus
+        {
+            /// <summary>
+            /// 生成
+            /// </summary>
+            Create,
+
+            /// <summary>
+            /// 确认
+            /// </summary>
+            Cofirm,
+
+            /// <summary>
+            /// 完成
+            /// </summary>
+            Finish
+        }
+
+        /// <summary>
+        /// 支付状态
+        /// </summary>
+        public enum PaymentStatus
+        {
+            /// <summary>
+            /// 已支付
+            /// </summary>
+            Piad,
+            /// <summary>
+            /// 未支付
+            /// </summary>
+            UnPaid
+        }
+
+        /// <summary>
+        /// 发货状态
+        /// </summary>
+        public enum DistributionStatus
+        {
+            /// <summary>
+            /// 已发货
+            /// </summary>
+            Shipped,
+
+            /// <summary>
+            /// 未发货
+            /// </summary>
+            UnShipped
+        }
+
+        /// <summary>
+        /// 获取红包方式
+        /// </summary>
+        public enum GetRedPackType
+        {
+            /// <summary>
+            /// 随机
+            /// </summary>
+            Random,
+
+            /// <summary>
+            /// 固定
+            /// </summary>
+            Fixed
+        }
+
+        /// <summary>
+        /// 会员类型
+        /// </summary>
+        public enum UserType
+        {
+            /// <summary>
+            /// 水电工
+            /// </summary>
+            Plumber,
+
+            /// <summary>
+            /// 五金门店
+            /// </summary>
+            Shop,
+
+            /// <summary>
+            /// 分销商
+            /// </summary>
+            Distributor,
+
+            /// <summary>
+            /// 一级代理商
+            /// </summary>
+            Agent
+        }
+
+        /// <summary>
+        /// 验证码类型
+        /// </summary>
+        public enum CodeType
+        {
+            /// <summary>
+            /// 注册
+            /// </summary>
+            PhoneVerify,
+
+            /// <summary>
+            /// 其他
+            /// </summary>
+            Other
+        }
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 namespace Core.Domain.Entities
 {
     /// <summary>
-    /// 用户实体
+    /// 会员实体
     /// </summary>
     public class User : AggregateRoot<User, int>
     {
@@ -21,6 +21,11 @@ namespace Core.Domain.Entities
         /// 昵称
         /// </summary>
         public string NickName { get; set; }
+
+        /// <summary>
+        /// 会员组Id
+        /// </summary>
+        public int GroupId { get; set; }
 
         /// <summary>
         /// 密码
@@ -51,6 +56,11 @@ namespace Core.Domain.Entities
         /// 注册地址
         /// </summary>
         public string Address { get; set; }
+
+        /// <summary>
+        /// 推荐码
+        /// </summary>
+        public string ReferralCode { get; set; }
 
         /// <summary>
         /// 区域编号

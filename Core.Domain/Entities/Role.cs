@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static Core.Global.CoreEnum;
 
 namespace Core.Domain.Entities
 {
@@ -27,10 +28,15 @@ namespace Core.Domain.Entities
         /// </summary>
         public string RoleDesc { get; set; }
 
+        ///// <summary>
+        ///// 获取红包方式
+        ///// </summary>
+        //public GetRedPackType? RedPackType { get; set; }
+
         /// <summary>
         /// 状态
         /// </summary>
-        public CoreEnum.Status Status { get; set; }
+        public Status Status { get; set; }
 
         /// <summary>
         /// 角色用户关联信息
