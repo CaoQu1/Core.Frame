@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Application.Controllers.Admin
 {
@@ -47,11 +48,12 @@ namespace Core.Application.Controllers.Admin
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetAuthCode()
+        public async Task<IActionResult> GetAuthCode()
         {
             var codeModel = this._verifyCodeService.GetVerifyCode();
             var seesionValue = this._encryptionService.MD5(codeModel.Item2);
             HttpContext.Session.Set(this._verifyCodeService.CodeKey, Encoding.Default.GetBytes(seesionValue));
+            await HttpContext.Session.CommitAsync();
             return File(codeModel.Item1, @"image/Gif");
         }
 
@@ -76,7 +78,7 @@ namespace Core.Application.Controllers.Admin
                     var systemUser = SystemUserService.Instance.GetByCondition(expressionSpecification).FirstOrDefault();
                     if (systemUser != null)
                     {
-                        if (systemUser.PassWord.Equals(this._encryptionService.MD5(password)))
+                        if (systemUser.PassWord.Equals(password))
                         {
                             return JsonSuccess<SystemUser, SystemUserDto>("登录成功!", systemUser);
                         }

@@ -68,7 +68,9 @@ namespace Core.Frame.Web
             {
                 var connectionString = Configuration.GetConnectionString("Core");
                 option.UseSqlServer(connectionString);
-                option.UseLoggerFactory(new LoggerFactory(new List<ILoggerProvider> { new Log4NetProvider() }));//添加sql监控日志
+                var logFactory = new LoggerFactory();
+                logFactory.AddLog4Net("log4.config");
+                option.UseLoggerFactory(logFactory);//添加sql监控日志
             });//初始化数据库连接
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
             services.AddDomianService();
@@ -78,11 +80,13 @@ namespace Core.Frame.Web
                 option.LoginPath = "/User/Login";
                 option.LogoutPath = "/User/LoginOut";
             });
+            services.AddSession();
             services.AddDistributedRedisCache(option =>
             {
                 option.Configuration = "127.0.0.1";
                 option.InstanceName = "db0";
             });
+            //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
             ServiceCollection = services;
         }
 
@@ -96,28 +100,28 @@ namespace Core.Frame.Web
             CoreAppContext.HttpContextAccessor = app.ApplicationServices.GetService<IHttpContextAccessor>();
             CoreAppContext.ServiceCollection = ServiceCollection;
             CoreAppContext.Configuration = Configuration;
-
+            CoreAppContext.ApplicationBuilder = app;
 
             //ServiceCollection.Configure<CustomExceptionMiddleWareOption>(Configuration.GetSection("ExceptionOption"));
 
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            app.UseCustomException(option =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseCustomException(option =>
-                {
-                    option.ErrorHandingPath = "/home/error";
-                    option.HandleType = CustomExceptionHandleType.Both;
-                    option.JsonHandleUrlKeys = new PathString[] { "/api" };
-                });
-                app.UseHsts();
-            }
+                option.ErrorHandingPath = "/home/error";
+                option.HandleType = CustomExceptionHandleType.Both;
+                option.JsonHandleUrlKeys = new PathString[] { "/api" };
+            });
+            //app.UseHsts();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseWap();
 
             app.UseRouting();

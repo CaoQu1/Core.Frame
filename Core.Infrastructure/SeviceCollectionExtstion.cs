@@ -27,11 +27,11 @@ namespace Core.Infrastructure
             services.TryAddTransient<IDbContext, BaseDbContext>();
             services.TryAddTransient(typeof(IRepository<,>), typeof(BaseRepository<,>));
             services.TryAddTransient(typeof(BaseDomainService<,>), typeof(BaseDomainService<,>));
-            services.TryAddTransient<SystemUserService, SystemUserService>();
             services.TryAddSingleton<IJsonSerializerService, JsonSerializerService>();
             services.TryAddTransient<ICacheManagerService, CacheManagerService>();
             services.TryAddTransient<IEncryptionService, EncryptionService>();
             services.TryAddTransient<IVerifyCodeService, VerifyCodeService>();
+            services.TryAddTransient<SystemUserService, SystemUserService>();
             return services;
         }
     }

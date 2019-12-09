@@ -26,10 +26,11 @@ namespace Core.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetTypes().Where(t => !t.IsAbstract && typeof(IEntityTypeConfiguration<>).IsAssignableFrom(t)).Any()).ToList().ForEach(assmbly =>
-              {
-                  modelBuilder.ApplyConfigurationsFromAssembly(assmbly, x => !x.IsAbstract && !x.IsInterface && typeof(IEntityTypeConfiguration<>).IsAssignableFrom(x));
-              });
+            var assmblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.StartsWith("Core") && x.GetTypes().Where(t => t.GetInterfaces().Any(m => m.IsGenericType && m.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))).Any()).ToList();
+            assmblies.ForEach(assmbly =>
+           {
+               modelBuilder.ApplyConfigurationsFromAssembly(assmbly, x => x.GetInterfaces().Any(t => t.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>)));
+           });
             base.OnModelCreating(modelBuilder);
         }
     }

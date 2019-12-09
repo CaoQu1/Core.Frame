@@ -35,7 +35,7 @@ namespace Core.Global
         {
             MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
             byte[] hashedDataBytes;
-            hashedDataBytes = md5Hasher.ComputeHash(Encoding.GetEncoding("gb2312").GetBytes(strValue));
+            hashedDataBytes = md5Hasher.ComputeHash(Encoding.Default.GetBytes(strValue));
             StringBuilder tmp = new StringBuilder();
             foreach (byte i in hashedDataBytes)
             {
