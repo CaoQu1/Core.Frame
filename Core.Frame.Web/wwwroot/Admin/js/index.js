@@ -3,12 +3,12 @@ layui.config({
     base: '/Areas/Admin/plugins/app/'
 }).use(['element', 'layer', 'navbar', 'tab'], function () {
     var element = layui.element,
-		$ = layui.jquery,
-		layer = layui.layer,
-		navbar = layui.navbar(),
-		tab = layui.tab({
-		    elem: '.admin-nav-card' //设置选项卡容器
-		});
+        $ = layui.jquery,
+        layer = layui.layer,
+        navbar = layui.navbar(),
+        tab = layui.tab({
+            elem: '.admin-nav-card' //设置选项卡容器
+        });
     //iframe自适应
     $(window).on('resize', function () {
         var $content = $('.admin-nav-card .layui-tab-content');
@@ -24,7 +24,7 @@ layui.config({
         elem: '#admin-navbar-side',
         //data: navs
         /*cached:true,*/
-        url: '/Permissions/Menu/GetMenuList?isIndex=true'
+        url: '/Admin/Menu/GetMenuList?isIndex=true'
     });
     //渲染navbar
     navbar.render();
@@ -72,7 +72,7 @@ layui.config({
 
     //手机设备的简单适配
     var treeMobile = $('.site-tree-mobile'),
-		shadeMobile = $('.site-mobile-shade');
+        shadeMobile = $('.site-mobile-shade');
     treeMobile.on('click', function () {
         $('body').addClass('site-mobile');
     });
@@ -100,12 +100,12 @@ function lock($, layer) {
                     $this.val('').attr('type', 'password');
                 }
             })
-				.on('blur', function () {
-				    var $this = $(this);
-				    if ($this.val() === '' || $this.length === 0) {
-				        $this.attr('type', 'text').val('输入密码解锁..');
-				    }
-				});
+                .on('blur', function () {
+                    var $this = $(this);
+                    if ($this.val() === '' || $this.length === 0) {
+                        $this.attr('type', 'text').val('输入密码解锁..');
+                    }
+                });
             //在此处可以写一个请求到服务端删除相关身份认证，因为考虑到如果浏览器被强制刷新的时候，身份验证还存在的情况			
             //do something...
             //e.g. 
@@ -127,11 +127,7 @@ function lock($, layer) {
                 }
                 unlock(userName, pwd);
             });
-            /**
-			 * 解锁操作方法
-			 * @param {String} 用户名
-			 * @param {String} 密码
-			 */
+
             var unlock = function (un, pwd) {
                 //这里可以使用ajax方法解锁
                 /*$.post('api/xx',{username:un,password:pwd}},function(data){

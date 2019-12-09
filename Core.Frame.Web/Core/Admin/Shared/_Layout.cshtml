@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Admin/fonts/iconfont.css" rel="stylesheet" />
+    <link href="~/Admin/css/layui.css" rel="stylesheet" />
+    <link href="~/Admin/css/global.css" rel="stylesheet" />
+    <script src="~/Admin/js/jquery-3.3.1.min.js"></script>
+</head>
+<body style="overflow-x:hidden;">
+    @RenderBody()
+    <script type="text/javascript">
+        layui.config({
+            base: '/Admin/app/',
+            version: '1522709297490' //为了更新 js 缓存，可忽略
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

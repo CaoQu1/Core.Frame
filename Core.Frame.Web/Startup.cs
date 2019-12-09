@@ -87,6 +87,7 @@ namespace Core.Frame.Web
                 option.InstanceName = "db0";
             });
             //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
+            ServiceCollection.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
             ServiceCollection = services;
         }
 
@@ -102,7 +103,7 @@ namespace Core.Frame.Web
             CoreAppContext.Configuration = Configuration;
             CoreAppContext.ApplicationBuilder = app;
 
-            //ServiceCollection.Configure<CustomExceptionMiddleWareOption>(Configuration.GetSection("ExceptionOption"));
+
 
             //if (env.IsDevelopment())
             //{
