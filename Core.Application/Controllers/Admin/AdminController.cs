@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace Core.Application.Controllers.Admin
 {
@@ -75,11 +78,19 @@ namespace Core.Application.Controllers.Admin
                 if (seesionCode.Length > 0 && md5Code.Equals(Encoding.Default.GetString(seesionCode)))
                 {
                     var expressionSpecification = new ExpressionSpecification<SystemUser>(x => x.UserName == username);
-                    var systemUser = SystemUserService.Instance.GetByCondition(expressionSpecification).FirstOrDefault();
+                    var systemUser = SystemUserService.Instance.GetByCondition(expressionSpecification, x => x.SystemUserRoles).FirstOrDefault();
                     if (systemUser != null)
                     {
                         if (systemUser.PassWord.Equals(password))
                         {
+                            var claimsPrincipal = new ClaimsPrincipal();
+                            var claimsIdentity = new ClaimsIdentity();
+                            claimsIdentity.AddClaims(new Claim[] {
+                                new Claim(ClaimTypes.Sid, systemUser.Id.ToString()),
+                                new Claim(ClaimTypes.Role,string.Join(',' ,systemUser.SystemUserRoles.Select(x=>x.RoleId).ToList()))
+                            });
+                            claimsPrincipal.AddIdentity(claimsIdentity);
+                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                             return JsonSuccess<SystemUser, SystemUserDto>("登录成功!", systemUser);
                         }
                         else
