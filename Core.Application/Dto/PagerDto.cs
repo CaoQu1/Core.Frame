@@ -6,7 +6,7 @@ namespace Core.Domain.Repositories
     /// <summary>
     /// 入参 分页筛选条件
     /// </summary>
-    public class Pager
+    public class PagerDto
     {
         public static dynamic Paging(IEnumerable<dynamic> list, long total)
         {

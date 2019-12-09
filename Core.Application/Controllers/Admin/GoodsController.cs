@@ -3,6 +3,7 @@ using Core.Application.Dto;
 using Core.Domain;
 using Core.Domain.Entities;
 using Core.Domain.Repositories;
+using Core.Domain.Service;
 using Core.Global;
 using Core.Global.Specifications;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +17,13 @@ namespace Core.Application.Controllers.Admin
 {
     public class GoodsController : AdminBaseController
     {
+        private readonly BaseDomainService<int, Goods> _baseDomainService;
+
+        public GoodsController(BaseDomainService<int, Goods> baseDomainService)
+        {
+            _baseDomainService = baseDomainService;
+        }
+
         /// <summary>
         /// 管理页面
         /// </summary>
@@ -39,38 +47,20 @@ namespace Core.Application.Controllers.Admin
         /// 获取商品列表
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetNewsList(Goods goodsFilter, PageInfo pageInfo)
+        public ActionResult GetNewsList(GoodsDto goodsFilter, PageInfo pageInfo)
         {
             var data = new ExpressionSpecification<Goods>(x => true);
-            //if (!string.IsNullOrEmpty(goodsFilter.GoodName))
-            //{
-            //    data = data.GetExpression<Goods>(x=>x.)
-            //    //Where(x => x.Title.Contains(NewsName));
-            //}
-            //if (newsType != null)
-            //{
-            //    data = data.Where(x => x.NewsType == newsType);
-            //}
-            //int cnt = 0;
-            //var ar = data.OrderBy(m => m.Sort).ThenByDescending(x => x.CreateOn).Skip((pageInfo.page - 1) * pageInfo.limit).Take(pageInfo.limit).ToList();
-            ////投影
-            //var list = from a in ar
-            //           join b in t_userServer.Query(x => true) on a.CreateBy equals b.Id
-            //           join c in NewsTypeServer.Query(x => true) on a.NewsType equals c.TypeID
-            //           select (new
-            //           {
-            //               NewsID = a.NewsID,
-            //               Title = a.Title,
-            //               NewsType = c.TypeName,
-            //               CreateBy = b.RealName,
-            //               Sort = a.Sort,
-            //               IsTop = a.IsTop == 1 ? "是" : "否",
-            //               CreateOn = a.CreateOn
 
-            //           });
-            //cnt = data.Count();
-            //var checks = list.OrderBy(x => x.IsTop).OrderByDescending(x => x.CreateOn).ToList();
-            //return Json(new { code = 0, msg = "", count = cnt, data = checks }, JsonRequestBehavior.AllowGet);
+            data.And(new ExpressionSpecification<Goods>(x => x.Point == 110));
+            data.And(new ExpressionSpecification<Goods>(x => x.GoodName == "123"));
+            var goods = GoodsService.Instance.GetByCondition(data); //, x => x.GoodCategory
+
+            //_baseDomainService.Delete()
+            GoodsService.Instance.Add(MapTo<GoodsDto, Goods>(goodsFilter));
+            //foreach (var item in goods) {
+            //    MapForm<Goods, GoodsDto>(item);
+            //}
+
             return null;
         }
         /// <summary>
@@ -105,9 +95,9 @@ namespace Core.Application.Controllers.Admin
 
             string msg = "操作成功";
             int code = 400;
-            var goods = new ExpressionSpecification<Goods>(x => x.GoodNo== GoodNo);
+            var goods = new ExpressionSpecification<Goods>(x => x.GoodNo == GoodNo);
 
-            if (goods !=null)
+            if (goods != null)
             {//执行删除
 
             }
