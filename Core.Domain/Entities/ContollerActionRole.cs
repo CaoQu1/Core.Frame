@@ -46,15 +46,15 @@ namespace Core.Domain.Entities
         /// </summary>
         public int ControllerActionId { get; set; }
 
-        /// <summary>
-        /// 控制器实体
-        /// </summary>
-        public virtual ControllerPermissions ControllerPermissions { get; set; }
+        ///// <summary>
+        ///// 控制器实体
+        ///// </summary>
+        //public virtual ControllerPermissions ControllerPermissions { get; set; }
 
-        /// <summary>
-        /// 操作实体
-        /// </summary>
-        public virtual ActionPermissions ActionPermissions { get; set; }
+        ///// <summary>
+        ///// 操作实体
+        ///// </summary>
+        //public virtual ActionPermissions ActionPermissions { get; set; }
 
         /// <summary>
         /// 控制器操作实体
@@ -73,9 +73,10 @@ namespace Core.Domain.Entities
         public override void Configure(EntityTypeBuilder<ContollerActionRole> builder)
         {
             builder.ToTable("ContollerActionRoles");
-            builder.HasOne(x => x.ControllerPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ControllerId);
-            builder.HasOne(x => x.ActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ActionId);
+            //builder.HasOne(x => x.ControllerPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ControllerId);
+            //builder.HasOne(x => x.ActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ActionId);
             builder.HasOne(x => x.Role).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.RoleId);
+            builder.HasOne(x => x.ControllerActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ControllerActionId);
         }
     }
 }

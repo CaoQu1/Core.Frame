@@ -38,6 +38,11 @@ namespace Core.Domain.Entities
         public int? ShowOrder { get; set; }
 
         /// <summary>
+        /// 控制器操作关联信息
+        /// </summary>
+        public virtual ICollection<ControllerActionPermissions> ControllerActionPermissions { get; set; }
+
+        /// <summary>
         /// 配置数据库
         /// </summary>
         /// <param name="builder"></param>

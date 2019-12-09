@@ -30,6 +30,8 @@ namespace Core.Infrastructure
             services.TryAddTransient<SystemUserService, SystemUserService>();
             services.TryAddSingleton<IJsonSerializerService, JsonSerializerService>();
             services.TryAddTransient<ICacheManagerService, CacheManagerService>();
+            services.TryAddTransient<IEncryptionService, EncryptionService>();
+            services.TryAddTransient<IVerifyCodeService, VerifyCodeService>();
             return services;
         }
     }

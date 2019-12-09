@@ -12,7 +12,7 @@ namespace Core.Global
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
 
         /// <summary>
         /// 结果

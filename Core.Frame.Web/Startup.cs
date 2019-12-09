@@ -97,26 +97,34 @@ namespace Core.Frame.Web
             CoreAppContext.ServiceCollection = ServiceCollection;
             CoreAppContext.Configuration = Configuration;
 
+
+            //ServiceCollection.Configure<CustomExceptionMiddleWareOption>(Configuration.GetSection("ExceptionOption"));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseCustomException(option =>
+                {
+                    option.ErrorHandingPath = "/home/error";
+                    option.HandleType = CustomExceptionHandleType.Both;
+                    option.JsonHandleUrlKeys = new PathString[] { "/api" };
+                });
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseWap();
+
             app.UseRouting();
 
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseWap();
 
             app.UseEndpoints(endpoints =>
             {

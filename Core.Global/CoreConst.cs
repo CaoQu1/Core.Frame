@@ -18,5 +18,10 @@ namespace Core.Global
         /// 用户角色权限缓存键
         /// </summary>
         public const string USERROLEACTIONS = "{0}_User_Role_Actions";
+
+        /// <summary>
+        /// 验证码缓存键
+        /// </summary>
+        public const string CODEKEY = "CodeKey";
     }
 }
