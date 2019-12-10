@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Application.Dto;
 using Core.Application.Dto.EditDto;
+using Core.Application.Dto.ReturnDto;
 using Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ using System.Text;
 namespace Core.Application.Map
 {
     /// <summary>
-    /// dto和entity互转
+    /// 菜单map
     /// </summary>
-    public class SystemUserMap : Profile
+    public class MenuMap : Profile
     {
-        public SystemUserMap()
+        public MenuMap()
         {
-            this.CreateMap<SystemUserDto, SystemUser>();
-            this.CreateMap<SystemUser, SystemUserDto>();
+            this.CreateMap<MenuEditDto, ControllerPermissions>();
+            this.CreateMap<ControllerPermissions, MenuReturnDto>();
         }
     }
 }

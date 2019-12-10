@@ -24,7 +24,7 @@ layui.config({
         elem: '#admin-navbar-side',
         //data: navs
         /*cached:true,*/
-        url: '/Admin/Menu/GetMenuList?isIndex=true'
+        url: '/Admin/Menu/GetMenuList'
     });
     //渲染navbar
     navbar.render();

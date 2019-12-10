@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Application.Dto;
+using Core.Application.Dto.EditDto;
 using Core.Domain.Entities;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Application.Dto;
+using Core.Application.Dto.EditDto;
 using Core.Domain;
 using Core.Domain.Entities;
 using Core.Domain.Repositories;
@@ -47,7 +48,7 @@ namespace Core.Application.Controllers.Admin
         /// 获取商品列表
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetNewsList(GoodsDto goodsFilter, PageInfo pageInfo)
+        public ActionResult GetNewsList(GoodsDto goodsFilter)
         {
             var data = new ExpressionSpecification<Goods>(x => true);
 

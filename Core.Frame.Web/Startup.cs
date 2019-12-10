@@ -85,6 +85,7 @@ namespace Core.Frame.Web
             {
                 option.LoginPath = "/User/Login";
                 option.LogoutPath = "/User/LoginOut";
+                option.Cookie.Name = "Core.Sid";
             });
             services.AddSession();
             if (WebHostEnvironment.IsDevelopment())
@@ -100,7 +101,7 @@ namespace Core.Frame.Web
                 });
             }
             //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
-            ServiceCollection.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
+
             ServiceCollection = services;
         }
 
@@ -117,7 +118,7 @@ namespace Core.Frame.Web
             CoreAppContext.ApplicationBuilder = app;
 
 
-
+            ServiceCollection.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();

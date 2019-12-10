@@ -16,9 +16,4 @@
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\ReturnDto\" />
-    <Folder Include="Dto\QueryDto\" />
-  </ItemGroup>
-
 </Project>

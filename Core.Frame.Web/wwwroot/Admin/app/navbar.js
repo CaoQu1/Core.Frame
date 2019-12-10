@@ -59,7 +59,7 @@
                                 key: 'navbar',
                                 value: result
                             });
-                            var html = getHtml(result);
+                            var html = getHtml(result.Value);
                             $container.html(html);
                             element.init();
                         },
@@ -71,8 +71,8 @@
                         }
                     });
                 } else {
-                    var html = getHtml(cacheNavbar.navbar);
-                    $container.html(html);
+                    var html2 = getHtml(cacheNavbar.navbar);
+                    $container.html(html2);
                     element.init();
                     _that.config.elem = $container;
                 }
@@ -182,19 +182,19 @@
     };
     var ulHtml;
     function getChildHtml(data) {
-        if (data != undefined && data.children != undefined && data.children.length > 0) {
+        if (data != undefined && data.Children != undefined && data.Children.length > 0) {
             ulHtml += '<dl class="layui-nav-child">'
-            for (var j = 0; j < data.children.length; j++) {
+            for (var j = 0; j < data.Children.length; j++) {
                 ulHtml += '<dd>';
-                ulHtml += '<a data-id=' + data.children[j].id + ' href="javascript:;" data-url="' + data.children[j].href + '?id=' + data.children[j].id + '" lay-href="' + data.children[j].href + '">';
-                if (data.children[j].icon !== undefined && data.children[j].icon !== '') {
-                    if (data.children[j].icon.indexOf('icon-') !== -1) {
-                        ulHtml += '<i class="iconfont icon ' + data.children[j].icon + '" data-icon="' + data.children[j].icon + '" aria-hidden="true"></i>';
+                ulHtml += '<a data-id=' + data.children[j].Id + ' href="javascript:;" data-url="' + data.children[j].ModuleUrl + '?id=' + data.children[j].Id + '" lay-href="' + data.children[j].ModuleUrl + '">';
+                if (data.children[j].Icon !== undefined && data.children[j].Icon !== '') {
+                    if (data.children[j].Icon.indexOf('icon-') !== -1) {
+                        ulHtml += '<i class="iconfont icon ' + data.children[j].Icon + '" data-icon="' + data.children[j].Icon + '" aria-hidden="true"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data.icon + '" data-icon="' + data.children[j].icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data.Icon + '" data-icon="' + data.children[j].Icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data.children[j].title + '</cite>';
+                ulHtml += '<cite>' + data.children[j].ModuleName + '</cite>';
                 ulHtml += '</a>';
                 getChildHtml(data.children[j], '');
                 ulHtml += '</dd>';
@@ -206,37 +206,37 @@
     function getHtml(data) {
         ulHtml = '<ul class="layui-nav layui-nav-tree beg-navbar">';
         for (var i = 0; i < data.length; i++) {
-            if (data[i].spread) {
+            if (data[i].Spread) {
                 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
             } else {
                 ulHtml += '<li class="layui-nav-item">';
             }
-            if (data[i].children !== undefined && data[i].children.length > 0) {
+            if (data[i].Children !== undefined && data[i].Children.length > 0) {
                 ulHtml += '<a href="javascript:;">';
-                if (data[i].icon !== undefined && data[i].icon !== '') {
+                if (data[i].Icon !== undefined && data[i].Icon !== '') {
                     if (data[i].icon.indexOf('icon-') === -1) {
-                        ulHtml += '<i class="iconfont icon-' + data[i].icon + '" aria-hidden="true" data-icon="' + data[i].icon + '"></i>';
+                        ulHtml += '<i class="iconfont icon-' + data[i].Icon + '" aria-hidden="true" data-icon="' + data[i].Icon + '"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data[i].icon + '" data-icon="' + data[i].icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data[i].Icon + '" data-icon="' + data[i].Icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data[i].title + '</cite>'
+                ulHtml += '<cite>' + data[i].ModuleName + '</cite>'
                 ulHtml += '</a>';
                 //ulHtml += '<dl class="layui-nav-child">'
                 getChildHtml(data[i]);
 
                 //ulHtml += '</dl>';
             } else {
-                var dataUrl = (data[i].href !== undefined && data[i].href !== '') ? 'data-url="' + data[i].href + '" lay-href="' + data[i].href + '"' : '';
+                var dataUrl = (data[i].ModuleUrl !== undefined && data[i].ModuleUrl !== '') ? 'data-url="' + data[i].ModuleUrl + '" lay-href="' + data[i].ModuleUrl + '"' : '';
                 ulHtml += '<a href="javascript:;" ' + dataUrl + '>';
-                if (data[i].icon !== undefined && data[i].icon !== '') {
-                    if (data[i].icon.indexOf('icon-') == -1) {
-                        ulHtml += '<i class="iconfont icon-' + data[i].icon + '" aria-hidden="true" data-icon="' + data[i].icon + '"></i>';
+                if (data[i].Icon !== undefined && data[i].Icon !== '') {
+                    if (data[i].Icon.indexOf('icon-') === -1) {
+                        ulHtml += '<i class="iconfont icon-' + data[i].Icon + '" aria-hidden="true" data-icon="' + data[i].Icon + '"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data[i].icon + '" data-icon="' + data[i].icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data[i].Icon + '" data-icon="' + data[i].Icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data[i].title + '</cite>'
+                ulHtml += '<cite>' + data[i].ModuleName + '</cite>'
                 ulHtml += '</a>';
             }
             ulHtml += '</li>';
