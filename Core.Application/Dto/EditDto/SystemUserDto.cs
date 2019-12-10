@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Application.Dto
+namespace Core.Application.Dto.EditDto
 {
-    public class SystemUserDto
+    public class SystemUserDto : BaseDto
     {
         /// <summary>
         /// 用户名

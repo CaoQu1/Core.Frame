@@ -39,22 +39,6 @@ namespace Core.Domain
         public static SystemUserService Instance => CoreAppContext.GetService<SystemUserService>();
 
         /// <summary>
-        /// 用户注册
-        /// </summary>
-        /// <param name="systemUser"></param>
-        /// <returns></returns>
-        public CoreResult AddSystemUser(SystemUser systemUser)
-        {
-            return Invoke<CoreResult>(() =>
-             {
-                 CoreResult coreResult = new CoreResult();
-                 coreResult.Success = Add(systemUser) > 0;
-                 coreResult.Message = "用户添加" + (coreResult.Success ? "成功!" : "失败");
-                 return coreResult;
-             });
-        }
-
-        /// <summary>
         /// 获取用户角色
         /// </summary>
         /// <param name="userId"></param>

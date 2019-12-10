@@ -27,15 +27,21 @@ namespace Core.Frame.Web
         /// 注入配置文件
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            WebHostEnvironment = environment;
         }
 
         /// <summary>
         /// 配置文件
         /// </summary>
         public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// 环境配置
+        /// </summary>
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
 
         /// <summary>
         /// 服务
@@ -81,11 +87,18 @@ namespace Core.Frame.Web
                 option.LogoutPath = "/User/LoginOut";
             });
             services.AddSession();
-            services.AddDistributedRedisCache(option =>
+            if (WebHostEnvironment.IsDevelopment())
             {
-                option.Configuration = "127.0.0.1";
-                option.InstanceName = "db0";
-            });
+                services.AddMemoryCache();
+            }
+            else
+            {
+                services.AddDistributedRedisCache(option =>
+                {
+                    option.Configuration = "127.0.0.1";
+                    option.InstanceName = "db0";
+                });
+            }
             //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
             ServiceCollection.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
             ServiceCollection = services;
