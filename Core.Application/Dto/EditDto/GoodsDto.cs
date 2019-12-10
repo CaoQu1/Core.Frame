@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Application.Dto
+namespace Core.Application.Dto.EditDto
 {
     public class GoodsDto
     {
