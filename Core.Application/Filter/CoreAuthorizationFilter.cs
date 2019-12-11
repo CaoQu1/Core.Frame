@@ -45,15 +45,16 @@ namespace Core.Application.Filter
                    return SystemUserService.Instance.GetSystemUserRole(int.Parse(userClaim.Value)).Value;
                }, TimeSpan.FromMinutes(30));
 
-            var controllerActionRoles = await cacheManagerService.GetOrAdd<List<ContollerActionRole>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
+            var controllerActionPermissions = await cacheManagerService.GetOrAdd<List<ControllerActionPermissions>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
              {
                  return SystemUserService.Instance.GetRolePermissions(systemUserRoles).Value;
              }, TimeSpan.FromMinutes(30));
 
+            var area = context.RouteData.Values["Area"].ToString();
             var controller = context.RouteData.Values["Controller"].ToString();
             var action = context.RouteData.Values["Action"].ToString();
 
-            if (!controllerActionRoles.Any(x => x.Controller == controller && x.Action == action))
+            if (!controllerActionPermissions.Any(x => x.ControllerPermissions != null && x.ControllerPermissions.Area == area && x.ControllerPermissions.Controller == controller && x.ActionPermissions != null && x.ActionPermissions.Action == action))
             {
                 AuthorizationFailResult(context);
                 return;

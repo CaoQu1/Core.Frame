@@ -1,4 +1,5 @@
 ﻿using Core.Global;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -47,5 +48,24 @@ namespace Core.Domain.Entities
         /// 角色权限关联信息
         /// </summary>
         public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; }
+
+        /// <summary>
+        /// 配置数据库
+        /// </summary>
+        /// <param name="builder"></param>
+        public override void Configure(EntityTypeBuilder<Role> builder)
+        {
+            builder.HasData(new Role
+            {
+                RoleName = "系统管理员",
+                RoleDesc = "超级权限",
+                Status = Global.CoreEnum.Status.Enable,
+                CreateTime = DateTime.Now,
+                SortId = 1,
+                SystemId = 1,
+                Id = 1
+            });
+            base.Configure(builder);
+        }
     }
 }

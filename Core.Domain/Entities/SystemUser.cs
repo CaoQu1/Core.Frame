@@ -88,6 +88,22 @@ namespace Core.Domain.Entities
             builder.Property(x => x.Mobile).HasColumnName(nameof(Mobile));
             builder.Property(x => x.Sex).HasColumnName(nameof(Sex));
             builder.Property(x => x.SystemId).HasColumnName(nameof(SystemId));
+
+            builder.HasData(new SystemUser
+            {
+                CreateTime = DateTime.Now,
+                Mobile = "15196613744",
+                NickName = "曹瞿",
+                RegTime = DateTime.Now,
+                PassWord = "698d51a19d8a121ce581499d7b701668",
+                UserName = "cq",
+                SystemId = 1,
+                Sex = Global.CoreEnum.Sex.Man,
+                HeadPortrait = "",
+                Id = 1
+            });
+
+            base.Configure(builder);
         }
     }
 }

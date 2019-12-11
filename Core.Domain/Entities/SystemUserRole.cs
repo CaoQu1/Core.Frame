@@ -46,6 +46,18 @@ namespace Core.Domain.Entities
             builder.ToTable("SystemUserRoles");
             builder.HasOne(x => x.Role).WithMany(y => y.SystemUserRoles).HasForeignKey(f => f.RoleId);
             builder.HasOne(x => x.SystemUser).WithMany(y => y.SystemUserRoles).HasForeignKey(f => f.SystemUserId);
+
+            builder.HasData(new SystemUserRole
+            {
+                RoleId = 1,
+                SortId = 1,
+                SystemId = 1,
+                CreateTime = DateTime.Now,
+                SystemUserId = 1,
+                Id = 1
+            });
+
+            base.Configure(builder);
         }
     }
 }

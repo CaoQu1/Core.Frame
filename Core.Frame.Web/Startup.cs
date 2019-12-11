@@ -27,10 +27,17 @@ namespace Core.Frame.Web
         /// 注入配置文件
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment)
         {
-            Configuration = configuration;
             WebHostEnvironment = environment;
+
+            var builder = new ConfigurationBuilder()
+             .SetBasePath(environment.ContentRootPath)
+             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+             .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
+             .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         /// <summary>
@@ -54,6 +61,8 @@ namespace Core.Frame.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
+
             var assmebies = new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("Core.Application*.dll")
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
             services.AddMvc(option =>
@@ -81,11 +90,20 @@ namespace Core.Frame.Web
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
             services.AddDomianService();
             services.AddHttpContextAccessor();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+            services.AddAuthentication(option =>
+            {
+                option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.RequireAuthenticatedSignIn = false;
+            }).AddCookie(option =>
             {
                 option.LoginPath = "/User/Login";
                 option.LogoutPath = "/User/LoginOut";
-                option.Cookie.Name = "Core.Sid";
+                //option.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.Events.OnSigningIn = (context) =>
+                {
+                    var cookieName = context.Options.Cookie.Name;
+                    return Task.CompletedTask;
+                };
             });
             services.AddSession();
             if (WebHostEnvironment.IsDevelopment())
@@ -118,7 +136,7 @@ namespace Core.Frame.Web
             CoreAppContext.ApplicationBuilder = app;
 
 
-            ServiceCollection.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
+
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();

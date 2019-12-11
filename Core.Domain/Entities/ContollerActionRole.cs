@@ -17,26 +17,6 @@ namespace Core.Domain.Entities
         public int RoleId { get; set; }
 
         /// <summary>
-        /// 控制器编号
-        /// </summary>
-        public int ControllerId { get; set; }
-
-        /// <summary>
-        /// 控制器
-        /// </summary>
-        public string Controller { get; set; }
-
-        /// <summary>
-        /// 操作编号
-        /// </summary>
-        public int ActionId { get; set; }
-
-        /// <summary>
-        /// 操作
-        /// </summary>
-        public string Action { get; set; }
-
-        /// <summary>
         /// 系统编号
         /// </summary>
         public int SystemId { get; set; }
@@ -77,6 +57,18 @@ namespace Core.Domain.Entities
             //builder.HasOne(x => x.ActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ActionId);
             builder.HasOne(x => x.Role).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.RoleId);
             builder.HasOne(x => x.ControllerActionPermissions).WithMany(y => y.ContollerActionRoles).HasForeignKey(f => f.ControllerActionId);
+
+            builder.HasData(new ContollerActionRole
+            {
+                RoleId = 1,
+                SortId = 1,
+                SystemId = 1,
+                CreateTime = DateTime.Now,
+                ControllerActionId = 1,
+                Id = 1
+            });
+
+            base.Configure(builder);
         }
     }
 }

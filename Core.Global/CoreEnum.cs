@@ -85,7 +85,12 @@ namespace Core.Global
             /// <summary>
             /// 审核
             /// </summary>
-            Approve
+            Approve,
+
+            /// <summary>
+            /// 列表
+            /// </summary>
+            List
         }
 
         /// <summary>

@@ -182,7 +182,7 @@
     };
     var ulHtml;
     function getChildHtml(data) {
-        if (data != undefined && data.Children != undefined && data.Children.length > 0) {
+        if (data !== undefined && data.Children !== undefined && data.Children.length > 0) {
             ulHtml += '<dl class="layui-nav-child">'
             for (var j = 0; j < data.Children.length; j++) {
                 ulHtml += '<dd>';
@@ -204,6 +204,7 @@
     }
 
     function getHtml(data) {
+        debugger;
         ulHtml = '<ul class="layui-nav layui-nav-tree beg-navbar">';
         for (var i = 0; i < data.length; i++) {
             if (data[i].Spread) {

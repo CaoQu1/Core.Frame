@@ -23,7 +23,7 @@ namespace Core.Application.Controllers.Admin
         /// 首页
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public IActionResult Master()
         {
             return View(_coreWebSite);
         }

@@ -49,6 +49,19 @@ namespace Core.Domain.Entities
         public override void Configure(EntityTypeBuilder<ActionPermissions> builder)
         {
             builder.ToTable("ActionPermissions");
+
+            builder.HasData(new ActionPermissions
+            {
+                ActionName = "首页",
+                CreateTime = DateTime.Now,
+                Icon = "layui-icon-file-b",
+                ShowOrder = 1,
+                SortId = 1,
+                Action = "Index",
+                Type = Global.CoreEnum.Operation.List,
+                Id = 1
+            });
+
             base.Configure(builder);
         }
     }

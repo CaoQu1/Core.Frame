@@ -70,7 +70,7 @@ namespace Core.Application.Controllers.Admin
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CheckLogin(string username, string password, string code)
+        public async Task<IActionResult> CheckLogin(string username, string password, string code)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Core.Application.Controllers.Admin
                                 new Claim(ClaimTypes.Role,string.Join(',' ,systemUser.SystemUserRoles.Select(x=>x.RoleId).ToList()))
                             });
                             claimsPrincipal.AddIdentity(claimsIdentity);
-                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                             return JsonSuccess<SystemUser, SystemUserDto>("登录成功!", systemUser);
                         }
                         else
