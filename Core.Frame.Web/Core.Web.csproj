@@ -20,19 +20,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\Admin\fonts\iconfont.eot">
+    <Content Update="wwwroot\Admin\font\iconfont.eot">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\Admin\fonts\iconfont.svg">
+    <Content Update="wwwroot\Admin\font\iconfont.svg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\Admin\fonts\iconfont.ttf">
+    <Content Update="wwwroot\Admin\font\iconfont.ttf">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\Admin\fonts\iconfont.woff">
+    <Content Update="wwwroot\Admin\font\iconfont.woff">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

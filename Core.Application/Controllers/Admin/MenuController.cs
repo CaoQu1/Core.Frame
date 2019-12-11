@@ -2,6 +2,7 @@
 using Core.Application.Dto.ReturnDto;
 using Core.Domain.Entities;
 using Core.Global;
+using Core.Global.Attributes;
 using Core.Global.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,12 +16,15 @@ namespace Core.Application.Controllers.Admin
     /// <summary>
     /// 菜单控制器
     /// </summary>
+    [Initialize(" 菜单")]
     public class MenuController : AdminBaseController
     {
         /// <summary>
         /// 获取菜单
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
+        [Initialize(" 获取菜单")]
         public IActionResult GetMenuList()
         {
             var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
@@ -36,6 +40,7 @@ namespace Core.Application.Controllers.Admin
         /// 编辑菜单页
         /// </summary>
         /// <returns></returns>
+        [Initialize(" 编辑菜单页")]
         public IActionResult EditMenu(int? id)
         {
             var menu = new MenuEditDto();
@@ -52,6 +57,7 @@ namespace Core.Application.Controllers.Admin
         /// </summary>
         /// <param name="menuEditDto"></param>
         /// <returns></returns>
+        [Initialize(" 编辑菜单")]
         public IActionResult EditMenu(MenuEditDto menuEditDto)
         {
             return AddDto<ControllerPermissions, MenuEditDto, MenuReturnDto>(menuEditDto);

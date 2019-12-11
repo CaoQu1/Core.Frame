@@ -30,14 +30,14 @@ namespace Core.Domain
         /// </summary>
         public static MenuService Instance => CoreAppContext.GetService<MenuService>();
 
-        /// <summary>
-        /// 获取菜单
-        /// </summary>
-        /// <param name="roleIds"></param>
-        /// <returns></returns>
-        //public IList<ControllerPermissions> GetControllerPermissions(int[] roleIds)
+        ///// <summary>
+        ///// 获取菜单
+        ///// </summary>
+        ///// <param name="roleIds"></param>
+        ///// <returns></returns>
+        //public IList<ControllerPermissions> GetControllerPermissions(int )
         //{
-           
+
         //}
     }
 }

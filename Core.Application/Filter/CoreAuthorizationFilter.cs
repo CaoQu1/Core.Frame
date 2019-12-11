@@ -80,7 +80,7 @@ namespace Core.Application.Filter
         {
             if (IsAjaxRequest(context.HttpContext.Request))
             {
-                context.Result = new JsonResult("未登录!")
+                context.Result = new JsonResult("未授权!")
                 {
                     StatusCode = 401,
                 };

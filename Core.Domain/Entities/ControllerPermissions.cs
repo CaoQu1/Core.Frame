@@ -43,11 +43,6 @@ namespace Core.Domain.Entities
         public string Icon { get; set; }
 
         /// <summary>
-        /// 显示顺序
-        /// </summary>
-        public int? ShowOrder { get; set; }
-
-        /// <summary>
         /// 父模块
         /// </summary>
         public int? ParentId { get; set; }
@@ -90,7 +85,6 @@ namespace Core.Domain.Entities
                 ModuleUrl = "Admin/Home/Index",
                 Icon = "layui-icon-home",
                 IsShow = true,
-                ShowOrder = 1,
                 SortId = 1,
                 Id = 1
             });
