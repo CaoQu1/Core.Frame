@@ -18,15 +18,18 @@ namespace Core.Global.Attributes
 
         public int? SortId { get; set; }
 
+        public bool IsShow { get; set; }
+
+        public CoreEnum.Operation? Type { get; set; }
+
         public InitializeAttribute() { }
 
-        public InitializeAttribute(string functionName, string moduleUrl, string icon = "", int? sortId = null)
+        public InitializeAttribute(string functionName, string moduleUrl = "", string icon = "", bool isShow = true)
         {
             FunctionName = functionName;
             ModuleUrl = moduleUrl;
             Icon = icon;
-            SortId = sortId;
+            IsShow = isShow;
         }
-
     }
 }

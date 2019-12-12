@@ -33,9 +33,9 @@ namespace Core.Domain.Entities
         public string Icon { get; set; }
 
         /// <summary>
-        /// 显示顺序
+        /// 是否显示
         /// </summary>
-        public int? ShowOrder { get; set; }
+        public bool IsShow { get; set; }
 
         /// <summary>
         /// 控制器操作关联信息
@@ -55,11 +55,21 @@ namespace Core.Domain.Entities
                 ActionName = "首页",
                 CreateTime = DateTime.Now,
                 Icon = "layui-icon-file-b",
-                ShowOrder = 1,
                 SortId = 1,
-                Action = "Index",
+                Action = "Master",
                 Type = Global.CoreEnum.Operation.List,
                 Id = 1
+            });
+
+            builder.HasData(new ActionPermissions
+            {
+                ActionName = "获取菜单",
+                CreateTime = DateTime.Now,
+                Icon = "layui-icon-file-b",
+                SortId = 2,
+                Action = "GetMenuList",
+                Type = Global.CoreEnum.Operation.List,
+                Id = 2
             });
 
             base.Configure(builder);

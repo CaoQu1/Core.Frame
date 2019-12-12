@@ -41,8 +41,9 @@ namespace Core.Application.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = "")
         {
+            ViewBag.returnUrl = returnUrl;
             return View();
         }
 
@@ -70,7 +71,7 @@ namespace Core.Application.Controllers.Admin
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CheckLogin(string username, string password, string code)
+        public async Task<IActionResult> CheckLogin(string username, string password, string code, string returnUrl)
         {
             try
             {
@@ -91,7 +92,12 @@ namespace Core.Application.Controllers.Admin
                                 new Claim(ClaimTypes.Role,string.Join(',' ,systemUser.SystemUserRoles.Select(x=>x.RoleId).ToList()))
                             });
                             claimsPrincipal.AddIdentity(claimsIdentity);
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, new AuthenticationProperties
+                            {
+                                RedirectUri = returnUrl,
+                                IsPersistent = true,
+                                ExpiresUtc = DateTime.Now.AddMinutes(30)
+                            });
                             return JsonSuccess<SystemUser, SystemUserDto>("登录成功!", systemUser);
                         }
                         else

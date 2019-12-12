@@ -15,6 +15,11 @@ namespace Core.Domain.Entities
     public class Role : AggregateRoot<Role, int>
     {
         /// <summary>
+        /// 角色编号
+        /// </summary>
+        public string RoleCode { get; set; }
+
+        /// <summary>
         /// 角色名称
         /// </summary>
         public string RoleName { get; set; }
@@ -28,6 +33,11 @@ namespace Core.Domain.Entities
         /// 角色描述
         /// </summary>
         public string RoleDesc { get; set; }
+
+        /// <summary>
+        /// 是否是超级管理员
+        /// </summary>
+        public bool IsSystemAdmin { get; set; }
 
         ///// <summary>
         ///// 获取红包方式
@@ -63,8 +73,9 @@ namespace Core.Domain.Entities
                 CreateTime = DateTime.Now,
                 SortId = 1,
                 SystemId = 1,
-                Id = 1
-            });
+                Id = 1,
+                IsSystemAdmin = true
+            }); ;
             base.Configure(builder);
         }
     }

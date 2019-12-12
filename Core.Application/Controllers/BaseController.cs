@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Application.Controllers
 {
@@ -69,6 +70,24 @@ namespace Core.Application.Controllers
         /// <typeparam name="T"></typeparam>
         /// <param name="action"></param>
         protected virtual TReturn Invoke<TReturn>(Func<TReturn> action)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 执行
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
+        protected virtual Task<TReturn> Invoke<TReturn>(Func<Task<TReturn>> action)
         {
             try
             {

@@ -93,7 +93,6 @@ namespace Core.Infrastructure
                 ActionName = "首页",
                 CreateTime = DateTime.Now,
                 Icon = "layui-icon-file-b",
-                ShowOrder = 1,
                 SortId = 1,
                 Action = "Index",
                 Type = Global.CoreEnum.Operation.List
@@ -109,7 +108,6 @@ namespace Core.Infrastructure
                 ModuleUrl = "Admin/Home/Index",
                 Icon = "layui-icon-home",
                 IsShow = true,
-                ShowOrder = 1,
                 SortId = 1
             });
             controllerEntry.State = EntityState.Added;

@@ -68,6 +68,16 @@ namespace Core.Domain.Entities
                 Id = 1
             });
 
+            builder.HasData(new ContollerActionRole
+            {
+                RoleId = 1,
+                SortId = 2,
+                SystemId = 1,
+                CreateTime = DateTime.Now,
+                ControllerActionId = 2,
+                Id = 2
+            });
+
             base.Configure(builder);
         }
     }

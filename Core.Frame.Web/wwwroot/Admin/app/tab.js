@@ -3,30 +3,25 @@ layui.define(['element', 'common'], function (exports) {
     "use strict";
 
     var mod_name = 'tab',
-		$ = layui.jquery,
-		element = layui.element,
-		commom = layui.common,
-		globalTabIdIndex = 0,
-		Tab = function () {
-		    this.config = {
-		        elem: undefined,
-		        closed: true, //是否包含删除按钮				
-		        autoRefresh: false
-		    };
-		};
+        $ = layui.jquery,
+        element = layui.element,
+        commom = layui.common,
+        globalTabIdIndex = 0,
+        Tab = function () {
+            this.config = {
+                elem: undefined,
+                closed: true, //是否包含删除按钮				
+                autoRefresh: false
+            };
+        };
     var ELEM = {};
-    /**
-	 * 参数设置
-	 * @param {Object} options
-	 */
+
     Tab.prototype.set = function (options) {
         var that = this;
         $.extend(true, that.config, options);
         return that;
     };
-    /**
-	 * 初始化
-	 */
+
     Tab.prototype.init = function () {
         var that = this;
         var _config = that.config;
@@ -53,13 +48,10 @@ layui.define(['element', 'common'], function (exports) {
         ELEM.tabFilter = filter;
         return that;
     };
-    /**
-	 * 查询tab是否存在，如果存在则返回索引值，不存在返回-1
-	 * @param {String} 标题
-	 */
+
     Tab.prototype.exists = function (title) {
         var that = ELEM.titleBox === undefined ? this.init() : this,
-			tabIndex = -1;
+            tabIndex = -1;
         ELEM.titleBox.find('li').each(function (i, e) {
             var $cite = $(this).children('cite');
             if ($cite.text() === title) {
@@ -68,20 +60,17 @@ layui.define(['element', 'common'], function (exports) {
         });
         return tabIndex;
     };
-    /**
-	 * 添加选择卡，如果选择卡存在则获取焦点
-	 * @param {Object} data
-	 */
+
     Tab.prototype.tabAdd = function (data) {
         var that = this;
         var _config = that.config;
         var tabIndex = that.exists(data.title);
         if (tabIndex === -1) {
             globalTabIdIndex++;
-            var content = '<iframe src="' + data.href+ '" data-id="' + globalTabIdIndex + '"></iframe>';
+            var content = '<iframe src="' + data.href + '" data-id="' + globalTabIdIndex + '"></iframe>';
             var title = '';
             if (data.icon) {
-                if (data.icon.indexOf('icon-') == -1) {
+                if (data.icon.indexOf('icon-') === -1) {
                     title += '<i class="iconfont icon-' + data.icon + '" aria-hidden="true"></i>';
                 } else {
                     title += '<i class="iconfont ' + data.icon + '"></i>';
@@ -96,7 +85,7 @@ layui.define(['element', 'common'], function (exports) {
                 title: title,
                 content: content,
                 id: data.id,
-                attr:data.href
+                attr: data.href
             });
             //iframe 自适应
             ELEM.contentBox.find('iframe[data-id=' + globalTabIdIndex + ']').each(function () {

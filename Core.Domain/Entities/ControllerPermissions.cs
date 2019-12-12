@@ -82,11 +82,24 @@ namespace Core.Domain.Entities
                 CreateTime = DateTime.Now,
                 Area = "Admin",
                 Controller = "Home",
-                ModuleUrl = "Admin/Home/Index",
+                ModuleUrl = "Admin/Home/Master",
                 Icon = "layui-icon-home",
                 IsShow = true,
                 SortId = 1,
                 Id = 1
+            });
+
+            builder.HasData(new ControllerPermissions
+            {
+                ModuleName = "菜单",
+                CreateTime = DateTime.Now,
+                Area = "Admin",
+                Controller = "Menu",
+                ModuleUrl = "Admin/Menu/GetMenuList",
+                Icon = "layui-icon-home",
+                IsShow = false,
+                SortId = 2,
+                Id = 2
             });
 
             base.Configure(builder);

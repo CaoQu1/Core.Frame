@@ -29,7 +29,7 @@ layui.define(['layer'], function (exports) {
             layer.open({
                 type: 2 //此处以iframe举例
               , title: options.title
-              , area: options.w==undefined ? 'auto' : [options.w, options.h]
+              , area: options.w===undefined ? 'auto' : [options.w, options.h]
               //,shade: 0
               ,maxmin: true
               ,offset: 'auto'
@@ -49,18 +49,7 @@ layui.define(['layer'], function (exports) {
               }
             });
         },
-        /**
-		 * 抛出一个异常错误信息
-		 * @param {String} msg
-		 */
-        throwError: function (msg) {
-            throw new Error(msg);
-            return;
-        },
-        /**
-		 * 弹出一个错误提示
-		 * @param {String} msg
-		 */
+      
         msgError: function (msg) {
             layer.msg(msg, {
                 icon: 5

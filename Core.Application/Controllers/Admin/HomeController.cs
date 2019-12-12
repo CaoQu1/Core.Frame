@@ -11,7 +11,7 @@ namespace Core.Application.Controllers.Admin
     /// <summary>
     /// 主页控制器
     /// </summary>
-    [Initialize(FunctionName = "主页")]
+    [Initialize("主页", "/Admin/Home/Index")]
     public class HomeController : AdminBaseController
     {
         private readonly CoreWebSite _coreWebSite;
@@ -25,7 +25,7 @@ namespace Core.Application.Controllers.Admin
         /// 首页
         /// </summary>
         /// <returns></returns>
-        [Initialize(FunctionName = "首页")]
+        [Initialize("首页")]
         public IActionResult Master()
         {
             return View(_coreWebSite);
@@ -35,7 +35,7 @@ namespace Core.Application.Controllers.Admin
         /// 网站
         /// </summary>
         /// <returns></returns>
-        [Initialize(FunctionName = "网站")]
+        [Initialize("网站")]
         public IActionResult Main()
         {
             return View();

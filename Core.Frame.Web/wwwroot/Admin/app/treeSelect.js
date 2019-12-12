@@ -11,9 +11,7 @@ layui.define('tree', function (exports) {
         TreeSelect = function () {
             this.v = '1.0.0';
         };
-    /**
-    * 初始化下拉树选择框
-    */
+
     TreeSelect.prototype.render = function (options) {
         var that = this,
             othis = options ? $(options.elem) : null,
