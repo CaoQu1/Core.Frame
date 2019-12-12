@@ -39,6 +39,7 @@ namespace Core.Application.Controllers
         /// 初始化权限
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public async Task<IActionResult> InitPermissions()
         {
             return await Invoke<IActionResult>(async () =>
@@ -63,10 +64,11 @@ namespace Core.Application.Controllers
                var controllerActionRoleService = GetInstance<ContollerActionRole>();
 
                var assembly = Assembly.GetExecutingAssembly();
-               var area = assembly.FullName.Split('.').Last();
-               var controllerTypes = assembly.GetTypes().Where(x => !x.IsAbstract && typeof(Controller).IsAssignableFrom(x));
+
+               var controllerTypes = assembly.GetTypes().Where(x => !x.IsAbstract && typeof(AdminBaseController).IsAssignableFrom(x));
                if (controllerTypes.Count() > 0)
                {
+                   var area = controllerTypes.First().Namespace.Split('.').Last();
                    foreach (Type controllerType in controllerTypes)
                    {
                        string name = string.Empty;
@@ -81,7 +83,7 @@ namespace Core.Application.Controllers
                            continue;
                        }
 
-                       var controller = controllerType.Name;
+                       var controller = controllerType.Name.Replace("Controller", "");
                        var controllerPermissions = controllerService.GetByCondition(new ExpressionSpecification<ControllerPermissions>(x => x.Area == area && x.Controller == controller));
                        int controllerId = 0, actionId = 0, controllerActionId = 0;
                        if (controllerInitializeAttribute != null && controllerPermissions.Count == 0)
