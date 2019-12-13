@@ -101,11 +101,11 @@ namespace Core.Infrastructure
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual int Add(TEntity entity)
+        public virtual TKey Add(TEntity entity)
         {
             this._dbContext.Set<TEntity>().Add(entity);
             this._dbContext.Entry<TEntity>(entity).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-            return this._dbContext.SaveChanges();
+            return this._dbContext.SaveChanges() > 0 ? entity.Id : default(TKey);
         }
 
         /// <summary>

@@ -32,6 +32,7 @@ namespace Core.Infrastructure
             services.TryAddTransient<IEncryptionService, EncryptionService>();
             services.TryAddTransient<IVerifyCodeService, VerifyCodeService>();
             services.TryAddTransient<SystemUserService, SystemUserService>();
+            services.TryAddTransient<MenuService, MenuService>();
             return services;
         }
     }

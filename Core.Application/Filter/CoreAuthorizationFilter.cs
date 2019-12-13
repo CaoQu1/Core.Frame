@@ -42,12 +42,12 @@ namespace Core.Application.Filter
             var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
             var systemUserRoles = await cacheManagerService.GetOrAdd<List<SystemUserRole>>(String.Format(CoreConst.USERROLES, userClaim.Value), () =>
                {
-                   return SystemUserService.Instance.GetSystemUserRole(int.Parse(userClaim.Value)).Value;
+                   return SystemUserService.Instance.GetSystemUserRole(int.Parse(userClaim.Value));
                }, TimeSpan.FromMinutes(30));
 
             var controllerActionPermissions = await cacheManagerService.GetOrAdd<List<ControllerActionPermissions>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
              {
-                 return SystemUserService.Instance.GetRolePermissions(systemUserRoles).Value;
+                 return SystemUserService.Instance.GetRolePermissions(systemUserRoles);
              }, TimeSpan.FromMinutes(30));
 
             var area = context.RouteData.Values["Area"].ToString();

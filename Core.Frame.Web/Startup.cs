@@ -78,6 +78,9 @@ namespace Core.Frame.Web
                 options.ViewLocationFormats.Add("/Core/Mobile/{1}/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Core/Mobile/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Core/Mobile/Shared/{0}.cshtml");
+            }).AddJsonOptions(option =>
+            {
+                option.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
             });
             services.AddDbContext<BaseDbContext>(option =>
             {
@@ -145,7 +148,7 @@ namespace Core.Frame.Web
             //{
             app.UseCustomException(option =>
             {
-                option.ErrorHandingPath = "/home/error";
+                option.ErrorHandingPath = "/admin/home/error";
                 option.HandleType = CustomExceptionHandleType.Both;
                 option.JsonHandleUrlKeys = new PathString[] { "/api" };
             });

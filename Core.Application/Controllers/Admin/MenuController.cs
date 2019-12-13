@@ -1,5 +1,6 @@
 ﻿using Core.Application.Dto.EditDto;
 using Core.Application.Dto.ReturnDto;
+using Core.Domain;
 using Core.Domain.Entities;
 using Core.Global;
 using Core.Global.Attributes;
@@ -28,12 +29,9 @@ namespace Core.Application.Controllers.Admin
         public IActionResult GetMenuList()
         {
             var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
-            var roleIds = roleClaim.Value.Split(',').Cast<int>();
-            var service = GetInstance<ContollerActionRole>();
-            var expression = new ExpressionSpecification<ContollerActionRole>(x => roleIds.Contains(x.RoleId));
-            var contollerActionRoles = service.GetByCondition(expression, x => x.ControllerActionPermissions);
-            var controllers = contollerActionRoles.Select(x => x.ControllerActionPermissions.ControllerPermissions);
-            return JsonSuccess("查询成功!", controllers);
+            var roleIds = roleClaim.Value.Split(',').ToArray();
+            var menus = MapForm<List<ControllerPermissions>, List<MenuReturnDto>>(MenuService.Instance.GetControllerPermissions(roleIds));
+            return JsonSuccess("查询成功!", menus);
         }
 
         /// <summary>

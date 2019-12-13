@@ -57,14 +57,11 @@ namespace Core.Domain
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public CoreResult<List<SystemUserRole>> GetSystemUserRole(int userId)
+        public List<SystemUserRole> GetSystemUserRole(int userId)
         {
-            return Invoke<CoreResult<List<SystemUserRole>>>(() =>
+            return Invoke<List<SystemUserRole>>(() =>
             {
-                CoreResult<List<SystemUserRole>> coreResult = new CoreResult<List<SystemUserRole>>();
-                coreResult.Value = Get(userId, x => x.SystemUserRoles).SystemUserRoles.ToList();
-                coreResult.Message = "用户获取" + (coreResult.Success ? "成功!" : "失败");
-                return coreResult;
+                return Get(userId, x => x.SystemUserRoles).SystemUserRoles.ToList();
             });
         }
 
@@ -73,11 +70,10 @@ namespace Core.Domain
         /// </summary>
         /// <param name="systemUserRoles"></param>
         /// <returns></returns>
-        public CoreResult<List<ControllerActionPermissions>> GetRolePermissions(IList<SystemUserRole> systemUserRoles)
+        public List<ControllerActionPermissions> GetRolePermissions(IList<SystemUserRole> systemUserRoles)
         {
-            return Invoke<CoreResult<List<ControllerActionPermissions>>>(() =>
+            return Invoke<List<ControllerActionPermissions>>(() =>
             {
-                CoreResult<List<ControllerActionPermissions>> coreResult = new CoreResult<List<ControllerActionPermissions>>();
                 var controllerActionIds = (from role in systemUserRoles
                                            join actionRole in this._actionRoleRepository.Table
                                            on role.RoleId equals actionRole.RoleId
@@ -85,9 +81,7 @@ namespace Core.Domain
                                            on actionRole.ControllerActionId equals controllerAction.Id
                                            select controllerAction.Id).ToList();
 
-                coreResult.Value = this._controllerActionRepository.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => controllerActionIds.Contains(x.Id)), x => x.ControllerPermissions, x => x.ActionPermissions).ToList();
-                coreResult.Message = "用户权限获取" + (coreResult.Success ? "成功!" : "失败");
-                return coreResult;
+                return this._controllerActionRepository.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => controllerActionIds.Contains(x.Id)), x => x.ControllerPermissions, x => x.ActionPermissions).ToList();
             });
         }
     }

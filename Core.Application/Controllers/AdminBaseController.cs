@@ -106,7 +106,7 @@ namespace Core.Application.Controllers
                            controllerId = controllerPermissions.First().Id;
                        }
 
-                       var methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+                       var methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                        foreach (MethodInfo item in methods)
                        {
                            var actionAttributes = item.GetCustomAttribute(typeof(InitializeAttribute)) as InitializeAttribute;

@@ -78,7 +78,11 @@ namespace Core.Application.Controllers
             catch (Exception ex)
             {
                 this._logger.LogError(ex, ex.Message);
-                throw ex;
+                if (typeof(TReturn) is IActionResult)
+                {
+                    return (TReturn)JsonFail(ex.Message);
+                }
+                return default(TReturn);
             }
         }
 
@@ -96,7 +100,11 @@ namespace Core.Application.Controllers
             catch (Exception ex)
             {
                 this._logger.LogError(ex, ex.Message);
-                throw ex;
+                if (typeof(TReturn) is IActionResult)
+                {
+                    return Task.FromResult((TReturn)JsonFail(ex.Message));
+                }
+                return Task.FromResult(default(TReturn));
             }
         }
 
@@ -367,6 +375,16 @@ namespace Core.Application.Controllers
         protected virtual IActionResult JsonFail(string message)
         {
             return Json(new CoreResult { Success = false, Message = message });
+        }
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        protected virtual Task<IActionResult> JsonFailAsync(string message)
+        {
+            return Task.FromResult<IActionResult>(Json(new CoreResult { Success = false, Message = message }));
         }
     }
 }

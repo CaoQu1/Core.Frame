@@ -1,5 +1,6 @@
 ﻿using Core.Global;
 using Core.Global.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -38,6 +39,17 @@ namespace Core.Application.Controllers.Admin
         [Initialize("网站")]
         public IActionResult Main()
         {
+            return View();
+        }
+
+        /// <summary>
+        /// 错误页
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            ViewBag.ex = HttpContext.Items["Exception"] as Exception;
             return View();
         }
     }

@@ -32,9 +32,9 @@ namespace Core.Domain.Service
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual int Add(TEntity entity)
+        public virtual TKey Add(TEntity entity)
         {
-            return Invoke<int>(() => this._repository.Add(entity), entity);
+            return Invoke<TKey>(() => this._repository.Add(entity), entity);
         }
 
         /// <summary>

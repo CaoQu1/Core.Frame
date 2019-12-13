@@ -1,6 +1,7 @@
 ﻿using Core.Domain.Entities;
 using Core.Global;
 using Core.Global.Specifications;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Core.Domain.Repositories
     /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TKey, TEntity> where TEntity : class, IAggregateRoot<TKey>
     {
-        int Add(TEntity entity);
+        TKey Add(TEntity entity);
 
         int Add(IList<TEntity> entities);
 
