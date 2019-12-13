@@ -42,11 +42,12 @@ namespace Core.Domain
         /// <returns></returns>
         public List<ControllerPermissions> GetControllerPermissions(string[] roleIds)
         {
-            var menus = (from caRole in _controllerRoleRepository.Table.Where(x => roleIds.Contains(x.RoleId.ToString()))
+            var menus = (from caRole in _controllerRoleRepository.Table
                          join caPermissions in _controllerActionPermissionsRepository.Table
                          on caRole.ControllerActionId equals caPermissions.Id
                          join cPermissions in _repository.Table
                          on caPermissions.ControllerId equals cPermissions.Id
+                         where roleIds.Contains(caRole.RoleId.ToString())
                          select cPermissions).ToList();
             return menus;
         }

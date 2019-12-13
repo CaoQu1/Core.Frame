@@ -40,21 +40,27 @@ namespace Core.Application.Filter
                 return;
             }
             var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
-            var systemUserRoles = await cacheManagerService.GetOrAdd<List<SystemUserRole>>(String.Format(CoreConst.USERROLES, userClaim.Value), () =>
+            var roleIds = await cacheManagerService.GetOrAdd<List<int>>(String.Format(CoreConst.USERROLES, userClaim.Value), () =>
                {
-                   return SystemUserService.Instance.GetSystemUserRole(int.Parse(userClaim.Value));
+                   return SystemUserService.Instance.GetSystemUserRole(int.Parse(userClaim.Value)).Select(x => x.RoleId).ToList();
                }, TimeSpan.FromMinutes(30));
 
-            var controllerActionPermissions = await cacheManagerService.GetOrAdd<List<ControllerActionPermissions>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
+            var controllerActionPermissions = await cacheManagerService.GetOrAdd<List<AuthorizationModel>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
              {
-                 return SystemUserService.Instance.GetRolePermissions(systemUserRoles);
+                 var controllerActionPermissions = SystemUserService.Instance.GetRolePermissions(roleIds);
+                 return controllerActionPermissions.Select(x => new AuthorizationModel
+                 {
+                     Area = x.ControllerPermissions.Area,
+                     Controller = x.ControllerPermissions.Controller,
+                     Action = x.ActionPermissions.Action
+                 }).ToList();
              }, TimeSpan.FromMinutes(30));
 
             var area = context.RouteData.Values["Area"].ToString();
             var controller = context.RouteData.Values["Controller"].ToString();
             var action = context.RouteData.Values["Action"].ToString();
 
-            if (!controllerActionPermissions.Any(x => x.ControllerPermissions != null && x.ControllerPermissions.Area == area && x.ControllerPermissions.Controller == controller && x.ActionPermissions != null && x.ActionPermissions.Action == action))
+            if (!controllerActionPermissions.Any(x => x.Area == area && x.Controller == controller && x.Action == action))
             {
                 AuthorizationFailResult(context);
                 return;
@@ -89,6 +95,18 @@ namespace Core.Application.Filter
             {
                 context.Result = new RedirectResult("/admin/admin/login");
             }
+        }
+
+        /// <summary>
+        /// 验证模型
+        /// </summary>
+        public class AuthorizationModel
+        {
+            public string Area { get; set; }
+
+            public string Controller { get; set; }
+
+            public string Action { get; set; }
         }
     }
 }

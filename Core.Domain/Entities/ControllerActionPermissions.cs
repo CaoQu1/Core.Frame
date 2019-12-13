@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace Core.Domain.Entities
 {
@@ -29,16 +30,19 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 控制器实体
         /// </summary>
+        [JsonIgnore]
         public virtual ControllerPermissions ControllerPermissions { get; set; }
 
         /// <summary>
         /// 操作实体
         /// </summary>
+        [JsonIgnore]
         public virtual ActionPermissions ActionPermissions { get; set; }
 
         /// <summary>
         /// 控制器操作角色关联信息
         /// </summary>
+        [JsonIgnore]
         public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; }
 
         /// <summary>

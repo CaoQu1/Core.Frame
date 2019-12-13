@@ -24,7 +24,7 @@ namespace Core.Application.Controllers.Admin
         /// 获取菜单
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("api/{area}/{controller}/{action}")]
         [Initialize(" 获取菜单")]
         public IActionResult GetMenuList()
         {

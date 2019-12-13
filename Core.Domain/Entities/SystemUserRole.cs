@@ -1,6 +1,7 @@
 ﻿using Core.Global;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,11 +31,13 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 用户实体
         /// </summary>
+        [JsonIgnore]
         public virtual SystemUser SystemUser { get; set; }
 
         /// <summary>
         /// 角色实体
         /// </summary>
+        [JsonIgnore]
         public virtual Role Role { get; set; }
 
         /// <summary>

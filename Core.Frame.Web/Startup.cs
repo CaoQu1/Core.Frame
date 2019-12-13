@@ -87,7 +87,7 @@ namespace Core.Frame.Web
                 var connectionString = Configuration.GetConnectionString("Core");
                 option.UseSqlServer(connectionString);
                 var logFactory = new LoggerFactory();
-                logFactory.AddLog4Net("log4.config");
+                logFactory.AddLog4Net();
                 option.UseLoggerFactory(logFactory);//添加sql监控日志
             });//初始化数据库连接
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
@@ -101,7 +101,6 @@ namespace Core.Frame.Web
             {
                 option.LoginPath = "/User/Login";
                 option.LogoutPath = "/User/LoginOut";
-                //option.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.Events.OnSigningIn = (context) =>
                 {
                     var cookieName = context.Options.Cookie.Name;
@@ -122,7 +121,6 @@ namespace Core.Frame.Web
                 });
             }
             //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
-
             ServiceCollection = services;
         }
 
@@ -146,20 +144,22 @@ namespace Core.Frame.Web
             //}
             //else
             //{
-            app.UseCustomException(option =>
-            {
-                option.ErrorHandingPath = "/admin/home/error";
-                option.HandleType = CustomExceptionHandleType.Both;
-                option.JsonHandleUrlKeys = new PathString[] { "/api" };
-            });
+          
             //app.UseHsts();
             //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseWap();
+            app.UseCustomException(option =>
+            {
+                option.ErrorHandingPath = "/admin/home/error";
+                option.HandleType = CustomExceptionHandleType.Both;
+                option.JsonHandleUrlKeys = new PathString[] { "/api" };
+            });
 
+            app.UseWap();
+           
             app.UseRouting();
 
             app.UseAuthentication();

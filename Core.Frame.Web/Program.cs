@@ -23,7 +23,10 @@ namespace Core.Frame.Web
                     webBuilder.UseStartup<Startup>();
                 }).ConfigureLogging((host, log) =>
                 {
-                    log.AddLog4Net("log4.config");//添加日志组件
+                    log.AddFilter("System", LogLevel.Warning); //过滤掉系统默认的一些日志
+                    log.AddFilter("Microsoft", LogLevel.Warning);//过滤掉系统默认的一些日志
+
+                    log.AddLog4Net();//添加日志组件
                 });
     }
 }

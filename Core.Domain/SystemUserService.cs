@@ -70,13 +70,13 @@ namespace Core.Domain
         /// </summary>
         /// <param name="systemUserRoles"></param>
         /// <returns></returns>
-        public List<ControllerActionPermissions> GetRolePermissions(IList<SystemUserRole> systemUserRoles)
+        public List<ControllerActionPermissions> GetRolePermissions(IList<int> roleIds)
         {
             return Invoke<List<ControllerActionPermissions>>(() =>
             {
-                var controllerActionIds = (from role in systemUserRoles
+                var controllerActionIds = (from id in roleIds
                                            join actionRole in this._actionRoleRepository.Table
-                                           on role.RoleId equals actionRole.RoleId
+                                           on id equals actionRole.RoleId
                                            join controllerAction in this._controllerActionRepository.Table
                                            on actionRole.ControllerActionId equals controllerAction.Id
                                            select controllerAction.Id).ToList();

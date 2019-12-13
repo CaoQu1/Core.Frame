@@ -2,6 +2,7 @@
 using log4net.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,9 @@ namespace Core.Web
             {
                 context.Response.Clear();
                 context.Response.StatusCode = 500;   //发生未捕获的异常，手动设置状态码
+                context.SetEndpoint(endpoint: null);
+                var routeValuesFeature = context.Features.Get<IRouteValuesFeature>();
+                routeValuesFeature?.RouteValues?.Clear();
                 exception = ex;
             }
             finally
@@ -106,7 +110,7 @@ namespace Core.Web
                     {
                         var requestPath = context.Request.Path;
                         handleType = _option.JsonHandleUrlKeys != null && _option.JsonHandleUrlKeys.Count(
-                            k => requestPath.StartsWithSegments(k, StringComparison.CurrentCultureIgnoreCase)) > 0 ?
+                            k => requestPath.ToString().Contains(k)) > 0 ?
                             CustomExceptionHandleType.JsonHandle :
                             CustomExceptionHandleType.PageHandle;
                     }
@@ -153,17 +157,20 @@ namespace Core.Web
         /// <returns></returns>
         private async Task PageHandle(HttpContext context, Exception ex, PathString path)
         {
-            context.Items.Add("Exception", ex);
             var originPath = context.Request.Path;
-            context.Request.Path = path;   //设置请求页面为错误跳转页面
             try
             {
+                context.Items.Add("Exception", ex);
+                context.Request.Path = path;   //设置请求页面为错误跳转页面
                 await _next(context);
             }
-            catch { }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+            }
             finally
             {
-                context.Request.Path = originPath;   //恢复原始请求页面
+                context.Request.Path = originPath;
             }
         }
     }

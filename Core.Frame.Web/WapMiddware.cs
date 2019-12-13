@@ -35,29 +35,18 @@ namespace Core.Web
         {
             var userAgents = httpContext.Request.Headers["user-agent"];
             var originPath = httpContext.Request.Path;
-            try
+            if (!originPath.HasValue || originPath.Value == "/")
             {
-                if (!originPath.HasValue || originPath.Value == "/")
+                if (userAgents.Contains("micromessenger"))
                 {
-                    if (userAgents.Contains("micromessenger"))
-                    {
-                        httpContext.Request.Path = new PathString("/mobile/user/login");
-                    }
-                    else
-                    {
-                        httpContext.Request.Path = new PathString("/admin/admin/login");
-                    }
+                    httpContext.Request.Path = new PathString("/mobile/user/login");
                 }
-                await _next(httpContext);
+                else
+                {
+                    httpContext.Request.Path = new PathString("/admin/admin/login");
+                }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                httpContext.Request.Path = originPath;
-            }
+            await _next(httpContext);
         }
     }
 
