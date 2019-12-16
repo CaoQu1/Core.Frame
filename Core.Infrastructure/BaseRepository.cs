@@ -27,7 +27,7 @@ namespace Core.Infrastructure
         /// <summary>
         /// 工作单元
         /// </summary>
-        private readonly IDbContext _dbContext;
+        protected readonly IDbContext _dbContext;
         //private static readonly TypeInfo QueryCompilerTypeInfo = typeof(QueryCompiler).GetTypeInfo();
         //private static readonly FieldInfo QueryCompilerField = typeof(EntityQueryProvider).GetTypeInfo().DeclaredFields.First(x => x.Name == "_queryCompiler");
         //private static readonly PropertyInfo NodeTypeProviderField = QueryCompilerTypeInfo.DeclaredProperties.Single(x => x.Name == "NodeTypeProvider");

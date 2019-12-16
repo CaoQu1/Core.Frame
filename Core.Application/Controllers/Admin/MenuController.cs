@@ -30,7 +30,7 @@ namespace Core.Application.Controllers.Admin
         {
             var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
             var roleIds = roleClaim.Value.Split(',').ToArray();
-            var menus = MapForm<List<ControllerPermissions>, List<MenuReturnDto>>(MenuService.Instance.GetControllerPermissions(roleIds));
+            var menus = MapForm<List<ControllerPermissions>, List<MenuReturnDto>>(SystemUserService.Instance.GetControllerPermissions(roleIds));
             return JsonSuccess("查询成功!", menus);
         }
 

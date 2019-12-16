@@ -20,6 +20,7 @@
         };
         this.v = '0.0.1';
     };
+
     Navbar.prototype.render = function () {
         var _that = this;
         var _config = _that.config;
@@ -59,7 +60,7 @@
                                 key: 'navbar',
                                 value: result
                             });
-                            var html = getHtml(result.Value);
+                            var html = getHtml(result.value);
                             $container.html(html);
                             element.init();
                         },
@@ -85,7 +86,8 @@
                     async: false, //_config.async,
                     dataType: 'json',
                     success: function (result, status, xhr) {
-                        var html = getHtml(result);
+                        debugger;
+                        var html = getHtml(result.value);
                         $container.html(html);
                         element.init();
                     },
@@ -174,27 +176,27 @@
             }
         }
     };
-    /**
-	 * 清除缓存
-	 */
+
     Navbar.prototype.cleanCached = function () {
         layui.data(cacheName, null);
     };
+
     var ulHtml;
+
     function getChildHtml(data) {
-        if (data !== undefined && data.Children !== undefined && data.Children.length > 0) {
+        if (data && data.children && data.children.length > 0) {
             ulHtml += '<dl class="layui-nav-child">'
-            for (var j = 0; j < data.Children.length; j++) {
+            for (var j = 0; j < data.children.length; j++) {
                 ulHtml += '<dd>';
-                ulHtml += '<a data-id=' + data.children[j].Id + ' href="javascript:;" data-url="' + data.children[j].ModuleUrl + '?id=' + data.children[j].Id + '" lay-href="' + data.children[j].ModuleUrl + '">';
-                if (data.children[j].Icon !== undefined && data.children[j].Icon !== '') {
-                    if (data.children[j].Icon.indexOf('icon-') !== -1) {
-                        ulHtml += '<i class="iconfont icon ' + data.children[j].Icon + '" data-icon="' + data.children[j].Icon + '" aria-hidden="true"></i>';
+                ulHtml += '<a data-id=' + data.children[j].id + ' href="javascript:;" data-url="' + data.children[j].moduleUrl + '?id=' + data.children[j].id + '" lay-href="' + data.children[j].moduleUrl + '">';
+                if (data.children[j].icon !== undefined && data.children[j].icon !== '') {
+                    if (data.children[j].icon.indexOf('icon-') !== -1) {
+                        ulHtml += '<i class="iconfont icon ' + data.children[j].icon + '" data-icon="' + data.children[j].icon + '" aria-hidden="true"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data.Icon + '" data-icon="' + data.children[j].Icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data.icon + '" data-icon="' + data.children[j].icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data.children[j].ModuleName + '</cite>';
+                ulHtml += '<cite>' + data.children[j].moduleName + '</cite>';
                 ulHtml += '</a>';
                 getChildHtml(data.children[j], '');
                 ulHtml += '</dd>';
@@ -207,37 +209,37 @@
         debugger;
         ulHtml = '<ul class="layui-nav layui-nav-tree beg-navbar">';
         for (var i = 0; i < data.length; i++) {
-            if (data[i].Spread) {
+            if (data[i].spread) {
                 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
             } else {
                 ulHtml += '<li class="layui-nav-item">';
             }
-            if (data[i].Children !== undefined && data[i].Children.length > 0) {
+            if (data[i].children && data[i].children.length > 0) {
                 ulHtml += '<a href="javascript:;">';
-                if (data[i].Icon !== undefined && data[i].Icon !== '') {
+                if (data[i].icon !== undefined && data[i].icon !== '') {
                     if (data[i].icon.indexOf('icon-') === -1) {
-                        ulHtml += '<i class="iconfont icon-' + data[i].Icon + '" aria-hidden="true" data-icon="' + data[i].Icon + '"></i>';
+                        ulHtml += '<i class="iconfont icon-' + data[i].icon + '" aria-hidden="true" data-icon="' + data[i].icon + '"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data[i].Icon + '" data-icon="' + data[i].Icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data[i].icon + '" data-icon="' + data[i].icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data[i].ModuleName + '</cite>'
+                ulHtml += '<cite>' + data[i].moduleName + '</cite>'
                 ulHtml += '</a>';
                 //ulHtml += '<dl class="layui-nav-child">'
                 getChildHtml(data[i]);
 
                 //ulHtml += '</dl>';
             } else {
-                var dataUrl = (data[i].ModuleUrl !== undefined && data[i].ModuleUrl !== '') ? 'data-url="' + data[i].ModuleUrl + '" lay-href="' + data[i].ModuleUrl + '"' : '';
+                var dataUrl = (data[i].moduleUrl !== undefined && data[i].moduleUrl !== '') ? 'data-url="' + data[i].moduleUrl + '" lay-href="' + data[i].moduleUrl + '"' : '';
                 ulHtml += '<a href="javascript:;" ' + dataUrl + '>';
-                if (data[i].Icon !== undefined && data[i].Icon !== '') {
-                    if (data[i].Icon.indexOf('icon-') === -1) {
-                        ulHtml += '<i class="iconfont icon-' + data[i].Icon + '" aria-hidden="true" data-icon="' + data[i].Icon + '"></i>';
+                if (data[i].icon !== undefined && data[i].icon !== '') {
+                    if (data[i].icon.indexOf('icon-') === -1) {
+                        ulHtml += '<i class="iconfont icon-' + data[i].icon + '" aria-hidden="true" data-icon="' + data[i].icon + '"></i>';
                     } else {
-                        ulHtml += '<i class="iconfont ' + data[i].Icon + '" data-icon="' + data[i].Icon + '"></i>';
+                        ulHtml += '<i class="iconfont ' + data[i].icon + '" data-icon="' + data[i].icon + '"></i>';
                     }
                 }
-                ulHtml += '<cite>' + data[i].ModuleName + '</cite>'
+                ulHtml += '<cite>' + data[i].moduleName + '</cite>'
                 ulHtml += '</a>';
             }
             ulHtml += '</li>';

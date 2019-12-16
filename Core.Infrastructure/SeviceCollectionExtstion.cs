@@ -31,8 +31,9 @@ namespace Core.Infrastructure
             services.TryAddTransient<ICacheManagerService, CacheManagerService>();
             services.TryAddTransient<IEncryptionService, EncryptionService>();
             services.TryAddTransient<IVerifyCodeService, VerifyCodeService>();
+            services.TryAddTransient<IMenuRepository, MenuRepository>();
+            services.TryAddTransient<ISystemUserRepository, SystemUserRepository>();
             services.TryAddTransient<SystemUserService, SystemUserService>();
-            services.TryAddTransient<MenuService, MenuService>();
             return services;
         }
     }
