@@ -27,10 +27,13 @@ namespace Core.Infrastructure
             services.TryAddTransient<IDbContext, BaseDbContext>();
             services.TryAddTransient(typeof(IRepository<,>), typeof(BaseRepository<,>));
             services.TryAddTransient(typeof(BaseDomainService<,>), typeof(BaseDomainService<,>));
-            services.TryAddSingleton<IJsonSerializerService, JsonSerializerService>();
-            services.TryAddTransient<ICacheManagerService, CacheManagerService>();
-            services.TryAddTransient<IEncryptionService, EncryptionService>();
-            services.TryAddTransient<IVerifyCodeService, VerifyCodeService>();
+
+            services.TryAddSingleton<IJsonSerializerService, JsonSerializerService>();//json序列化服务
+            services.TryAddSingleton<ICacheManagerService, CacheManagerService>();//缓存服务
+            services.TryAddSingleton<IEncryptionService, EncryptionService>();//加密服务
+            services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();//验证码服务
+            services.TryAddSingleton<IHttpRequestService, HttpRequestService>();//http请求服务
+
             services.TryAddTransient<IMenuRepository, MenuRepository>();
             services.TryAddTransient<ISystemUserRepository, SystemUserRepository>();
             services.TryAddTransient<SystemUserService, SystemUserService>();

@@ -68,6 +68,11 @@ namespace Core.Domain.Entities
         public virtual ICollection<ControllerPermissions> ChildrenControllerPermissions { get; set; }
 
         /// <summary>
+        /// 菜单查询关联信息
+        /// </summary>
+        public virtual ICollection<ControllerQuery> ControllerQueries { get; set; }
+
+        /// <summary>
         /// 配置数据库
         /// </summary>
         /// <param name="builder"></param>

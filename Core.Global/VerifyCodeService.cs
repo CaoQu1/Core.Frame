@@ -102,7 +102,7 @@ namespace Core.Global
         {
             get
             {
-                return CoreAppContext.Configuration[CoreConst.CODEKEY];
+                return "CodeKey";
             }
         }
     }

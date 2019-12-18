@@ -23,9 +23,14 @@ namespace Core.Domain.Entities
         public string Action { get; set; }
 
         /// <summary>
-        /// 类型
+        /// 操作类型
         /// </summary>
         public CoreEnum.Operation? Type { get; set; }
+
+        /// <summary>
+        /// 操作位置
+        /// </summary>
+        public CoreEnum.ActionType? ActionType { get; set; }
 
         /// <summary>
         /// 图标
@@ -58,7 +63,8 @@ namespace Core.Domain.Entities
                 SortId = 1,
                 Action = "Master",
                 Type = Global.CoreEnum.Operation.List,
-                Id = 1
+                Id = 1,
+                IsShow = false
             });
 
             builder.HasData(new ActionPermissions
@@ -69,7 +75,8 @@ namespace Core.Domain.Entities
                 SortId = 2,
                 Action = "GetMenuList",
                 Type = Global.CoreEnum.Operation.List,
-                Id = 2
+                Id = 2,
+                IsShow = false
             });
 
             base.Configure(builder);

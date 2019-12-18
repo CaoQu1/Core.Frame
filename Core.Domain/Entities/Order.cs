@@ -123,11 +123,6 @@ namespace Core.Domain.Entities
         public int Point { get; set; }
 
         /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreateTime { get; set; }
-
-        /// <summary>
         /// 支付时间
         /// </summary>
         public DateTime? PaymentTime { get; set; }

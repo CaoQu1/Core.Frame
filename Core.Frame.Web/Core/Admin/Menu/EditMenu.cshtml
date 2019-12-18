@@ -7,23 +7,24 @@
 
 <div class="layui-col-md12 top10">
     <form class="layui-form" id="form" action="~/Admin/Menu/EditMenu" method="post">
+        @Html.HiddenFor(x => x.Id)
         <div class="layui-form-item">
             <label class="layui-form-label">菜单名称：</label>
             <div class="layui-input-inline">
-                <input name="MenuName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+                <input name="MenuName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text" value="@Model.ModuleName">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">菜单图片：</label>
             <div class="layui-input-inline">
-                <input name="MenuIcon" id="Icon" lay-verify="required" lay-vertype="tips" class="layui-input" type="text" />
+                <input name="MenuIcon" id="Icon" lay-verify="required" lay-vertype="tips" class="layui-input" type="text" value="@Model.Icon" />
             </div>
             <div class="layui-input-inline"><a id="sltIcon" href="javascript:;">选择图片</a><span id="spnIcon"></span></div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">上级菜单：</label>
             <div class="layui-input-block">
-                <input name="ParentId" type="text" id="ParentId" lay-filter="demo" placeholder="【选择上级菜单】" autocomplete="off" class="layui-input">
+                <input name="ParentId" type="text" id="ParentId" lay-filter="demo" placeholder="【选择上级菜单】" autocomplete="off" class="layui-input" value="@Model.ParentId">
             </div>
         </div>
         <div class="layui-form-item">
@@ -35,7 +36,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">排序号：</label>
             <div class="layui-input-block">
-                <input name="OrderNo" lay-verify="required" lay-vertype="tips" class="layui-input" type="text" value="0">
+                <input name="OrderNo" lay-verify="required" lay-vertype="tips" class="layui-input" type="text" value="@Model.ShowOrder">
             </div>
         </div>
         <div class="layui-form-item">
@@ -59,7 +60,7 @@
         treeselect.render(
             {
                 elem: "#ParentId",
-                data: "/Permissions/Menu/GetMenuList",
+                data: "/Admin/Menu/GetMenuList",
                 method: "GET"
             });
     });</script>

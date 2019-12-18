@@ -38,11 +38,6 @@ namespace Core.Domain.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// 排序
-        /// </summary>
-        public int SortId { get; set; }
-
-        /// <summary>
         /// 商品附件信息
         /// </summary>
         public virtual ICollection<GoodAttachment> GoodAttachments { get; set; }

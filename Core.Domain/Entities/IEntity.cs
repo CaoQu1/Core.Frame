@@ -15,6 +15,31 @@ namespace Core.Domain.Entities
         TKey Id { get; set; }
 
         /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime? UpdateTime { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int? SortId { get; set; }
+
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        public bool? IsDeleted { get; set; }
+
+        /// <summary>
         /// 对值初始化
         /// </summary>
         void FormatInitValue();

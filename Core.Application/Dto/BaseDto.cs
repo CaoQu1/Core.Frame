@@ -12,6 +12,6 @@ namespace Core.Application.Dto
         /// <summary>
         /// 编号
         /// </summary>
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

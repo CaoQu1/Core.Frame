@@ -31,18 +31,30 @@ namespace Core.Application.Controllers
         /// <param name="context"></param>
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            await base.OnActionExecutionAsync(context, next);
+            await Invoke(async () =>
+           {
+               var controllerId = context.ActionArguments.ContainsKey("id") ? context.ActionArguments["id"]?.ToString() : null;
+               if (!controllerId.IsEmpty())
+               {
+                   var controllerActionService = GetInstance<ControllerActionPermissions>();
+                   var controllerQueryService = GetInstance<ControllerQuery>();
+                   var buttonList = controllerActionService.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => x.ControllerId.ToString() == controllerId), x => x.ActionPermissions).Select(x => x.ActionPermissions);
+                   ViewData["buttonList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.Inside).ToList();
+                   ViewData["buttonOutList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.OutSide).ToList();
+                   ViewData["queryList"] = controllerQueryService.GetByCondition(new ExpressionSpecification<ControllerQuery>(x => x.ControllerId.ToString() == controllerId && x.IsShow == true), x => x.Query).Select(x => x.Query);
+               }
+               await base.OnActionExecutionAsync(context, next);
+           });
         }
-
 
         /// <summary>
         /// 初始化权限
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public async Task<IActionResult> InitPermissions()
+        public async Task<IActionResult> InitPermissionsAsync()
         {
-            return await Invoke<IActionResult>(async () =>
+            return await InvokeAsync<IActionResult>(async () =>
            {
                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
                var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
@@ -65,7 +77,7 @@ namespace Core.Application.Controllers
 
                var assembly = Assembly.GetExecutingAssembly();
 
-               var controllerTypes = assembly.GetTypes().Where(x => !x.IsAbstract && typeof(AdminBaseController).IsAssignableFrom(x));
+               var controllerTypes = assembly.GetTypes().Where(x => !x.IsAbstract && typeof(Controller).IsAssignableFrom(x));
                if (controllerTypes.Count() > 0)
                {
                    var area = controllerTypes.First().Namespace.Split('.').Last();
@@ -181,6 +193,16 @@ namespace Core.Application.Controllers
                }
                return JsonSuccess("初始化成功!");
            });
+        }
+
+        /// <summary>
+        /// 列表页
+        /// </summary>
+        /// <returns></returns>
+        [Initialize("列表页")]
+        public virtual IActionResult Index()
+        {
+            return View();
         }
     }
 }

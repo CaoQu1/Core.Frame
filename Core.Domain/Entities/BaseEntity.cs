@@ -33,6 +33,16 @@ namespace Core.Domain.Entities
         public int? SortId { get; set; }
 
         /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        public bool? IsDeleted { get; set; }
+
+        /// <summary>
         /// 初始化值
         /// </summary>
         public virtual void FormatInitValue() { }

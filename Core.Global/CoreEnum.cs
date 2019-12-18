@@ -234,5 +234,73 @@ namespace Core.Global
             /// </summary>
             Other
         }
+
+        /// <summary>
+        /// 表单操作
+        /// </summary>
+        public enum ActionType
+        {
+            /// <summary>
+            /// 表单内
+            /// </summary>
+            Inside,
+
+            /// <summary>
+            /// 表单外
+            /// </summary>
+            OutSide
+        }
+
+        /// <summary>
+        /// 控件类型
+        /// </summary>
+        public enum ControlType
+        {
+            /// <summary>
+            /// 输入框
+            /// </summary>
+            TextBox,
+
+            /// <summary>
+            ///下拉框
+            /// </summary>
+            DropList,
+
+            /// <summary>
+            /// 时间选择
+            /// </summary>
+            DateTime
+        }
+
+        /// <summary>
+        /// 值的数据类型
+        /// </summary>
+        public enum FieldValueTypeEnum
+        {
+            /// <summary>
+            /// 整型
+            /// </summary>
+            Int = 1,
+
+            /// <summary>
+            /// 浮点型
+            /// </summary>
+            Double = 2,
+
+            /// <summary>
+            /// 时间
+            /// </summary>
+            DateTime = 3,
+
+            /// <summary>
+            /// 字符串
+            /// </summary>
+            String = 4,
+
+            /// <summary>
+            /// guid
+            /// </summary>
+            GUID = 5
+        }
     }
 }

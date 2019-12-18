@@ -4,8 +4,11 @@ using Core.Domain;
 using Core.Domain.Entities;
 using Core.Domain.Service;
 using Core.Global;
+using Core.Global.Attributes;
+using Core.Global.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -32,12 +35,18 @@ namespace Core.Application.Controllers
         protected readonly ILogger<BaseController> _logger;
 
         /// <summary>
+        /// 上传附件参数
+        /// </summary>
+        protected readonly CoreUpload _coreUpload;
+
+        /// <summary>
         /// ctor
         /// </summary>
         public BaseController()
         {
             this._mapper = CoreAppContext.GetService<IMapper>();
             this._logger = CoreAppContext.GetService<ILogger<BaseController>>();
+            this._coreUpload = CoreAppContext.GetService<IOptions<CoreUpload>>().Value;
         }
 
         /// <summary>
@@ -91,7 +100,7 @@ namespace Core.Application.Controllers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="action"></param>
-        protected virtual Task<TReturn> Invoke<TReturn>(Func<Task<TReturn>> action)
+        protected virtual Task<TReturn> InvokeAsync<TReturn>(Func<Task<TReturn>> action)
         {
             try
             {
@@ -385,6 +394,86 @@ namespace Core.Application.Controllers
         protected virtual Task<IActionResult> JsonFailAsync(string message)
         {
             return Task.FromResult<IActionResult>(Json(new CoreResult { Success = false, Message = message }));
+        }
+
+        /// <summary>
+        /// 成功
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual Task<IActionResult> JsonSuccessAsync<T>(string message, T value = default(T))
+        {
+            return Task.FromResult<IActionResult>(Json(new CoreResult<T> { Success = true, Message = message, Value = value }));
+        }
+
+        /// <summary>
+        /// 上传附件
+        /// </summary>
+        /// <returns></returns>
+        [Initialize("上传附件", "", "", false)]
+        public async Task<IActionResult> UploadFileAsync()
+        {
+            return await JsonSuccessAsync<int>("上传成功!");
+        }
+
+        /// <summary>
+        /// 获取分页数据
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDto"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="dto"></param>
+        /// <param name="action"></param>
+        /// <param name="orderType"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="navigationProperties"></param>
+        /// <returns></returns>
+        [Initialize("获取分页数据", "", "", false)]
+        public async Task<IActionResult> GetPageListAsync<TEntity, TDto, TResult>(TDto dto, Action<TDto, ISpecification<TEntity>> action = null, CoreEnum.SortOrder orderType = CoreEnum.SortOrder.Desc, Expression<Func<TEntity, dynamic>> orderBy = null,
+                 params Expression<Func<TEntity, dynamic>>[] navigationProperties) where TDto : BaseQueryPageDto where TEntity : class, IAggregateRoot<int> where TResult : BaseDto
+        {
+            return await InvokeAsync<IActionResult>(async () =>
+            {
+                var baseService = GetInstance<TEntity>();
+                if (baseService == null)
+                {
+                    return JsonFail("服务注入失败!");
+                }
+                var expressionSpecification = new ExpressionSpecification<TEntity>();
+                if (action != null)
+                {
+                    action(dto, expressionSpecification);
+                }
+                if (orderBy == null)
+                {
+                    orderBy = x => x.SortId;
+                }
+                if (dto.Id.HasValue && dto.Id.Value > 0)
+                {
+                    expressionSpecification.And(new ExpressionSpecification<TEntity>(x => x.Id == dto.Id.Value));
+                }
+                if (dto.StartTime.HasValue && dto.EndTime.HasValue)
+                {
+                    expressionSpecification.And(new ExpressionSpecification<TEntity>(x => x.CreateTime >= dto.StartTime.Value && x.CreateTime <= dto.EndTime.Value));
+                }
+                if (!dto.KeyWord.IsEmpty())
+                {
+                    expressionSpecification.And(new ExpressionSpecification<TEntity>(x => x.Description.Contains(dto.KeyWord)));
+                }
+                CorePageResult<TResult> result = new CorePageResult<TResult>();
+                var corePageResult = baseService.GetByCondition(expressionSpecification, orderBy, orderType, dto.PageSize, dto.PageIndex, navigationProperties);
+                if (corePageResult.Count > 0)
+                {
+                    result.Data = MapForm<List<TEntity>, List<TResult>>(corePageResult.Data);
+                    result.TotalPages = corePageResult.TotalPages;
+                    result.TotalRecords = corePageResult.TotalRecords;
+                    result.PageNumber = corePageResult.PageNumber;
+                    result.PageSize = corePageResult.PageSize;
+                }
+                return await JsonSuccessAsync<CorePageResult<TResult>>("查询成功!", result);
+            });
         }
     }
 }

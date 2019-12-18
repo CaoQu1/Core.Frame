@@ -27,17 +27,18 @@ namespace Core.Frame.Web
         /// ◊¢»Î≈‰÷√Œƒº˛
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment,IConfiguration configuration)
         {
             WebHostEnvironment = environment;
 
-            var builder = new ConfigurationBuilder()
-             .SetBasePath(environment.ContentRootPath)
-             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-             .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
-             .AddEnvironmentVariables();
+            //var builder = new ConfigurationBuilder()
+            // .SetBasePath(environment.ContentRootPath)
+            // .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            // .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
+            // .AddEnvironmentVariables();
 
-            Configuration = builder.Build();
+            //Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         /// <summary>
@@ -61,7 +62,9 @@ namespace Core.Frame.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton(Configuration);
             services.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
+            services.Configure<CoreUpload>(Configuration.GetSection("CoreUpload"));
 
             var assmebies = new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("Core.Application*.dll")
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
@@ -144,7 +147,7 @@ namespace Core.Frame.Web
             //}
             //else
             //{
-          
+
             //app.UseHsts();
             //}
 
@@ -159,7 +162,7 @@ namespace Core.Frame.Web
             });
 
             app.UseWap();
-           
+
             app.UseRouting();
 
             app.UseAuthentication();
