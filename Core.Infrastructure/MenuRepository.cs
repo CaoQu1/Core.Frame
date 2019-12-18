@@ -35,7 +35,7 @@ namespace Core.Infrastructure
                          on caRole.ControllerActionId equals caPermissions.Id
                          join cPermissions in Table
                          on caPermissions.ControllerId equals cPermissions.Id
-                         where roleIds.Contains(caRole.RoleId.ToString())
+                         where roleIds.Contains(caRole.RoleId.ToString()) && (!cPermissions.IsDeleted.HasValue || cPermissions.IsDeleted.Value == false) && cPermissions.IsShow == true
                          select cPermissions).Distinct().ToList();
             return menus;
         }

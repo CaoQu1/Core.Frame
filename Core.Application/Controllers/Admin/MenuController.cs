@@ -17,7 +17,7 @@ namespace Core.Application.Controllers.Admin
     /// <summary>
     /// 菜单控制器
     /// </summary>
-    [Initialize(" 菜单", IsShow = false)]
+    [Initialize(" 菜单", IsShow = false, Area = "Admin", ModuleUrl = "/Admin/Menu/Index")]
     public class MenuController : AdminBaseController
     {
         /// <summary>

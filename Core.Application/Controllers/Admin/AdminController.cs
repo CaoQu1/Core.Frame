@@ -127,6 +127,7 @@ namespace Core.Application.Controllers.Admin
         /// 退出
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public async Task OutLogin()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

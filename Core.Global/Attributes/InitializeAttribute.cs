@@ -12,6 +12,8 @@ namespace Core.Global.Attributes
     {
         public string FunctionName { get; set; }
 
+        public string Area { get; set; }
+
         public string ModuleUrl { get; set; }
 
         public string Icon { get; set; }
@@ -24,12 +26,13 @@ namespace Core.Global.Attributes
 
         public InitializeAttribute() { }
 
-        public InitializeAttribute(string functionName, string moduleUrl = "", string icon = "", bool isShow = true)
+        public InitializeAttribute(string functionName, string moduleUrl = "", string icon = "layui-icon-home", bool isShow = true, string area = "")
         {
             FunctionName = functionName;
             ModuleUrl = moduleUrl;
             Icon = icon;
             IsShow = isShow;
+            Area = area;
         }
     }
 }

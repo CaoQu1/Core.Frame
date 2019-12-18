@@ -14,29 +14,20 @@ using System.Text;
 namespace Core.Infrastructure
 {
     /// <summary>
-    /// 注入扩展
+    /// 服务扩展
     /// </summary>
-    public static class SeviceCollectionExtstion
+    public static class RepositorySeviceCollectionExtstion
     {
         /// <summary>
-        /// 注入领域服务
+        /// 注入数据仓储服务
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddDomianService(this IServiceCollection services)
+        public static IServiceCollection AddRepositoryService(this IServiceCollection services)
         {
             services.TryAddTransient<IDbContext, BaseDbContext>();
             services.TryAddTransient(typeof(IRepository<,>), typeof(BaseRepository<,>));
-            services.TryAddTransient(typeof(BaseDomainService<,>), typeof(BaseDomainService<,>));
-
-            services.TryAddSingleton<IJsonSerializerService, JsonSerializerService>();//json序列化服务
-            services.TryAddSingleton<ICacheManagerService, CacheManagerService>();//缓存服务
-            services.TryAddSingleton<IEncryptionService, EncryptionService>();//加密服务
-            services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();//验证码服务
-            services.TryAddSingleton<IHttpRequestService, HttpRequestService>();//http请求服务
-
             services.TryAddTransient<IMenuRepository, MenuRepository>();
             services.TryAddTransient<ISystemUserRepository, SystemUserRepository>();
-            services.TryAddTransient<SystemUserService, SystemUserService>();
             return services;
         }
     }

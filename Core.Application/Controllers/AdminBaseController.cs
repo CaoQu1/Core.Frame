@@ -52,17 +52,17 @@ namespace Core.Application.Controllers
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
-        public async Task<IActionResult> InitPermissionsAsync()
+        public IActionResult InitPermissions()
         {
-            return await InvokeAsync<IActionResult>(async () =>
+            return Invoke<IActionResult>(() =>
            {
                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
                var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
-               var roles = await cacheManagerService.GetOrAdd<List<Role>>(String.Format(CoreConst.USERROLES, roleClaim.Value), () =>
+               var roles = cacheManagerService.GetOrAdd<List<Role>>(String.Format(CoreConst.USERROLES, roleClaim.Value), () =>
                {
                    var roleIds = roleClaim.Value.Split(',').ToList();
                    return GetInstance<Role>().GetByCondition(new ExpressionSpecification<Role>(x => roleIds.Contains(x.Id.ToString()))).ToList();
-               }, TimeSpan.FromMinutes(30));
+               }, TimeSpan.FromMinutes(30)).Result;
 
                if (!roles.Any(x => x.IsSystemAdmin))
                {
@@ -88,6 +88,7 @@ namespace Core.Application.Controllers
                        if (controllerInitializeAttribute != null)
                        {
                            name = controllerInitializeAttribute.FunctionName;
+                           area = controllerInitializeAttribute.Area;
                        }
 
                        if (controllerInitializeAttribute == null)
@@ -199,10 +200,10 @@ namespace Core.Application.Controllers
         /// 列表页
         /// </summary>
         /// <returns></returns>
-        [Initialize("列表页")]
         public virtual IActionResult Index()
         {
             return View();
         }
+
     }
 }

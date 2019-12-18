@@ -6,6 +6,7 @@ using Core.Domain.Entities;
 using Core.Domain.Repositories;
 using Core.Domain.Service;
 using Core.Global;
+using Core.Global.Attributes;
 using Core.Global.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,10 @@ using System.Text;
 
 namespace Core.Application.Controllers.Admin
 {
+    /// <summary>
+    /// 商品管理控制器
+    /// </summary>
+    [Initialize("商品管理", Area = "Admin", ModuleUrl = "/Admin/Goods/Index")]
     public class GoodsController : AdminBaseController
     {
         private readonly BaseDomainService<int, Goods> _baseDomainService;

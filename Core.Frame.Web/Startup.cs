@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,10 +12,10 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Core.Global;
-using Core.Domain.Service;
-using Core.Application.Filter;
 using Core.Web;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Core.Domain;
+using UEditorNetCore;
 
 namespace Core.Frame.Web
 {
@@ -27,17 +25,9 @@ namespace Core.Frame.Web
         /// 注入配置文件
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IWebHostEnvironment environment,IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             WebHostEnvironment = environment;
-
-            //var builder = new ConfigurationBuilder()
-            // .SetBasePath(environment.ContentRootPath)
-            // .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            // .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
-            // .AddEnvironmentVariables();
-
-            //Configuration = builder.Build();
             Configuration = configuration;
         }
 
@@ -62,7 +52,6 @@ namespace Core.Frame.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton(Configuration);
             services.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
             services.Configure<CoreUpload>(Configuration.GetSection("CoreUpload"));
 
@@ -70,7 +59,6 @@ namespace Core.Frame.Web
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
             services.AddMvc(option =>
             {
-                // option.Filters.Add(new CoreAuthorizationFilter());
             }).AddApplicationPart(assmebies.FirstOrDefault())
                 .AddRazorOptions(options =>
             {
@@ -94,7 +82,6 @@ namespace Core.Frame.Web
                 option.UseLoggerFactory(logFactory);//添加sql监控日志
             });//初始化数据库连接
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//添加对象映射组件
-            services.AddDomianService();
             services.AddHttpContextAccessor();
             services.AddAuthentication(option =>
             {
@@ -123,7 +110,11 @@ namespace Core.Frame.Web
                     option.InstanceName = "db0";
                 });
             }
-            //ServiceCollection.AddOptions<CustomExceptionMiddleWareOption>();
+            services.AddCommonService()
+                .AddRepositoryService()
+                .AddDomainService();
+
+            services.AddUEditorService();
             ServiceCollection = services;
         }
 
@@ -138,18 +129,6 @@ namespace Core.Frame.Web
             CoreAppContext.ServiceCollection = ServiceCollection;
             CoreAppContext.Configuration = Configuration;
             CoreAppContext.ApplicationBuilder = app;
-
-
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-
-            //app.UseHsts();
-            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

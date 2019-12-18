@@ -28,14 +28,24 @@ namespace Core.Domain.Entities
         public int ModuleId { get; set; }
 
         /// <summary>
+        /// 服务器
+        /// </summary>
+        public string Server { get; set; }
+
+        /// <summary>
         /// 路径
         /// </summary>
         public string Path { get; set; }
 
         /// <summary>
-        /// 描述
+        /// 文件名称
         /// </summary>
-        public string Description { get; set; }
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// 格式
+        /// </summary>
+        public string FileExt { get; set; }
 
         /// <summary>
         /// 商品附件信息

@@ -22,7 +22,7 @@ namespace Core.Global
         /// <summary>
         /// 允许上传的扩展名（多个逗号隔开）
         /// </summary>
-        public string Ext { get; set; }
+        public string[] Ext { get; set; }
 
         /// <summary>
         /// 允许上传的大小

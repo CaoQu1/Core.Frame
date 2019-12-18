@@ -9,3 +9,5 @@ obj
 /.vs/Core.Frame/v16/.suo
 /.vs/Core.Frame/v16
 /.vs
+*.log
+*.suo

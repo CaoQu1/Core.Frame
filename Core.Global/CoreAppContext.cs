@@ -17,6 +17,11 @@ namespace Core.Global
         public static IConfiguration Configuration { get; set; }
 
         /// <summary>
+        /// 宿主环境
+        /// </summary>
+        public static IHostingEnvironment HostingEnvironment { get; set; }
+
+        /// <summary>
         /// 服务集合
         /// </summary>
         public static IServiceCollection ServiceCollection { get; set; }
@@ -46,6 +51,30 @@ namespace Core.Global
             {
                 return ApplicationBuilder.ApplicationServices.GetService<T>();
             }
+        }
+
+        /// <summary>
+        /// 获取根目录
+        /// </summary>
+        /// <returns></returns>
+        public static string CPWebRootPath()
+        {
+            if (HostingEnvironment.IsDevelopment())
+            {
+                return "";
+            }
+            else if (HostingEnvironment.IsProduction())
+            {
+                //return "/CPSite";
+                return "";
+            }
+            else if (HostingEnvironment.IsStaging())
+            {
+                //return "/CPSite";
+                return "";
+            }
+            else
+                return "";
         }
     }
 }

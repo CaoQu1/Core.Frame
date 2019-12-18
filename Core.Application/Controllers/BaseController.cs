@@ -6,11 +6,14 @@ using Core.Domain.Service;
 using Core.Global;
 using Core.Global.Attributes;
 using Core.Global.Specifications;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -413,9 +416,50 @@ namespace Core.Application.Controllers
         /// </summary>
         /// <returns></returns>
         [Initialize("上传附件", "", "", false)]
-        public async Task<IActionResult> UploadFileAsync()
+        public virtual async Task<IActionResult> UploadFileAsync()
         {
-            return await JsonSuccessAsync<int>("上传成功!");
+            return await InvokeAsync<IActionResult>(async () =>
+            {
+                var attachmentService = GetInstance<SystemAttachment>();
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _coreUpload.Path);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var files = Request.Form.Files;
+                List<int> attachmentIds = new List<int>();
+                if (files.Count > 0)
+                {
+                    foreach (IFormFile file in files)
+                    {
+                        var fileExtension = Path.GetExtension(file.FileName).ToLower();
+                        if (CheckFile(fileExtension))
+                        {
+                            if (CheckSize((int)file.Length))
+                            {
+                                byte[] fileData = new byte[file.Length];
+                                file.OpenReadStream().Read(fileData, 0, (int)file.Length);
+                                var fullPath = Path.Combine(path, file.FileName);
+                                System.IO.File.WriteAllBytes(fullPath, fileData);
+                                attachmentIds.Add(attachmentService.Add(new SystemAttachment
+                                {
+                                    CreateTime = DateTime.Now,
+                                    Type = CoreEnum.AttachmentType.Image,
+                                    FileName = file.FileName,
+                                    FileExt = fileExtension,
+                                    Path = path
+                                }));
+                            }
+                        }
+                    }
+                }
+
+                bool CheckFile(string ext) => _coreUpload.Ext.Contains(ext);
+
+                bool CheckSize(int size) => _coreUpload.Size * 1024 * 1024 > size;
+
+                return await JsonSuccessAsync<List<int>>("上传成功!", attachmentIds);
+            });
         }
 
         /// <summary>
@@ -432,7 +476,7 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         [Initialize("获取分页数据", "", "", false)]
         public async Task<IActionResult> GetPageListAsync<TEntity, TDto, TResult>(TDto dto, Action<TDto, ISpecification<TEntity>> action = null, CoreEnum.SortOrder orderType = CoreEnum.SortOrder.Desc, Expression<Func<TEntity, dynamic>> orderBy = null,
-                 params Expression<Func<TEntity, dynamic>>[] navigationProperties) where TDto : BaseQueryPageDto where TEntity : class, IAggregateRoot<int> where TResult : BaseDto
+                 params Expression<Func<TEntity, dynamic>>[] navigationProperties) where TDto : BaseQueryPageDto where TEntity : class, IAggregateRoot<int>
         {
             return await InvokeAsync<IActionResult>(async () =>
             {
