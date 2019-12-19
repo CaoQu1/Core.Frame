@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Core.Application.Dto;
 using Core.Application.Dto.EditDto;
 using Core.Domain.Entities;
 using System;
@@ -11,12 +10,12 @@ namespace Core.Application.Map
     /// <summary>
     /// dto和entity互转
     /// </summary>
-    public class SystemUserMap : Profile
+    public class RoleMap : Profile
     {
-        public SystemUserMap()
+        public RoleMap()
         {
-            this.CreateMap<SystemUserEditDto, SystemUser>();
-            this.CreateMap<SystemUser, SystemUserEditDto>();
+            CreateMap<Role, RoleEditDto>();
+            CreateMap<RoleEditDto, Role>();
         }
     }
 }

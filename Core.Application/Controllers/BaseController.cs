@@ -190,10 +190,13 @@ namespace Core.Application.Controllers
         /// <typeparam name="TDto"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        protected virtual IActionResult DeleteDto<TEntity, TDto>(int Id) where TEntity : class, IAggregateRoot<int> where TDto : BaseDto, new()
+        protected virtual IActionResult DeleteDto<TEntity>(int id) where TEntity : class, IAggregateRoot<int>
         {
-            TDto dto = new TDto() { Id = Id };
-            return DeleteDto<TEntity, TDto>(dto);
+            return Verification<TEntity>(id, (tEntitity, baseService) =>
+            {
+                var tEntityId = baseService.Delete(tEntitity);
+                return (tEntityId > 0, tEntityId > 0 ? "删除成功!" : "删除失败!");
+            });
         }
 
         /// <summary>
@@ -205,10 +208,10 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         protected virtual IActionResult DeleteDto<TEntity, TDto>(TDto dto) where TEntity : class, IAggregateRoot<int> where TDto : BaseDto
         {
-            return Verification<TEntity, TDto>(dto, (tEntities, baseService) =>
+            return Verification<TEntity, TDto>(dto, (tEntitity, baseService) =>
             {
-                var tEntityId = baseService.Update(tEntities);
-                return (tEntityId > 0, tEntityId > 0 ? "批量更新成功!" : "批量更新失败!");
+                var tEntityId = baseService.Delete(tEntitity);
+                return (tEntityId > 0, tEntityId > 0 ? "删除成功!" : "删除失败!");
             });
         }
 
@@ -221,6 +224,41 @@ namespace Core.Application.Controllers
         protected virtual BaseDomainService<int, TEntity> GetInstance<TEntity>() where TEntity : class, IAggregateRoot<int>
         {
             return CoreAppContext.GetService<BaseDomainService<int, TEntity>>();
+        }
+
+        /// <summary>
+        /// 数据验证
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDto"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="dto"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        protected virtual IActionResult Verification<TEntity>(int id, Func<TEntity, BaseDomainService<int, TEntity>, (bool, string)> func) where TEntity : class, IAggregateRoot<int>
+        {
+            return Invoke<IActionResult>(() =>
+            {
+                if (id <= 0)
+                {
+                    return JsonFail("参数错误!");
+                }
+                var baseService = GetInstance<TEntity>();
+                if (baseService == null)
+                {
+                    return JsonFail("服务注入失败!");
+                }
+                var tEntity = baseService.Get(id);
+                var result = func(tEntity, baseService);
+                if (result.Item1)
+                {
+                    return JsonSuccess(result.Item2);
+                }
+                else
+                {
+                    return JsonFail(result.Item2);
+                }
+            });
         }
 
         /// <summary>
@@ -415,8 +453,7 @@ namespace Core.Application.Controllers
         /// 上传附件
         /// </summary>
         /// <returns></returns>
-        [Initialize("上传附件", "", "", false)]
-        public virtual async Task<IActionResult> UploadFileAsync()
+        public async Task<IActionResult> UploadFileAsync()
         {
             return await InvokeAsync<IActionResult>(async () =>
             {
@@ -474,7 +511,6 @@ namespace Core.Application.Controllers
         /// <param name="orderBy"></param>
         /// <param name="navigationProperties"></param>
         /// <returns></returns>
-        [Initialize("获取分页数据", "", "", false)]
         public async Task<IActionResult> GetPageListAsync<TEntity, TDto, TResult>(TDto dto, Action<TDto, ISpecification<TEntity>> action = null, CoreEnum.SortOrder orderType = CoreEnum.SortOrder.Desc, Expression<Func<TEntity, dynamic>> orderBy = null,
                  params Expression<Func<TEntity, dynamic>>[] navigationProperties) where TDto : BaseQueryPageDto where TEntity : class, IAggregateRoot<int>
         {

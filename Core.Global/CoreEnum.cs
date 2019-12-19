@@ -86,11 +86,6 @@ namespace Core.Global
             /// 审核
             /// </summary>
             Approve,
-
-            /// <summary>
-            /// 列表
-            /// </summary>
-            List
         }
 
         /// <summary>
@@ -269,7 +264,12 @@ namespace Core.Global
             /// <summary>
             /// 时间选择
             /// </summary>
-            DateTime
+            DateTime,
+
+            /// <summary>
+            /// 按钮
+            /// </summary>
+            Button
         }
 
         /// <summary>

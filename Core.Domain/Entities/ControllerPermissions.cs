@@ -55,7 +55,12 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 操作实体
         /// </summary>
-        public virtual ICollection<ControllerActionPermissions> ControllerActionPermissions { get; set; }
+        public virtual ICollection<ActionPermissions> ActionPermissions { get; set; }
+
+        /// <summary>
+        /// 控制器角色信息
+        /// </summary>
+        public virtual ICollection<ControllerRole>  ContollerRoles { get; set; }
 
         /// <summary>
         /// 父菜单
@@ -66,11 +71,6 @@ namespace Core.Domain.Entities
         /// 子菜单
         /// </summary>
         public virtual ICollection<ControllerPermissions> ChildrenControllerPermissions { get; set; }
-
-        /// <summary>
-        /// 菜单查询关联信息
-        /// </summary>
-        public virtual ICollection<ControllerQuery> ControllerQueries { get; set; }
 
         /// <summary>
         /// 配置数据库

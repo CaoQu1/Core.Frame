@@ -100,7 +100,7 @@ namespace Core.Application.Controllers.Admin
                                 IsPersistent = true,
                                 ExpiresUtc = DateTime.Now.AddMinutes(30)
                             });
-                            return JsonSuccess<SystemUser, SystemUserDto>("登录成功!", systemUser);
+                            return JsonSuccess<SystemUser, SystemUserEditDto>("登录成功!", systemUser);
                         }
                         else
                         {

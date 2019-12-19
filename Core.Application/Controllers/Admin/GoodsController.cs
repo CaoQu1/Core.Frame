@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Application.Controllers.Admin
 {
@@ -23,97 +24,63 @@ namespace Core.Application.Controllers.Admin
     [Initialize("商品管理", Area = "Admin", ModuleUrl = "/Admin/Goods/Index")]
     public class GoodsController : AdminBaseController
     {
-        private readonly BaseDomainService<int, Goods> _baseDomainService;
-
-        public GoodsController(BaseDomainService<int, Goods> baseDomainService)
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="baseDomainService"></param>
+        public GoodsController()
         {
-            _baseDomainService = baseDomainService;
         }
 
         /// <summary>
-        /// 管理页面
+        /// 商品列表页
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
-        public IActionResult GoodsManager()
+        [Initialize("商品列表页")]
+        public override IActionResult Index()
+        {
+            return base.Index();
+        }
+
+        /// <summary>
+        /// 编辑商品页
+        /// </summary>
+        /// <returns></returns>
+        [Initialize("编辑商品页")]
+        public IActionResult EditGoods()
         {
             return View();
         }
 
         /// <summary>
-        /// 弹出层
+        /// 保存商品
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
-        public IActionResult GoodsEdit()
+        [Initialize("保存商品")]
+        public IActionResult EditGoods(GoodsEditDto goodsEditDto)
         {
-            return View();
+            return Edit<Goods, GoodsEditDto, Goods>(goodsEditDto);
         }
+
         /// <summary>
         /// 获取商品列表
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetNewsList(GoodsDto goodsFilter)
+        [Initialize("获取商品分页数据")]
+        public async Task<IActionResult> GetGoodsListAsync(BaseQueryPageDto baseQueryPageDto)
         {
-            var data = new ExpressionSpecification<Goods>(x => true);
-
-            data.And(new ExpressionSpecification<Goods>(x => x.Point == 110));
-            data.And(new ExpressionSpecification<Goods>(x => x.GoodName == "123"));
-            var goods = GoodsService.Instance.GetByCondition(data); //, x => x.GoodCategory
-
-            //_baseDomainService.Delete()
-            GoodsService.Instance.Add(MapTo<GoodsDto, Goods>(goodsFilter));
-            //foreach (var item in goods) {
-            //    MapForm<Goods, GoodsDto>(item);
-            //}
-
-            return null;
+            return await GetPageListAsync<Goods, BaseQueryPageDto, Goods>(baseQueryPageDto);
         }
+
         /// <summary>
-        /// 新增/修改
+        /// 删除商品
         /// </summary>
+        /// <param name="GoodNo"></param>
         /// <returns></returns>
-        public ActionResult EditNewsType(Goods goodsModel)
+        [Initialize("删除商品")]
+        public IActionResult DelGoods(int id)
         {
-            string msg = "操作成功";
-
-            if (string.IsNullOrEmpty(goodsModel.GoodNo))
-            {
-                Goods model = new Goods();
-                model = goodsModel;
-                //var result = NewsTypeServer.Insert(nt);
-                //if (result == null)
-                //    msg = "失败";
-            }
-            else
-            {
-                //var type = NewsTypeServer.Query(x => x.TypeID == id).First();
-                //type.TypeName = typeName;
-                //if (!NewsTypeServer.Update(type))
-                //    msg = "失败";
-            }
-            //return Json(new { code = 400, msg = msg }, JsonRequestBehavior.AllowGet);
-            return null;
+            return DeleteDto<Goods>(id);
         }
-        //删除这个商品
-        public ActionResult DelGoods(string GoodNo)
-        {
-
-            string msg = "操作成功";
-            int code = 400;
-            var goods = new ExpressionSpecification<Goods>(x => x.GoodNo == GoodNo);
-
-            if (goods != null)
-            {//执行删除
-
-            }
-            else
-            {
-                msg = "删除失败";
-            }
-            // return Json(new { code = code, msg = msg }, JsonRequestBehavior.AllowGet);
-            return null;
-        }
-
     }
 }

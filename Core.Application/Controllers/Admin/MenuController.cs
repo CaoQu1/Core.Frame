@@ -25,7 +25,7 @@ namespace Core.Application.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [HttpGet("api/{area}/{controller}/{action}")]
-        [Initialize(" 获取菜单")]
+        [Initialize(" 获取菜单数据")]
         public IActionResult GetMenuList()
         {
             var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
@@ -41,24 +41,18 @@ namespace Core.Application.Controllers.Admin
         [Initialize(" 编辑菜单页")]
         public IActionResult EditMenu(int? id)
         {
-            var menu = new MenuEditDto();
-            if (id.HasValue && id > 0)
-            {
-                var service = GetInstance<ControllerPermissions>();
-                menu = MapForm<ControllerPermissions, MenuEditDto>(service.Get(id.Value));
-            }
-            return View(menu);
+            return Edit<ControllerPermissions, MenuEditDto>(id);
         }
 
         /// <summary>
-        /// 编辑菜单
+        /// 保存菜单
         /// </summary>
         /// <param name="menuEditDto"></param>
         /// <returns></returns>
-        [Initialize(" 编辑菜单")]
+        [Initialize(" 保存菜单")]
         public IActionResult EditMenu(MenuEditDto menuEditDto)
         {
-            return AddDto<ControllerPermissions, MenuEditDto, MenuReturnDto>(menuEditDto);
+            return Edit<ControllerPermissions, MenuEditDto, MenuReturnDto>(menuEditDto);
         }
     }
 }

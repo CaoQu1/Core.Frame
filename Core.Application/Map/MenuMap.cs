@@ -10,7 +10,7 @@ using System.Text;
 namespace Core.Application.Map
 {
     /// <summary>
-    /// 菜单map
+    /// dto和entity互转
     /// </summary>
     public class MenuMap : Profile
     {

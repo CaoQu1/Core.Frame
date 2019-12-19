@@ -27,9 +27,19 @@ namespace Core.Domain
         private readonly IMenuRepository _menuRepository;
 
         /// <summary>
-        /// 菜单操作
+        ///菜单角色权限操作
         /// </summary>
-        private readonly IRepository<int, ControllerActionPermissions> _controllerActionRepository;
+        private readonly IRepository<int, ActionRole> _actionRoleRepository;
+
+        /// <summary>
+        ///操作角色权限操作
+        /// </summary>
+        private readonly IRepository<int, ControllerPermissions> _controllerRepository;
+
+        /// <summary>
+        ///操作角色权限操作
+        /// </summary>
+        private readonly IRepository<int, ActionPermissions> _actionRepository;
 
         /// <summary>
         /// 构造函数
@@ -38,12 +48,16 @@ namespace Core.Domain
         /// <param name="logger"></param>
         public SystemUserService(ISystemUserRepository repository,
             IMenuRepository menuRepository,
-            IRepository<int, ControllerActionPermissions> controllerActionRepository,
+            IRepository<int, ActionRole> actionRoleRepository,
+            IRepository<int, ActionPermissions> actionRepository,
+        IRepository<int, ControllerPermissions> controllerRepository,
             ILogger<SystemUserService> logger) : base(repository, logger: logger)
         {
-            this._controllerActionRepository = controllerActionRepository;
+            this._actionRoleRepository = actionRoleRepository;
+            this._controllerRepository = controllerRepository;
             this._menuRepository = menuRepository;
             this._systemUserRepository = repository as ISystemUserRepository;
+            this._actionRepository = actionRepository;
         }
 
         /// <summary>
@@ -69,13 +83,18 @@ namespace Core.Domain
         /// </summary>
         /// <param name="systemUserRoles"></param>
         /// <returns></returns>
-        public List<ControllerActionPermissions> GetRolePermissions(IList<int> roleIds)
+        public (List<ControllerPermissions>, List<ActionPermissions>) GetRolePermissions(IList<int> roleIds)
         {
-            return Invoke<List<ControllerActionPermissions>>(() =>
-            {
-                var controllerActionIds = _systemUserRepository.GetRolePermissions(roleIds);
-                return this._controllerActionRepository.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => controllerActionIds.Contains(x.Id)), x => x.ControllerPermissions, x => x.ActionPermissions).ToList();
-            });
+            return Invoke<(List<ControllerPermissions>, List<ActionPermissions>)>(() =>
+             {
+                 var actionPermissions = (from roleId in roleIds
+                                          join actionRole in this._actionRoleRepository.Table
+                                          on roleId equals actionRole.RoleId
+                                          join action in _actionRepository.Table
+                                          on actionRole.ActionId equals action.Id
+                                          select action).ToList();
+                 return (this._controllerRepository.GetByCondition(new ExpressionSpecification<ControllerPermissions>(x => actionPermissions.Select(y => y.ControllerId).Contains(x.Id))).ToList(), actionPermissions);
+             });
         }
 
         /// <summary>

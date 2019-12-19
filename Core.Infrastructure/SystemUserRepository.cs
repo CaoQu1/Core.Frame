@@ -31,11 +31,11 @@ namespace Core.Infrastructure
         public List<int> GetRolePermissions(IList<int> roleIds)
         {
             return (from id in roleIds
-                    join actionRole in _dbContext.Set<ContollerActionRole>()
+                    join actionRole in _dbContext.Set<ControllerRole>()
                     on id equals actionRole.RoleId
-                    join controllerAction in _dbContext.Set<ControllerActionPermissions>()
-                    on actionRole.ControllerActionId equals controllerAction.Id
-                    select controllerAction.Id).ToList();
+                    join controller in _dbContext.Set<ControllerPermissions>()
+                    on actionRole.ControllerId equals controller.Id
+                    select controller.Id).ToList();
         }
     }
 }

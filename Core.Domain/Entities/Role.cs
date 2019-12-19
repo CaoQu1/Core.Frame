@@ -1,5 +1,6 @@
 ﻿using Core.Global;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,11 +40,6 @@ namespace Core.Domain.Entities
         /// </summary>
         public bool IsSystemAdmin { get; set; }
 
-        ///// <summary>
-        ///// 获取红包方式
-        ///// </summary>
-        //public GetRedPackType? RedPackType { get; set; }
-
         /// <summary>
         /// 状态
         /// </summary>
@@ -52,12 +48,20 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 角色用户关联信息
         /// </summary>
+        [JsonIgnore]
         public virtual ICollection<SystemUserRole> SystemUserRoles { get; set; }
 
         /// <summary>
         /// 角色权限关联信息
         /// </summary>
-        public virtual ICollection<ContollerActionRole> ContollerActionRoles { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<ControllerRole> ContollerRoles { get; set; }
+
+        /// <summary>
+        /// 角色操作关联信息
+        /// </summary>
+        [JsonIgnore]
+        public virtual ICollection<ActionRole> ActionRoles { get; set; }
 
         /// <summary>
         /// 配置数据库

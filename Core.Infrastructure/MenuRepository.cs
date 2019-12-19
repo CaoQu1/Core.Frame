@@ -30,11 +30,9 @@ namespace Core.Infrastructure
         /// <returns></returns>
         public List<ControllerPermissions> GetControllerPermissions(string[] roleIds)
         {
-            var menus = (from caRole in _dbContext.Set<ContollerActionRole>()
-                         join caPermissions in _dbContext.Set<ControllerActionPermissions>()
-                         on caRole.ControllerActionId equals caPermissions.Id
+            var menus = (from caRole in _dbContext.Set<ControllerRole>()
                          join cPermissions in Table
-                         on caPermissions.ControllerId equals cPermissions.Id
+                         on caRole.ControllerId equals cPermissions.Id
                          where roleIds.Contains(caRole.RoleId.ToString()) && (!cPermissions.IsDeleted.HasValue || cPermissions.IsDeleted.Value == false) && cPermissions.IsShow == true
                          select cPermissions).Distinct().ToList();
             return menus;

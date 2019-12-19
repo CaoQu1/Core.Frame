@@ -48,12 +48,18 @@ namespace Core.Application.Filter
             var controllerActionPermissions = await cacheManagerService.GetOrAdd<List<AuthorizationModel>>(String.Format(CoreConst.USERROLEACTIONS, userClaim.Value), () =>
              {
                  var controllerActionPermissions = SystemUserService.Instance.GetRolePermissions(roleIds);
-                 return controllerActionPermissions.Select(x => new AuthorizationModel
+                 List<AuthorizationModel> authorizationModels = new List<AuthorizationModel>();
+                 foreach (var item in controllerActionPermissions.Item2)
                  {
-                     Area = x.ControllerPermissions.Area,
-                     Controller = x.ControllerPermissions.Controller,
-                     Action = x.ActionPermissions.Action
-                 }).ToList();
+                     var controller = controllerActionPermissions.Item1.SingleOrDefault(x => x.Id == item.ControllerId);
+                     authorizationModels.Add(new AuthorizationModel
+                     {
+                         Action = item.Action,
+                         Area = controller.Area,
+                         Controller = controller.Controller
+                     });
+                 }
+                 return authorizationModels;
              }, TimeSpan.FromMinutes(30));
 
             var area = context.RouteData.Values["Area"].ToString();

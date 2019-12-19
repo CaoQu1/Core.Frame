@@ -95,7 +95,6 @@ namespace Core.Infrastructure
                 Icon = "layui-icon-file-b",
                 SortId = 1,
                 Action = "Index",
-                Type = Global.CoreEnum.Operation.List
             });
             actionEntry.State = EntityState.Added;
 
@@ -112,25 +111,24 @@ namespace Core.Infrastructure
             });
             controllerEntry.State = EntityState.Added;
 
-            var controllerActionEntry = Entry<ControllerActionPermissions>(new ControllerActionPermissions
-            {
-                CreateTime = DateTime.Now,
-                SortId = 1,
-                ActionId = actionEntry.Entity.Id,
-                SystemId = 1,
-                ControllerId = controllerEntry.Entity.Id
-            });
-            controllerActionEntry.State = EntityState.Added;
+            //var controllerActionEntry = Entry<ControllerActionPermissions>(new ControllerActionPermissions
+            //{
+            //    CreateTime = DateTime.Now,
+            //    SortId = 1,
+            //    ActionId = actionEntry.Entity.Id,
+            //    SystemId = 1,
+            //    ControllerId = controllerEntry.Entity.Id
+            //});
+            //controllerActionEntry.State = EntityState.Added;
 
-            var controllerActionRoleEntry = Entry<ContollerActionRole>(new ContollerActionRole
-            {
-                RoleId = roleEntry.Entity.Id,
-                SortId = 1,
-                SystemId = 1,
-                CreateTime = DateTime.Now,
-                ControllerActionId = controllerActionEntry.Entity.Id
-            });
-            controllerActionRoleEntry.State = EntityState.Added;
+            //var controllerActionRoleEntry = Entry<ContollerActionRole>(new ContollerActionRole
+            //{
+            //    RoleId = roleEntry.Entity.Id,
+            //    SortId = 1,
+            //    SystemId = 1,
+            //    CreateTime = DateTime.Now,
+            //});
+            //controllerActionRoleEntry.State = EntityState.Added;
 
             SaveChanges();
         }

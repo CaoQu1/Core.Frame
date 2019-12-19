@@ -57,16 +57,6 @@ namespace Core.Domain.Entities
         /// </summary>
         public int SystemId { get; set; }
 
-        ///// <summary>
-        ///// 区域编号
-        ///// </summary>
-        //public int? AreaId { get; set; }
-
-        ///// <summary>
-        ///// 区域实体
-        ///// </summary>
-        //public virtual BusinessArea BusinessArea { get; set; }
-
         /// <summary>
         /// 系统用户角色关联信息
         /// </summary>

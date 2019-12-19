@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Application.Dto.EditDto
 {
-    public class GoodsDto
+    public class GoodsEditDto : BaseQueryPageDto
     {
         /// <summary>
         /// 编号

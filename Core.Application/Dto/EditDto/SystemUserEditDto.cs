@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Application.Dto.EditDto
 {
-    public class SystemUserDto : BaseDto
+    public class SystemUserEditDto : BaseDto
     {
         /// <summary>
         /// 用户名

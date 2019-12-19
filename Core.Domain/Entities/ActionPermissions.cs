@@ -13,6 +13,11 @@ namespace Core.Domain.Entities
     public class ActionPermissions : AggregateRoot<ActionPermissions, int>
     {
         /// <summary>
+        /// 控制器编号
+        /// </summary>
+        public int ControllerId { get; set; }
+
+        /// <summary>
         /// 操作名称
         /// </summary>
         public string ActionName { get; set; }
@@ -21,16 +26,6 @@ namespace Core.Domain.Entities
         /// 操作
         /// </summary>
         public string Action { get; set; }
-
-        /// <summary>
-        /// 操作类型
-        /// </summary>
-        public CoreEnum.Operation? Type { get; set; }
-
-        /// <summary>
-        /// 操作位置
-        /// </summary>
-        public CoreEnum.ActionType? ActionType { get; set; }
 
         /// <summary>
         /// 图标
@@ -43,9 +38,14 @@ namespace Core.Domain.Entities
         public bool IsShow { get; set; }
 
         /// <summary>
-        /// 控制器操作关联信息
+        /// 控制器信息
         /// </summary>
-        public virtual ICollection<ControllerActionPermissions> ControllerActionPermissions { get; set; }
+        public virtual ControllerPermissions ControllerPermissions { get; set; }
+
+        /// <summary>
+        /// 操作权限信息
+        /// </summary>
+        public virtual ICollection<ActionRole> ActionRoles { get; set; }
 
         /// <summary>
         /// 配置数据库
@@ -55,6 +55,8 @@ namespace Core.Domain.Entities
         {
             builder.ToTable("ActionPermissions");
 
+            builder.HasOne(x => x.ControllerPermissions).WithMany(y => y.ActionPermissions).HasForeignKey(fk => fk.ControllerId);
+
             builder.HasData(new ActionPermissions
             {
                 ActionName = "首页",
@@ -62,9 +64,9 @@ namespace Core.Domain.Entities
                 Icon = "layui-icon-file-b",
                 SortId = 1,
                 Action = "Master",
-                Type = Global.CoreEnum.Operation.List,
                 Id = 1,
-                IsShow = false
+                IsShow = false,
+                ControllerId = 1
             });
 
             builder.HasData(new ActionPermissions
@@ -74,9 +76,9 @@ namespace Core.Domain.Entities
                 Icon = "layui-icon-file-b",
                 SortId = 2,
                 Action = "GetMenuList",
-                Type = Global.CoreEnum.Operation.List,
                 Id = 2,
-                IsShow = false
+                IsShow = false,
+                ControllerId = 2
             });
 
             base.Configure(builder);

@@ -10,7 +10,7 @@ namespace Core.Domain.Entities
     /// <summary>
     /// 查询模型
     /// </summary>
-    public class Query : AggregateRoot<Query, int>
+    public class PageAction : AggregateRoot<PageAction, int>
     {
         /// <summary>
         /// 标题
@@ -40,7 +40,7 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 存储值的数据类型
         /// </summary>
-        public CoreEnum.FieldValueTypeEnum FieldValueTypeEnum { get; set; }
+        public CoreEnum.FieldValueTypeEnum? FieldValueTypeEnum { get; set; }
 
         /// <summary>
         /// 控件类型为下拉列表,数据源数据库链接实例名称
@@ -53,18 +53,28 @@ namespace Core.Domain.Entities
         public string ListSql { get; set; }
 
         /// <summary>
-        /// 菜单查询关联信息
+        /// 样式
         /// </summary>
-        public virtual ICollection<ControllerQuery> ControllerQueries { get; set; }
+        public string CssStyle { get; set; }
+
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public CoreEnum.ActionType ActionType { get; set; }
+
+        /// <summary>
+        /// 操作类型
+        /// </summary>
+        public CoreEnum.Operation? Type { get; set; }
 
         /// <summary>
         /// 配置数据库
         /// </summary>
         /// <param name="builder"></param>
-        public override void Configure(EntityTypeBuilder<Query> builder)
+        public override void Configure(EntityTypeBuilder<PageAction> builder)
         {
-            builder.ToTable("Queries");
-            builder.HasData(new Query
+            builder.ToTable("PageActions");
+            builder.HasData(new PageAction
             {
                 Id = 1,
                 ControlType = CoreEnum.ControlType.TextBox,
@@ -74,39 +84,62 @@ namespace Core.Domain.Entities
                 LabelTitle = "关键字",
                 SortId = 1,
                 FieldValueName = "KeyWord",
-                //ListDbIns = CoreAppContext.Configuration.GetSection("ConnectionStrings")["Core"],
-                //ListSql=
-                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.String
+                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.String,
+                ActionType = CoreEnum.ActionType.OutSide
             });
 
-            builder.HasData(new Query
+            builder.HasData(new PageAction
             {
                 Id = 2,
                 ControlType = CoreEnum.ControlType.DateTime,
                 CreateTime = DateTime.Now,
-                // FieldPlaceHolder = "请输入关键字查询",
                 IsAllowNull = true,
                 LabelTitle = "开始时间",
                 SortId = 1,
                 FieldValueName = "StartTime",
-                //ListDbIns = CoreAppContext.Configuration.GetSection("ConnectionStrings")["Core"],
-                //ListSql=
-                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime
+                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime,
+                ActionType = CoreEnum.ActionType.OutSide
             });
 
-            builder.HasData(new Query
+            builder.HasData(new PageAction
             {
                 Id = 3,
                 ControlType = CoreEnum.ControlType.DateTime,
                 CreateTime = DateTime.Now,
-                // FieldPlaceHolder = "请输入关键字查询",
                 IsAllowNull = true,
                 LabelTitle = "结束时间",
                 SortId = 1,
                 FieldValueName = "EndTime",
-                //ListDbIns = CoreAppContext.Configuration.GetSection("ConnectionStrings")["Core"],
-                //ListSql=
-                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime
+                FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime,
+                ActionType = CoreEnum.ActionType.OutSide
+            });
+
+
+            builder.HasData(new PageAction
+            {
+                Id = 4,
+                ControlType = CoreEnum.ControlType.Button,
+                CreateTime = DateTime.Now,
+                FieldPlaceHolder = "添加",
+                LabelTitle = "",
+                SortId = 1,
+                ActionType = CoreEnum.ActionType.OutSide,
+                Type = CoreEnum.Operation.Add,
+                CssStyle = "laybtn"
+            });
+
+
+            builder.HasData(new PageAction
+            {
+                Id = 5,
+                ControlType = CoreEnum.ControlType.Button,
+                CreateTime = DateTime.Now,
+                FieldPlaceHolder = "编辑",
+                LabelTitle = "",
+                SortId = 1,
+                ActionType = CoreEnum.ActionType.Inside,
+                Type = CoreEnum.Operation.Update,
+                CssStyle = "laybtn"
             });
 
             base.Configure(builder);

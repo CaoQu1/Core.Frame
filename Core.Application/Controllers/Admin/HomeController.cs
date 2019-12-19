@@ -15,17 +15,18 @@ namespace Core.Application.Controllers.Admin
     [Initialize("主页", "/Admin/Home/Index", Area = "Admin")]
     public class HomeController : AdminBaseController
     {
+        /// <summary>
+        /// 网站配置
+        /// </summary>
         private readonly CoreWebSite _coreWebSite;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="options"></param>
         public HomeController(IOptions<CoreWebSite> options)
         {
             _coreWebSite = options.Value;
-        }
-
-        [Initialize("列表页")]
-        public override IActionResult Index()
-        {
-            return base.Index();
         }
 
         /// <summary>

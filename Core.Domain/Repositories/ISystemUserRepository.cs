@@ -11,7 +11,7 @@ namespace Core.Domain.Repositories
     public interface ISystemUserRepository : IRepository<int, SystemUser>
     {
         /// <summary>
-        /// 获取校色菜单
+        /// 获取角色菜单
         /// </summary>
         /// <param name="roleIds"></param>
         /// <returns></returns>

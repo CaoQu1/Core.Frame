@@ -17,19 +17,9 @@ namespace Core.Domain.Entities
         public string ItemName { get; set; }
 
         /// <summary>
-        /// 描述
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
         /// 创建人编号
         /// </summary>
         public int CreateUserId { get; set; }
-
-        /// <summary>
-        /// 时间
-        /// </summary>
-        public DateTime CreateTime { get; set; }
 
         /// <summary>
         /// 数据值

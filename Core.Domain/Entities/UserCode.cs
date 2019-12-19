@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static Core.Global.CoreEnum;
 
@@ -8,6 +9,7 @@ namespace Core.Domain.Entities
     /// <summary>
     /// 用户验证码实体
     /// </summary>
+    [Table("UserCodes")]
     public class UserCode : AggregateRoot<UserCode, int>
     {
         /// <summary>
@@ -29,10 +31,5 @@ namespace Core.Domain.Entities
         /// 失效时间
         /// </summary>
         public DateTime ExpiryTime { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreateTime { get; set; }
     }
 }

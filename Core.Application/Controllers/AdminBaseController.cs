@@ -1,4 +1,5 @@
-﻿using Core.Application.Filter;
+﻿using Core.Application.Dto;
+using Core.Application.Filter;
 using Core.Domain;
 using Core.Domain.Entities;
 using Core.Global;
@@ -33,16 +34,16 @@ namespace Core.Application.Controllers
         {
             await Invoke(async () =>
            {
-               var controllerId = context.ActionArguments.ContainsKey("id") ? context.ActionArguments["id"]?.ToString() : null;
-               if (!controllerId.IsEmpty())
-               {
-                   var controllerActionService = GetInstance<ControllerActionPermissions>();
-                   var controllerQueryService = GetInstance<ControllerQuery>();
-                   var buttonList = controllerActionService.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => x.ControllerId.ToString() == controllerId), x => x.ActionPermissions).Select(x => x.ActionPermissions);
-                   ViewData["buttonList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.Inside).ToList();
-                   ViewData["buttonOutList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.OutSide).ToList();
-                   ViewData["queryList"] = controllerQueryService.GetByCondition(new ExpressionSpecification<ControllerQuery>(x => x.ControllerId.ToString() == controllerId && x.IsShow == true), x => x.Query).Select(x => x.Query);
-               }
+               //var controllerId = context.ActionArguments.ContainsKey("id") ? context.ActionArguments["id"]?.ToString() : null;
+               //if (!controllerId.IsEmpty())
+               //{
+               //var controllerActionService = GetInstance<ControllerActionPermissions>();
+               var controllerQueryService = GetInstance<PageAction>();
+               var buttonList = controllerQueryService.Get().ToList();
+               ViewData["buttonList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.Inside && x.ControlType == CoreEnum.ControlType.Button).ToList();
+               ViewData["buttonOutList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.OutSide && x.ControlType == CoreEnum.ControlType.Button).ToList();
+               ViewData["queryList"] = buttonList.Where(x => x.ControlType != CoreEnum.ControlType.Button && x.ActionType == CoreEnum.ActionType.OutSide);
+               //}
                await base.OnActionExecutionAsync(context, next);
            });
         }
@@ -72,9 +73,8 @@ namespace Core.Application.Controllers
                var roleId = roles.Where(x => x.IsSystemAdmin).FirstOrDefault().Id;
                var controllerService = GetInstance<ControllerPermissions>();
                var actionService = GetInstance<ActionPermissions>();
-               var controllerActionService = GetInstance<ControllerActionPermissions>();
-               var controllerActionRoleService = GetInstance<ContollerActionRole>();
-
+               var controllerRoleService = GetInstance<ControllerRole>();
+               var actionRoleServic = GetInstance<ActionRole>();
                var assembly = Assembly.GetExecutingAssembly();
 
                var controllerTypes = assembly.GetTypes().Where(x => !x.IsAbstract && typeof(Controller).IsAssignableFrom(x));
@@ -98,7 +98,7 @@ namespace Core.Application.Controllers
 
                        var controller = controllerType.Name.Replace("Controller", "");
                        var controllerPermissions = controllerService.GetByCondition(new ExpressionSpecification<ControllerPermissions>(x => x.Area == area && x.Controller == controller));
-                       int controllerId = 0, actionId = 0, controllerActionId = 0;
+                       int controllerId = 0, actionId = 0;
                        if (controllerInitializeAttribute != null && controllerPermissions.Count == 0)
                        {
                            controllerId = controllerService.Add(new ControllerPermissions
@@ -134,7 +134,7 @@ namespace Core.Application.Controllers
                            }
 
                            var action = item.Name;
-                           var actionPermissions = actionService.GetByCondition(new ExpressionSpecification<ActionPermissions>(x => x.Action == action));
+                           var actionPermissions = actionService.GetByCondition(new ExpressionSpecification<ActionPermissions>(x => x.Action == action && x.ControllerId == controllerId));
                            if (actionAttributes != null && actionPermissions.Count == 0)
                            {
                                actionId = actionService.Add(new ActionPermissions
@@ -145,7 +145,7 @@ namespace Core.Application.Controllers
                                    Icon = actionAttributes.Icon,
                                    SortId = actionAttributes.SortId,
                                    IsShow = actionAttributes.IsShow,
-                                   Type = actionAttributes.Type
+                                   ControllerId = controllerId
                                });
                            }
 
@@ -154,38 +154,35 @@ namespace Core.Application.Controllers
                                actionId = actionPermissions.First().Id;
                            }
 
-                           if (controllerId != 0 && actionId != 0)
+                           if (controllerId != 0)
                            {
-                               var controllerActionPermissions = controllerActionService.GetByCondition(new ExpressionSpecification<ControllerActionPermissions>(x => x.ActionId == actionId && x.ControllerId == controllerId));
-                               if (controllerActionPermissions.Count == 0)
+                               var controllerRoles = controllerRoleService.GetByCondition(new ExpressionSpecification<ControllerRole>(x => x.ControllerId == controllerId && x.RoleId == roleId));
+                               if (controllerRoles.Count == 0)
                                {
-                                   controllerActionId = controllerActionService.Add(new ControllerActionPermissions
-                                   {
-                                       ControllerId = controllerId,
-                                       ActionId = actionId,
-                                       CreateTime = DateTime.Now,
-                                       SortId = 1,
-                                       SystemId = 1
-                                   });
-                               }
-                               else
-                               {
-                                   controllerActionId = controllerActionPermissions.First().Id;
-                               }
-                           }
-
-                           if (controllerActionId != 0)
-                           {
-                               var controllerActionRoles = controllerActionRoleService.GetByCondition(new ExpressionSpecification<ContollerActionRole>(x => x.ControllerActionId == controllerActionId && x.RoleId == roleId));
-                               if (controllerActionRoles.Count == 0)
-                               {
-                                   controllerActionRoleService.Add(new ContollerActionRole
+                                   controllerRoleService.Add(new ControllerRole
                                    {
                                        CreateTime = DateTime.Now,
                                        RoleId = roleId,
-                                       ControllerActionId = controllerActionId,
                                        SortId = 1,
-                                       SystemId = 1
+                                       SystemId = 1,
+                                       ControllerId = controllerId,
+                                   });
+                               }
+                           }
+
+                           if (actionId != 0)
+                           {
+                               var controllerRoles = actionRoleServic.GetByCondition(new ExpressionSpecification<ActionRole>(x => x.ActionId == actionId && x.RoleId == roleId));
+                               if (controllerRoles.Count == 0)
+                               {
+                                   actionRoleServic.Add(new ActionRole
+                                   {
+                                       CreateTime = DateTime.Now,
+                                       RoleId = roleId,
+                                       SortId = 1,
+                                       SystemId = 1,
+                                       ActionId = actionId,
+                                       ControllerId = controllerId
                                    });
                                }
                            }
@@ -205,5 +202,31 @@ namespace Core.Application.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 编辑页
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Edit<TEntity, TDto>(int? id) where TEntity : class, IAggregateRoot<int>, new()
+        {
+            return Invoke<IActionResult>(() =>
+            {
+                TEntity entity = new TEntity();
+                var tentityService = GetInstance<TEntity>();
+                if (tentityService != null && id.HasValue && id.Value > 0)
+                {
+                    entity = tentityService.Get(id.Value);
+                }
+                return View(MapForm<TEntity, TDto>(entity));
+            });
+        }
+
+        /// <summary>
+        /// 编辑数据
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Edit<TEntity, TDto, TResult>(TDto dto) where TEntity : class, IAggregateRoot<int>, new() where TDto : BaseDto
+        {
+            return dto.Id.HasValue && dto.Id.Value > 0 ? UpdateDto<TEntity, TDto, TResult>(dto) : AddDto<TEntity, TDto, TResult>(dto);
+        }
     }
 }

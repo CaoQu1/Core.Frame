@@ -22,11 +22,6 @@ namespace Core.Domain.Entities
         public int ItemId { get; set; }
 
         /// <summary>
-        /// 排序
-        /// </summary>
-        public int SortId { get; set; }
-
-        /// <summary>
         /// 数据项
         /// </summary>
         public virtual Item Item { get; set; }

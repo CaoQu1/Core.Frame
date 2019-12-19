@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static Core.Global.CoreEnum;
 
@@ -8,6 +9,7 @@ namespace Core.Domain.Entities
     /// <summary>
     /// 用户组别实体
     /// </summary>
+    [Table("UserGroups")]
     public class UserGroup : AggregateRoot<UserGroup, int>
     {
         /// <summary>
@@ -24,11 +26,6 @@ namespace Core.Domain.Entities
         /// 固定红包金额
         /// </summary>
         public decimal? FixedRedPacket { get; set; }
-
-        /// <summary>
-        /// 描述
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// 标识

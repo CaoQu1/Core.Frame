@@ -8,12 +8,15 @@ using System.Text;
 
 namespace Core.Application.Map
 {
+    /// <summary>
+    /// dto和entity互转
+    /// </summary>
     public class GoodsMap : Profile
     {
         public GoodsMap()
         {
-            this.CreateMap<GoodsDto, Goods>();
-            this.CreateMap<Goods, GoodsDto>();
+            this.CreateMap<GoodsEditDto, Goods>();
+            this.CreateMap<Goods, GoodsEditDto>();
         }
     }
 }

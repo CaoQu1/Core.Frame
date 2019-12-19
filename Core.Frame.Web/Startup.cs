@@ -54,7 +54,9 @@ namespace Core.Frame.Web
         {
             services.Configure<CoreWebSite>(Configuration.GetSection("CoreWebSite"));
             services.Configure<CoreUpload>(Configuration.GetSection("CoreUpload"));
-
+            services.AddCommonService()
+                    .AddRepositoryService()
+                    .AddDomainService();
             var assmebies = new System.IO.DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).GetFiles("Core.Application*.dll")
                 .Select(x => System.Reflection.Assembly.LoadFrom(x.FullName)).ToArray();
             services.AddMvc(option =>
@@ -110,10 +112,6 @@ namespace Core.Frame.Web
                     option.InstanceName = "db0";
                 });
             }
-            services.AddCommonService()
-                .AddRepositoryService()
-                .AddDomainService();
-
             services.AddUEditorService();
             ServiceCollection = services;
         }

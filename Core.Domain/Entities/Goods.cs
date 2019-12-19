@@ -57,11 +57,6 @@ namespace Core.Domain.Entities
         public string DetailContent { get; set; }
 
         /// <summary>
-        /// 排序
-        /// </summary>
-        public int SortId { get; set; }
-
-        /// <summary>
         /// 商品类型
         /// </summary>
         public virtual GoodCategory GoodCategory { get; set; }
