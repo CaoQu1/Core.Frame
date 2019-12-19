@@ -43,7 +43,7 @@ namespace Core.Application.Controllers.Admin
         [Initialize("编辑角色页")]
         public IActionResult Edit(int? id)
         {
-            return Edit<Role, Role>(id);
+            return Edit<Role, RoleEditDto>(id);
         }
 
         /// <summary>
