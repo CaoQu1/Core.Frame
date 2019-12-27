@@ -2,22 +2,17 @@
     ViewBag.Title = "Index";
     Layout = "~/Core/Admin/Shared/_LayoutForm.cshtml";
 }
-
+@using Core.Application;
 <div class="admin-main">
     <blockquote class="layui-elem-quote p10">
         <form id="formSearch" class="layui-form" action="">
-            <div class="layui-form-item" style="margin-bottom:0px;">
-                <label class="layui-form-label">角色名称：</label>
-                <div class="layui-input-inline">
-                    <input name="RoleName" id="RoleName" lay-verify="" autocomplete="off" class="layui-input">
-                </div>
-                <label class="layui-form-label">状态：</label>
-            </div>
+            @Html.FormOutControl()
         </form>
     </blockquote>
     <div class="layui-field-box">
         <table id="defaultTable" lay-filter="defaultruv"></table>
         <script type="text/html" id="bar">
+            @Html.FormInControl()
         </script>
     </div>
 </div>
@@ -31,17 +26,39 @@
 			        id: 'defaultReload'
                    , elem: '#defaultTable'
                    , height: 'full-112' //高度最大化减去差值
-                   , url: '/Admin/Role/GetListAsync' //数据接口
+                   , url: '/Admin/Role/GetRoleList' //数据接口
                    , page: true //开启分页
                    , cols: [[ //表头
                      { checkbox: true, fixed: true },
-                     { field: 'Id', title: 'Id', width: 80, fixed: 'left' }
-                     , { field: 'RoleName', title: '角色名称', sort: true }
-                     , { field: 'RoleCode', title: '角色编码', width: 120 }
-                     , { field: 'Status', title: '状态', templet: '<div>{{showStatus(d.Status)}}</div>', unresize: true, width: 100, align: 'center' }
-                     , { field: 'CreateTime', title: '创建时间', sort: true, templet: '<div>{{showDate(d.CreateOn)}}</div>' }
+                     { field: 'id', title: 'id', width: 80, fixed: 'left' }
+                     , { field: 'roleName', title: '角色名称', sort: true }
+                     , { field: 'roleCode', title: '角色编码', width: 120 }
+                     , { field: 'status', title: '状态', templet: '<div>{{showStatus(d.status)}}</div>', unresize: true, width: 100, align: 'center' }
+                     , { field: 'createTime', title: '创建时间', sort: true, templet: '<div>{{showDate(d.createTime)}}</div>' }
                      , { field: '', title: '操作', toolbar: "#bar", width: 300 }
-                   ]]
+                    ]],
+                    request: {
+                        pageName: "PageIndex",
+                        limitName:"PageSize"
+                    },
+					toolbar:"default",
+                    //parseData: function (res) {
+                    //    return {
+                    //        "code": res.code, //解析接口状态
+                    //         "msg": res.message, //解析提示文本
+                    //         "count": res.value.totalRecords, //解析数据长度
+                    //         "data": res.value.data //解析数据列表
+                    //    }
+                    //},
+					 response: {
+                     statusName: 'code' //规定数据状态的字段名称，默认：code
+                    ,statusCode: 200 //规定成功的状态码，默认：0
+                    ,msgName: 'message' //规定状态信息的字段名称，默认：msg
+                    ,countName: 'totalRecords' //规定数据总数的字段名称，默认：count
+                    ,dataName: 'value' //规定数据列表的字段名称，默认：data
+                    },
+                    method: "post"
+                   // contentType:"application/json"
 			    });
 			    var $ = layui.$, active = {
 			        reload: function () {
@@ -103,7 +120,7 @@
 			                        }
 			                    }
 			                });
-			            });
+                        });
 			        } else if (obj.event === 'edit') {
 			            common.openTop({
 			                title: '角色编辑', w: '600px', h: '390px', content: '/Permissions/Role/Edit/' + data.Id

@@ -78,7 +78,7 @@ namespace Core.Frame.Web
             services.AddDbContext<BaseDbContext>(option =>
             {
                 var connectionString = Configuration.GetConnectionString("Core");
-                option.UseSqlServer(connectionString);
+                option.UseSqlServer(connectionString, b => b.UseRowNumberForPaging());//分页增加对sqlserver2008的支持
                 var logFactory = new LoggerFactory();
                 logFactory.AddLog4Net();
                 option.UseLoggerFactory(logFactory);//添加sql监控日志
@@ -113,6 +113,11 @@ namespace Core.Frame.Web
                 });
             }
             services.AddUEditorService();
+            services.AddDapper("sqlserver", option =>
+            {
+                option.ConnectionString = Configuration.GetConnectionString("Core");
+                option.DBType = CoreEnum.DBType.SqlServer;
+            });
             ServiceCollection = services;
         }
 

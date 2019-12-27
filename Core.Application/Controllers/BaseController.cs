@@ -390,7 +390,7 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         protected virtual IActionResult JsonSuccess(string message)
         {
-            return Json(new CoreResult { Success = true, Message = message });
+            return Json(new CoreResult { Success = true, Message = message, Code = 200 });
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         protected virtual IActionResult JsonSuccess<T>(string message, T value = default(T))
         {
-            return Json(new CoreResult<T> { Success = true, Message = message, Value = value });
+            return Json(new CoreResult<T> { Success = true, Message = message, Value = value, Code = 200 });
         }
 
         /// <summary>
@@ -414,27 +414,7 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         protected virtual IActionResult JsonSuccess<T, TDto>(string message, T value)
         {
-            return Json(new CoreResult<TDto> { Success = true, Message = message, Value = MapForm<T, TDto>(value) });
-        }
-
-        /// <summary>
-        /// 失败
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected virtual IActionResult JsonFail(string message)
-        {
-            return Json(new CoreResult { Success = false, Message = message });
-        }
-
-        /// <summary>
-        /// 失败
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected virtual Task<IActionResult> JsonFailAsync(string message)
-        {
-            return Task.FromResult<IActionResult>(Json(new CoreResult { Success = false, Message = message }));
+            return Json(new CoreResult<TDto> { Success = true, Message = message, Value = MapForm<T, TDto>(value), Code = 200 });
         }
 
         /// <summary>
@@ -446,7 +426,27 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         protected virtual Task<IActionResult> JsonSuccessAsync<T>(string message, T value = default(T))
         {
-            return Task.FromResult<IActionResult>(Json(new CoreResult<T> { Success = true, Message = message, Value = value }));
+            return Task.FromResult<IActionResult>(Json(new CoreResult<T> { Success = true, Message = message, Value = value, Code = 200 }));
+        }
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        protected virtual IActionResult JsonFail(string message)
+        {
+            return Json(new CoreResult { Success = false, Message = message, Code = 500 });
+        }
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        protected virtual Task<IActionResult> JsonFailAsync(string message)
+        {
+            return Task.FromResult<IActionResult>(Json(new CoreResult { Success = false, Message = message, Code = 500 }));
         }
 
         /// <summary>
@@ -542,17 +542,20 @@ namespace Core.Application.Controllers
                 {
                     expressionSpecification.And(new ExpressionSpecification<TEntity>(x => x.Description.Contains(dto.KeyWord)));
                 }
-                CorePageResult<TResult> result = new CorePageResult<TResult>();
+                CorePageResult<List<TResult>> result = new CorePageResult<List<TResult>>();
                 var corePageResult = baseService.GetByCondition(expressionSpecification, orderBy, orderType, dto.PageSize, dto.PageIndex, navigationProperties);
-                if (corePageResult.Count > 0)
+                if (corePageResult.Value.Count > 0)
                 {
-                    result.Data = MapForm<List<TEntity>, List<TResult>>(corePageResult.Data);
+                    result.Value = MapForm<List<TEntity>, List<TResult>>(corePageResult.Value);
                     result.TotalPages = corePageResult.TotalPages;
                     result.TotalRecords = corePageResult.TotalRecords;
                     result.PageNumber = corePageResult.PageNumber;
                     result.PageSize = corePageResult.PageSize;
                 }
-                return await JsonSuccessAsync<CorePageResult<TResult>>("查询成功!", result);
+                result.Message = "查询成功! ";
+                result.Code = 200;
+                result.Success = true;
+                return await Task.FromResult(Json(result));
             });
         }
     }

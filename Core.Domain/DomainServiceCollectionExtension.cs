@@ -10,7 +10,7 @@ namespace Core.Domain
     /// <summary>
     /// 服务扩展
     /// </summary>
-    public static class DomainServiceCollectionExtstion
+    public static class DomainServiceCollectionExtension
     {
         /// <summary>
         /// 注入领域服务

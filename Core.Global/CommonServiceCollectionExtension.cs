@@ -9,7 +9,7 @@ namespace Core.Global
     /// <summary>
     /// 服务扩展
     /// </summary>
-    public static class CommonServiceCollectionExtstion
+    public static class CommonServiceCollectionExtension
     {
         /// <summary>
         /// 注入公共服务

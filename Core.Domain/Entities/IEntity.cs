@@ -48,7 +48,7 @@ namespace Core.Domain.Entities
     /// <summary>
     /// 用户
     /// </summary>
-    public interface IUserEntity<Tkey, TUser> : IEntity<Tkey>
+    public interface IUserEntity<Tkey> : IEntity<Tkey>
     {
         /// <summary>
         /// 创建人ID
@@ -58,16 +58,16 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 创建人ID
         /// </summary>
-        int UpdateUserId { get; set; }
+        int? UpdateUserId { get; set; }
 
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        TUser CreateUser { get; set; }
+        ///// <summary>
+        ///// 创建人
+        ///// </summary>
+        //TUser CreateUser { get; set; }
 
-        /// <summary>
-        /// 更新人
-        /// </summary>
-        TUser UpdateUser { get; set; }
+        ///// <summary>
+        ///// 更新人
+        ///// </summary>
+        //TUser UpdateUser { get; set; }
     }
 }

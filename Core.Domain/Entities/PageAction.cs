@@ -8,9 +8,9 @@ using System.Text;
 namespace Core.Domain.Entities
 {
     /// <summary>
-    /// 查询模型
+    /// 控件模型
     /// </summary>
-    public class PageAction : AggregateRoot<PageAction, int>
+    public class PageControl : AggregateRoot<PageControl, int>
     {
         /// <summary>
         /// 标题
@@ -60,21 +60,31 @@ namespace Core.Domain.Entities
         /// <summary>
         /// 位置
         /// </summary>
-        public CoreEnum.ActionType ActionType { get; set; }
+        public CoreEnum.ControlPosition ControlPosition { get; set; }
 
         /// <summary>
-        /// 操作类型
+        /// 按钮类型
         /// </summary>
-        public CoreEnum.Operation? Type { get; set; }
+        public string ButtonType { get; set; }
+
+        /// <summary>
+        /// 控件编号
+        /// </summary>
+        public string ControlId { get; set; }
+
+        /// <summary>
+        /// 事件名称
+        /// </summary>
+        public string Event { get; set; }
 
         /// <summary>
         /// 配置数据库
         /// </summary>
         /// <param name="builder"></param>
-        public override void Configure(EntityTypeBuilder<PageAction> builder)
+        public override void Configure(EntityTypeBuilder<PageControl> builder)
         {
-            builder.ToTable("PageActions");
-            builder.HasData(new PageAction
+            builder.ToTable("PageControls");
+            builder.HasData(new PageControl
             {
                 Id = 1,
                 ControlType = CoreEnum.ControlType.TextBox,
@@ -85,10 +95,10 @@ namespace Core.Domain.Entities
                 SortId = 1,
                 FieldValueName = "KeyWord",
                 FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.String,
-                ActionType = CoreEnum.ActionType.OutSide
+                ControlPosition = CoreEnum.ControlPosition.OutSide
             });
 
-            builder.HasData(new PageAction
+            builder.HasData(new PageControl
             {
                 Id = 2,
                 ControlType = CoreEnum.ControlType.DateTime,
@@ -98,10 +108,10 @@ namespace Core.Domain.Entities
                 SortId = 1,
                 FieldValueName = "StartTime",
                 FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime,
-                ActionType = CoreEnum.ActionType.OutSide
+                ControlPosition = CoreEnum.ControlPosition.OutSide
             });
 
-            builder.HasData(new PageAction
+            builder.HasData(new PageControl
             {
                 Id = 3,
                 ControlType = CoreEnum.ControlType.DateTime,
@@ -111,35 +121,57 @@ namespace Core.Domain.Entities
                 SortId = 1,
                 FieldValueName = "EndTime",
                 FieldValueTypeEnum = CoreEnum.FieldValueTypeEnum.DateTime,
-                ActionType = CoreEnum.ActionType.OutSide
+                ControlPosition = CoreEnum.ControlPosition.OutSide
             });
 
 
-            builder.HasData(new PageAction
+            builder.HasData(new PageControl
             {
                 Id = 4,
                 ControlType = CoreEnum.ControlType.Button,
                 CreateTime = DateTime.Now,
-                FieldPlaceHolder = "添加",
-                LabelTitle = "",
+                LabelTitle = "添加",
                 SortId = 1,
-                ActionType = CoreEnum.ActionType.OutSide,
-                Type = CoreEnum.Operation.Add,
-                CssStyle = "laybtn"
+                ControlPosition = CoreEnum.ControlPosition.OutSide,
+                CssStyle = "laybtn",
+                ControlId = "btnAdd"
             });
 
 
-            builder.HasData(new PageAction
+            builder.HasData(new PageControl
+            {
+                Id = 7,
+                ControlType = CoreEnum.ControlType.Button,
+                CreateTime = DateTime.Now,
+                LabelTitle = "查询",
+                SortId = 1,
+                ControlPosition = CoreEnum.ControlPosition.OutSide,
+                CssStyle = "laybtn",
+                ControlId = "btnSearch"
+            });
+
+            builder.HasData(new PageControl
             {
                 Id = 5,
                 ControlType = CoreEnum.ControlType.Button,
                 CreateTime = DateTime.Now,
-                FieldPlaceHolder = "编辑",
-                LabelTitle = "",
+                LabelTitle = "编辑",
                 SortId = 1,
-                ActionType = CoreEnum.ActionType.Inside,
-                Type = CoreEnum.Operation.Update,
-                CssStyle = "laybtn"
+                ControlPosition = CoreEnum.ControlPosition.Inside,
+                CssStyle = "laybtn",
+                Event = "edit"
+            });
+
+            builder.HasData(new PageControl
+            {
+                Id = 6,
+                ControlType = CoreEnum.ControlType.Button,
+                CreateTime = DateTime.Now,
+                LabelTitle = "删除",
+                SortId = 1,
+                ControlPosition = CoreEnum.ControlPosition.Inside,
+                CssStyle = "laybtn",
+                Event = "del"
             });
 
             base.Configure(builder);

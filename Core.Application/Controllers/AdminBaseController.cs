@@ -38,11 +38,10 @@ namespace Core.Application.Controllers
                //if (!controllerId.IsEmpty())
                //{
                //var controllerActionService = GetInstance<ControllerActionPermissions>();
-               var controllerQueryService = GetInstance<PageAction>();
+               var controllerQueryService = GetInstance<PageControl>();
                var buttonList = controllerQueryService.Get().ToList();
-               ViewData["buttonList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.Inside && x.ControlType == CoreEnum.ControlType.Button).ToList();
-               ViewData["buttonOutList"] = buttonList.Where(x => x.ActionType == CoreEnum.ActionType.OutSide && x.ControlType == CoreEnum.ControlType.Button).ToList();
-               ViewData["queryList"] = buttonList.Where(x => x.ControlType != CoreEnum.ControlType.Button && x.ActionType == CoreEnum.ActionType.OutSide);
+               ViewData["buttonList"] = buttonList.Where(x => x.ControlPosition == CoreEnum.ControlPosition.Inside).ToList();
+               ViewData["buttonOutList"] = buttonList.Where(x => x.ControlPosition == CoreEnum.ControlPosition.OutSide).ToList();
                //}
                await base.OnActionExecutionAsync(context, next);
            });
@@ -58,6 +57,7 @@ namespace Core.Application.Controllers
             return Invoke<IActionResult>(() =>
            {
                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+               var userClaim = HttpContext.User.FindFirst(ClaimTypes.Sid);
                var cacheManagerService = CoreAppContext.GetService<ICacheManagerService>();
                var roles = cacheManagerService.GetOrAdd<List<Role>>(String.Format(CoreConst.USERROLES, roleClaim.Value), () =>
                {
@@ -189,6 +189,7 @@ namespace Core.Application.Controllers
                        }
                    }
                }
+               cacheManagerService.Remove(string.Format(CoreConst.USERROLEACTIONS, userClaim.Value));
                return JsonSuccess("初始化成功!");
            });
         }
@@ -226,7 +227,20 @@ namespace Core.Application.Controllers
         /// <returns></returns>
         public IActionResult Edit<TEntity, TDto, TResult>(TDto dto) where TEntity : class, IAggregateRoot<int>, new() where TDto : BaseDto
         {
-            return dto.Id.HasValue && dto.Id.Value > 0 ? UpdateDto<TEntity, TDto, TResult>(dto) : AddDto<TEntity, TDto, TResult>(dto);
+            var userIdStr = HttpContext.User.FindFirst(ClaimTypes.Sid).Value;
+            if (!int.TryParse(userIdStr, out int userId))
+            {
+                throw new Exception("请登录!");
+            }
+            if (dto.Id.HasValue && dto.Id.Value > 0)
+            {
+                dto.UpdateTime = DateTime.Now;
+                dto.UpdateUserId = userId;
+                return UpdateDto<TEntity, TDto, TResult>(dto);
+            }
+            dto.CreateTime = DateTime.Now;
+            dto.CreateUserId = userId;
+            return AddDto<TEntity, TDto, TResult>(dto);
         }
     }
 }

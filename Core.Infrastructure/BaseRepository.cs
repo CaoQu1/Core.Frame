@@ -310,7 +310,7 @@ namespace Core.Infrastructure
         /// <param name="currentPage"></param>
         /// <param name="eagerLoadingProperties"></param>
         /// <returns></returns>
-        public virtual CorePageResult<TEntity> GetByCondition(
+        public virtual CorePageResult<List<TEntity>> GetByCondition(
             ISpecification<TEntity> specification,
             Expression<Func<TEntity, dynamic>> orderBy,
                CoreEnum.SortOrder orderType,
@@ -346,12 +346,12 @@ namespace Core.Infrastructure
             {
                 queryableData = queryable.SortByDescending(orderBy);
             }
-            queryableData = queryableData.Skip(currentPage * (currentPage - 1))//跳过行数，最终生成的sql语句是Top(n)
+            queryableData = queryableData.Skip(pageSize * (currentPage - 1))//跳过行数，最终生成的sql语句是Top(n)
                 .Take(pageSize).AsQueryable();//返回指定数量的行 
             int nCount = queryable.Count();//获取总记录数
 
             List<TEntity> col = queryableData.ToList();
-            return new CorePageResult<TEntity>(nCount,
+            return new CorePageResult<List<TEntity>>(nCount,
                 (nCount + pageSize - 1) / pageSize,
                 pageSize,
                 currentPage, col);

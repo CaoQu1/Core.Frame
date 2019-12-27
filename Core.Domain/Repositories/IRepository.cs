@@ -33,7 +33,7 @@ namespace Core.Domain.Repositories
 
         IList<TEntity> GetByCondition(ISpecification<TEntity> specification, Expression<Func<TEntity, dynamic>> orderBy, CoreEnum.SortOrder orderType, params Expression<Func<TEntity, dynamic>>[] navigationProperties);
 
-        CorePageResult<TEntity> GetByCondition(ISpecification<TEntity> specification,
+        CorePageResult<List<TEntity>> GetByCondition(ISpecification<TEntity> specification,
        Expression<Func<TEntity, dynamic>> orderBy,
        CoreEnum.SortOrder orderType,
        int pageSize, int currentPage, params Expression<Func<TEntity, dynamic>>[] navigationProperties);

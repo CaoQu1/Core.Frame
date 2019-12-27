@@ -231,9 +231,9 @@ namespace Core.Global
         }
 
         /// <summary>
-        /// 表单操作
+        /// 控件位置
         /// </summary>
-        public enum ActionType
+        public enum ControlPosition
         {
             /// <summary>
             /// 表单内
@@ -301,6 +301,15 @@ namespace Core.Global
             /// guid
             /// </summary>
             GUID = 5
+        }
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        public enum DBType
+        {
+            Oracle,
+            SqlServer
         }
     }
 }

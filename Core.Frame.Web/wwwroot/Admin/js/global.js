@@ -15,7 +15,8 @@
 };
 function showDate(str) {
     if (str === '/Date(-62135596800000)/') return '';
-    var d = eval('new ' + str.substr(1, str.length - 2)); //new Date()
+    var tStr = $.toString(str);
+    var d = eval('new ' + tStr.substr(1, tStr.length - 2)); //new Date()
     return d.Format("yyyy-MM-dd hh:mm:ss");
 }
 function showStatus(val) {

@@ -16,7 +16,7 @@ namespace Core.Infrastructure
     /// <summary>
     /// 服务扩展
     /// </summary>
-    public static class RepositorySeviceCollectionExtstion
+    public static class RepositorySeviceCollectionExtension
     {
         /// <summary>
         /// 注入数据仓储服务

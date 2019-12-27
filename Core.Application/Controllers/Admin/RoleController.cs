@@ -28,9 +28,10 @@ namespace Core.Application.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [Initialize("获取分页角色数据", "", "", false)]
-        public async Task<IActionResult> GetListAsync(BaseQueryPageDto baseQueryPageDto)
+        [HttpPost]
+        public IActionResult GetRoleList(BaseQueryPageDto baseQueryPageDto)
         {
-            return await GetPageListAsync<Role, BaseQueryPageDto, Role>(baseQueryPageDto);
+            return GetPageListAsync<Role, BaseQueryPageDto, Role>(baseQueryPageDto).Result;
         }
 
         /// <summary>

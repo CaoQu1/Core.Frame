@@ -23,12 +23,17 @@ namespace Core.Global
         /// 消息
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// 状态码
+        /// </summary>
+        public int Code { get; set; }
     }
 
     /// <summary>
     /// 返回对象结果
     /// </summary>
-    public class CoreResult:CoreResult<Object>
+    public class CoreResult : CoreResult<Object>
     {
 
     }

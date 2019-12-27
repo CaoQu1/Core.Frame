@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Core.Global;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,18 @@ namespace Core.Domain.Entities
         /// 系统用户角色关联信息
         /// </summary>
         public virtual ICollection<SystemUserRole> SystemUserRoles { get; set; }
+
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        [NotMapped]
+        public override int CreateUserId { get; set; }
+
+        /// <summary>
+        /// 更新人
+        /// </summary>
+        [NotMapped]
+        public override int? UpdateUserId { get; set; }
 
         /// <summary>
         /// 配置数据库映射

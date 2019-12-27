@@ -85,27 +85,28 @@ namespace Core.Domain.Entities
     /// 实体基类
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class BaseUserEntity<TEntity, TUser, TKey> : BaseEntity<TEntity, TKey> where TEntity : class, IUserEntity<TKey, TUser>
+    public abstract class BaseUserEntity<TEntity, TKey> : BaseEntity<TEntity, TKey>, IUserEntity<TKey> where TEntity : class, IUserEntity<TKey>
     {
-        /// <summary>
-        /// 创建人ID
-        /// </summary>
-        public int CreateUserId { get; set; }
 
         /// <summary>
         /// 创建人ID
         /// </summary>
-        public int UpdateUserId { get; set; }
+        public virtual int CreateUserId { get; set; } = 1;
 
         /// <summary>
-        /// 创建人
+        /// 修改人ID
         /// </summary>
-        public virtual TUser CreateUser { get; set; }
+        public virtual int? UpdateUserId { get; set; }
 
-        /// <summary>
-        /// 更新人
-        /// </summary>
-        public virtual TUser UpdateUser { get; set; }
+        ///// <summary>
+        ///// 创建人
+        ///// </summary>
+        //public virtual TUser CreateUser { get; set; }
+
+        ///// <summary>
+        ///// 更新人
+        ///// </summary>
+        //public virtual TUser UpdateUser { get; set; }
 
         /// <summary>
         /// 数据库配置
@@ -113,6 +114,7 @@ namespace Core.Domain.Entities
         /// <param name="builder"></param>
         public override void Configure(EntityTypeBuilder<TEntity> builder)
         {
+            //builder.Property(x => x.CreateUserId).HasDefaultValue(1);
             base.Configure(builder);
         }
     }

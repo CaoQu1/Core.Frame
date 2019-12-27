@@ -47,7 +47,7 @@ namespace Core.Global
             {
                 return HttpContextAccessor.HttpContext.RequestServices.GetService<T>();
             }
-            catch 
+            catch
             {
                 return ApplicationBuilder.ApplicationServices.GetService<T>();
             }

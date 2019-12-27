@@ -117,7 +117,7 @@ namespace Core.Domain.Service
         /// <param name="currentPage"></param>
         /// <param name="eagerLoadingProperties"></param>
         /// <returns></returns>
-        public virtual CorePageResult<TEntity> GetByCondition(
+        public virtual CorePageResult<List<TEntity>> GetByCondition(
             ISpecification<TEntity> specification,
             Expression<Func<TEntity, dynamic>> orderBy,
                CoreEnum.SortOrder orderType,
