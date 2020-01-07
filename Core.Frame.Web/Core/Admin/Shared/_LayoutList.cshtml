@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Admin/css/layui.css" rel="stylesheet" />
+    @*<link href="~/Content/layui-v2.5.5/layui/css/layui.css" rel="stylesheet" />*@
+    <link href="~/Admin/css/global.css" rel="stylesheet" />
+    <link href="~/Admin/css/admin.css" rel="stylesheet" />
+    <link href="~/Admin/font/iconfont.css" rel="stylesheet" />
+    <script src="~/Admin/js/layui.js"></script>
+    @*<script src="~/Content/layui-v2.5.5/layui/layui.js"></script>*@
+    <script src="~/Admin/js/global.js"></script>
+    <script src="~/Admin/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
+        <img src="~/Admin/images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
+    </div>
+    <script type="text/javascript">
+        layui.config({
+            base: '/../../../Admin/app/',
+            version: '1522709297490' //为了更新 js 缓存，可忽略
+        });
+    </script>
+    @RenderBody()
+    <script type="text/javascript">
+        layui.use(['common', 'form'], function () {
+            layer.config({
+                skin: 'layui-layer-molv'
+            })
+            var $ = layui.jquery;
+            $(function () {
+                $('#ajax-loader').fadeOut();
+            })
+        })
+
+        //通用方法
+        Date.prototype.format = function (format) {
+            var o = {
+                "M+": this.getMonth() + 1, //month
+                "d+": this.getDate(), //day
+                "h+": this.getHours(), //hour
+                "m+": this.getMinutes(), //minute
+                "s+": this.getSeconds(), //second
+                "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds() //millisecond
+            }
+
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(format)) {
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+                }
+            }
+            return format;
+        };
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        //获取参数
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]); return null;
+        }
+    </script>
+</body>
+</html>

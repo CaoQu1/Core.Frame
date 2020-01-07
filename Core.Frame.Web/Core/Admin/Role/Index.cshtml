@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
-    Layout = "~/Core/Admin/Shared/_LayoutForm.cshtml";
+    Layout = "~/Core/Admin/Shared/_LayoutList.cshtml";
 }
 @using Core.Application;
 <div class="admin-main">
@@ -34,7 +34,7 @@
                      , { field: 'roleName', title: '角色名称', sort: true }
                      , { field: 'roleCode', title: '角色编码', width: 120 }
                      , { field: 'status', title: '状态', templet: '<div>{{showStatus(d.status)}}</div>', unresize: true, width: 100, align: 'center' }
-                     , { field: 'createTime', title: '创建时间', sort: true, templet: '<div>{{showDate(d.createTime)}}</div>' }
+                     , { field: 'createTime', title: '创建时间', sort: true, templet: '<div></div>' }
                      , { field: '', title: '操作', toolbar: "#bar", width: 300 }
                     ]],
                     request: {
@@ -89,9 +89,18 @@
 			    });
 			    //add
 			    $('#btnAdd').on('click', function () {
-			        common.openTop({
-			            title: '角色添加', w: '600px', h: '390px', content: '/Permissions/Role/Add/'
-			        });
+			        //common.openTop({
+			        //    title: '角色添加', w: '600px', h: '390px', content: '/Admin/Role/Edit'
+			        //});
+					 layer.open({
+                type: 2 //此处以iframe举例
+              , title:"角色添加"
+              , area:'auto'
+              //,shade: 0
+              ,maxmin: true
+              ,offset: 'auto'
+              ,content: '/Admin/Role/Edit'
+            });
 			    });
 			    //监听工具条
 			    table.on('tool(defaultruv)', function (obj) {
@@ -99,14 +108,14 @@
 			        if (obj.event === 'detail') {
 			            common.openTop({
 			                detail:true,
-			                title: '角色详情', w: '600px', h: '360px', content: '/Permissions/Role/Detail/' + data.Id, clickOK: function (index) {
+			                title: '角色详情', w: '600px', h: '360px', content: '/Admin/Role/Detail/' + data.Id, clickOK: function (index) {
 			                    common.close(index);
 			                }
 			            });
 			        } else if (obj.event === 'del') {
 			            layer.confirm('确定要删除吗？', function (index) {
 			                $.ajax({
-			                    url: "/Permissions/Role/Delete",
+			                    url: "/Admin/Role/Delete",
 			                    type: "POST",
 			                    data: { "Id": data.Id },
 			                    dataType: "json",
@@ -123,11 +132,11 @@
                         });
 			        } else if (obj.event === 'edit') {
 			            common.openTop({
-			                title: '角色编辑', w: '600px', h: '390px', content: '/Permissions/Role/Edit/' + data.Id
+			                title: '角色编辑', w: '600px', h: '390px', content: '/Admin/Role/Edit/' + data.Id
 			            });
 			        } else if (obj.event === "assign") {
 			            common.openTop({
-			                title: '分配权限', w: '100%', h: '100%', content: '/Permissions/Role/Assign/' + data.Id
+			                title: '分配权限', w: '100%', h: '100%', content: '/Admin/Role/Assign/' + data.Id
 			            });
 			        }
 			    });

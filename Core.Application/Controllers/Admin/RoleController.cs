@@ -42,6 +42,7 @@ namespace Core.Application.Controllers.Admin
         /// <param name="id"></param>
         /// <returns></returns>
         [Initialize("编辑角色页")]
+        [HttpGet]
         public IActionResult Edit(int? id)
         {
             return Edit<Role, RoleEditDto>(id);
@@ -53,6 +54,7 @@ namespace Core.Application.Controllers.Admin
         /// <param name="role"></param>
         /// <returns></returns>
         [Initialize("保存角色")]
+        [HttpPost]
         public IActionResult Edit(RoleEditDto role)
         {
             return Edit<Role, RoleEditDto, Role>(role);
