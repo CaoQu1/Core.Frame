@@ -35,7 +35,7 @@ namespace Core.Web
         {
             var userAgents = httpContext.Request.Headers["user-agent"];
             var originPath = httpContext.Request.Path;
-            if (!originPath.HasValue || originPath.Value == "/")
+             if (!originPath.HasValue || originPath.Value == "/")
             {
                 if (userAgents.Contains("micromessenger"))
                 {

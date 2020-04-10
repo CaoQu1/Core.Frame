@@ -79,7 +79,8 @@ namespace Core.Global
         /// <returns></returns>
         public async Task<T> Get<T>(string key) => await Invoke<T>(async () =>
         {
-            return await this._jsonSerializerService.DeserializeObject<T>(Encoding.Default.GetString(await this._distributedCache.GetAsync(key)));
+            var valueString = await this._distributedCache.GetAsync(key);
+            return valueString != null && valueString.Length > 0 ? await this._jsonSerializerService.DeserializeObject<T>(Encoding.Default.GetString(valueString)) : default(T);
         });
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Core.Application
                         buttonViewResult.Append($@"<div class=""layui-inline"">
     <label class=""layui-form-label"">{item.LabelTitle}</label>
     <div class=""layui-input-inline"">
-      <input type = ""text"" name=""{item.FieldValueName}"" placeholder=""{item.FieldPlaceHolder}"" autocomplete=""off"" class=""layui-input {item.CssStyle}""></div></div>");
+      <input type = ""text"" name=""{item.FieldValueName}"" placeholder=""{item.FieldPlaceHolder}"" class=""layui-input {item.CssStyle}""></div></div>");
                         break;
                     case Global.CoreEnum.ControlType.DropList:
                         if (!string.IsNullOrEmpty(item.ListDbIns))
@@ -74,13 +74,13 @@ namespace Core.Application
                     case Global.CoreEnum.ControlType.Button:
                         if (controlPosition == CoreEnum.ControlPosition.Inside)
                         {
-                            buttonViewResult.Append($@" <a class=""layui-btn {item.CssStyle} layui-btn-xs"" lay-event=""{item.Event}"">{item.LabelTitle}</a>");
+                            buttonViewResult.Append($@" <a class=""layui-btn {item.CssStyle} layui-btn-xs"" {(!string.IsNullOrEmpty(item.Event) ? "lay-event='" + item.Event + "'" : "")}>{item.LabelTitle}</a>");
                         }
                         else
                         {
                             buttonViewResult.Append($@"
 <div class=""layui-inline"">
-      <button class=""layui-btn {item.CssStyle}"" lay-submit type=""{item.ButtonType ?? ""}"" lay-event=""{item.Event}"" id=""{item.ControlId}"">{item.LabelTitle}</button>
+      <button class=""layui-btn {item.CssStyle}"" {(!string.IsNullOrEmpty(item.Event) ? "lay-event='" + item.Event + "'" : "")} id=""{item.ControlId}"">{item.LabelTitle}</button>
   </div>");
                         }
                         break;

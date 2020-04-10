@@ -2,12 +2,16 @@
     ViewBag.Title = "Index";
     Layout = "~/Core/Admin/Shared/_LayoutList.cshtml";
 }
+
 @using Core.Application;
 <div class="admin-main">
     <blockquote class="layui-elem-quote p10">
-        <form id="formSearch" class="layui-form" action="">
-            @Html.FormOutControl()
-        </form>
+
+        @*@Html.FormOutControl()*@
+        <div class="" layui-inline"">
+            <button class=" layui-btn" id="btnAdd">添加</button>
+        </div>
+
     </blockquote>
     <div class="layui-field-box">
         <table id="defaultTable" lay-filter="defaultruv"></table>
@@ -17,129 +21,132 @@
     </div>
 </div>
 <script>
-			layui.use(['table', 'common', 'form'], function () {
-			    var table = layui.table,
-                    form = layui.form,
-                    common = layui.common;
-			    //表格
-			    table.render({
-			        id: 'defaultReload'
-                   , elem: '#defaultTable'
-                   , height: 'full-112' //高度最大化减去差值
-                   , url: '/Admin/Role/GetRoleList' //数据接口
-                   , page: true //开启分页
-                   , cols: [[ //表头
-                     { checkbox: true, fixed: true },
-                     { field: 'id', title: 'id', width: 80, fixed: 'left' }
-                     , { field: 'roleName', title: '角色名称', sort: true }
-                     , { field: 'roleCode', title: '角色编码', width: 120 }
-                     , { field: 'status', title: '状态', templet: '<div>{{showStatus(d.status)}}</div>', unresize: true, width: 100, align: 'center' }
-                     , { field: 'createTime', title: '创建时间', sort: true, templet: '<div></div>' }
-                     , { field: '', title: '操作', toolbar: "#bar", width: 300 }
-                    ]],
-                    request: {
-                        pageName: "PageIndex",
-                        limitName:"PageSize"
-                    },
-					toolbar:"default",
-                    //parseData: function (res) {
-                    //    return {
-                    //        "code": res.code, //解析接口状态
-                    //         "msg": res.message, //解析提示文本
-                    //         "count": res.value.totalRecords, //解析数据长度
-                    //         "data": res.value.data //解析数据列表
-                    //    }
-                    //},
-					 response: {
-                     statusName: 'code' //规定数据状态的字段名称，默认：code
-                    ,statusCode: 200 //规定成功的状态码，默认：0
-                    ,msgName: 'message' //规定状态信息的字段名称，默认：msg
-                    ,countName: 'totalRecords' //规定数据总数的字段名称，默认：count
-                    ,dataName: 'value' //规定数据列表的字段名称，默认：data
-                    },
-                    method: "post"
-                   // contentType:"application/json"
-			    });
-			    var $ = layui.$, active = {
-			        reload: function () {
-			            //执行重载
-			            table.reload('defaultReload', {
-			                page: {
-			                    curr: 1 //重新从第 1 页开始
-			                }
-                          , where: urlToJson($("#formSearch").serialize())
-			            });
-			        }
-			    };
-			    //服务器排序
-			    table.on('sort(defaultruv)', function (obj) {
-			        //尽管我们的 table 自带排序功能，但并没有请求服务端。
-			        //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
-			        table.reload('defaultReload', {
-			            initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
-                      , where: { //请求参数
-                          field: obj.field //排序字段
-                        , order: obj.type //排序方式
-                      }
-			        });
-			    });
-			    $('#btnSearch').on('click', function () {
-			        var type = $(this).data('type');
-			        active[type] ? active[type].call(this) : '';
-			    });
-			    //add
-			    $('#btnAdd').on('click', function () {
-			        //common.openTop({
-			        //    title: '角色添加', w: '600px', h: '390px', content: '/Admin/Role/Edit'
-			        //});
-					 layer.open({
-                type: 2 //此处以iframe举例
-              , title:"角色添加"
-              , area:'auto'
-              //,shade: 0
-              ,maxmin: true
-              ,offset: 'auto'
-              ,content: '/Admin/Role/Edit'
+                    //layui.use(['table', 'common', 'form'], function () {
+                    //    var table = layui.table,
+           //                 form = layui.form,
+           //                 common = layui.common;
+                    //    //表格
+                    //  //  table.render({
+                    //  //      id: 'defaultReload'
+           //  //              , elem: '#defaultTable'
+           //  //              , height: 'full-112' //高度最大化减去差值
+           //  //              , url: '/Admin/Role/GetRoleList' //数据接口
+           //  //              , page: true //开启分页
+           //  //              , cols: [[ //表头
+           //  //                { checkbox: true, fixed: true },
+           //  //                { field: 'id', title: 'id', width: 80, fixed: 'left' }
+           //  //                , { field: 'roleName', title: '角色名称', sort: true }
+           //  //                , { field: 'roleCode', title: '角色编码', width: 120 }
+           //  //                , { field: 'status', title: '状态', templet: '<div>{{showStatus(d.status)}}</div>', unresize: true, width: 100, align: 'center' }
+           //  //                , { field: 'createTime', title: '创建时间', sort: true, templet: '<div></div>' }
+           //  //                , { field: '', title: '操作', toolbar: "#bar", width: 300 }
+           //  //               ]],
+           //  //               request: {
+           //  //                   pageName: "PageIndex",
+           //  //                   limitName:"PageSize"
+           //  //               },
+                    //		//toolbar:"default",
+           //  //               //parseData: function (res) {
+           //  //               //    return {
+           //  //               //        "code": res.code, //解析接口状态
+           //  //               //         "msg": res.message, //解析提示文本
+           //  //               //         "count": res.value.totalRecords, //解析数据长度
+           //  //               //         "data": res.value.data //解析数据列表
+           //  //               //    }
+           //  //               //},
+                    //		// response: {
+           //  //                statusName: 'code' //规定数据状态的字段名称，默认：code
+           //  //               ,statusCode: 200 //规定成功的状态码，默认：0
+           //  //               ,msgName: 'message' //规定状态信息的字段名称，默认：msg
+           //  //               ,countName: 'totalRecords' //规定数据总数的字段名称，默认：count
+           //  //               ,dataName: 'value' //规定数据列表的字段名称，默认：data
+           //  //               },
+           //  //               method: "post"
+           //  //              // contentType:"application/json"
+                    //  //  });
+                    //    //var $ = layui.$, active = {
+                    //    //    reload: function () {
+                    //    //        //执行重载
+                    //    //        table.reload('defaultReload', {
+                    //    //            page: {
+                    //    //                curr: 1 //重新从第 1 页开始
+                    //    //            }
+           //    //                   , where: urlToJson($("#formSearch").serialize())
+                    //    //        });
+                    //    //    }
+                    //    //};
+                    //    ////服务器排序
+                    //    //table.on('sort(defaultruv)', function (obj) {
+                    //    //    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+                    //    //    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+                    //    //    table.reload('defaultReload', {
+                    //    //        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+           //    //               , where: { //请求参数
+           //    //                   field: obj.field //排序字段
+           //    //                 , order: obj.type //排序方式
+           //    //               }
+                    //    //    });
+                    //    //});
+                    //    //$('#btnSearch').on('click', function () {
+                    //    //    var type = $(this).data('type');
+                    //    //    active[type] ? active[type].call(this) : '';
+                    //    //});
+                    //    //add
+
+                    //    //监听工具条
+                    //    table.on('tool(defaultruv)', function (obj) {
+                    //        var data = obj.data;
+                    //        if (obj.event === 'detail') {
+                    //            common.openTop({
+                    //                detail:true,
+                    //                title: '角色详情', w: '600px', h: '360px', content: '/Admin/Role/Detail/' + data.Id, clickOK: function (index) {
+                    //                    common.close(index);
+                    //                }
+                    //            });
+                    //        } else if (obj.event === 'del') {
+                    //            layer.confirm('确定要删除吗？', function (index) {
+                    //                $.ajax({
+                    //                    url: "/Admin/Role/Delete",
+                    //                    type: "POST",
+                    //                    data: { "Id": data.Id },
+                    //                    dataType: "json",
+                    //                    success: function (data) {
+                    //                        if (data.state == "success") {
+                    //                            obj.del();//删除这一行
+                    //                            layer.close(index); //关闭弹框
+                    //                            common.msgSuccess("删除成功");
+                    //                        } else {
+                    //                            common.msgError("删除失败");
+                    //                        }
+                    //                    }
+                    //                });
+           //                     });
+                    //        } else if (obj.event === 'edit') {
+                    //            common.openTop({
+                    //                title: '角色编辑', w: '600px', h: '390px', content: '/Admin/Role/Edit?id=' + data.id
+                    //            });
+                    //        } else if (obj.event === "assign") {
+                    //            common.openTop({
+                    //                title: '分配权限', w: '100%', h: '100%', content: '/Admin/Role/Assign/' + data.id
+                    //            });
+                    //        }
+                    //    });
+                    //});
+            $('#btnAdd').on('click', function () {
+                //         debugger;
+                //common.openTop({
+                //    title: '角色添加', w: '600px', h: '390px', content: '/Admin/Role/Edit'
+                //});
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: "角色添加"
+                    , area: 'auto'
+                    //,shade: 0
+                    , maxmin: true
+                    , offset: 'auto'
+                    , content: '/Admin/Role/Edit'
+                })
             });
-			    });
-			    //监听工具条
-			    table.on('tool(defaultruv)', function (obj) {
-			        var data = obj.data;
-			        if (obj.event === 'detail') {
-			            common.openTop({
-			                detail:true,
-			                title: '角色详情', w: '600px', h: '360px', content: '/Admin/Role/Detail/' + data.Id, clickOK: function (index) {
-			                    common.close(index);
-			                }
-			            });
-			        } else if (obj.event === 'del') {
-			            layer.confirm('确定要删除吗？', function (index) {
-			                $.ajax({
-			                    url: "/Admin/Role/Delete",
-			                    type: "POST",
-			                    data: { "Id": data.Id },
-			                    dataType: "json",
-			                    success: function (data) {
-			                        if (data.state == "success") {
-			                            obj.del();//删除这一行
-			                            layer.close(index); //关闭弹框
-			                            common.msgSuccess("删除成功");
-			                        } else {
-			                            common.msgError("删除失败");
-			                        }
-			                    }
-			                });
-                        });
-			        } else if (obj.event === 'edit') {
-			            common.openTop({
-			                title: '角色编辑', w: '600px', h: '390px', content: '/Admin/Role/Edit/' + data.Id
-			            });
-			        } else if (obj.event === "assign") {
-			            common.openTop({
-			                title: '分配权限', w: '100%', h: '100%', content: '/Admin/Role/Assign/' + data.Id
-			            });
-			        }
-			    });
-			});
+
 </script>
 
